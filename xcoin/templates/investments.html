@@ -1,0 +1,328 @@
+{% extends "base.html" %}
+
+
+
+{% block title %}
+
+Investments | XCoin
+
+{% endblock %}
+
+
+
+{% block page_title %}
+
+Investment Plans
+
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+
+
+<div class="space-y-8">
+
+
+
+
+
+<!-- HEADER -->
+
+
+<div class="glass rounded-3xl p-8">
+
+
+<p class="uppercase tracking-[5px] text-red-500 font-semibold">
+
+XCOIN INVESTMENT
+
+</p>
+
+
+
+<h1 class="text-4xl font-black mt-4">
+
+Grow Your Capital
+
+</h1>
+
+
+
+<p class="text-zinc-400 mt-3 text-lg">
+
+Choose an investment plan and let your money work for you.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- WALLET -->
+
+
+<div class="glass rounded-3xl p-6">
+
+
+<p class="text-zinc-400">
+
+Available Wallet Balance
+
+</p>
+
+
+
+<h2 class="text-4xl font-black mt-3">
+
+${{wallet.balance}}
+
+</h2>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- PLANS -->
+
+
+<div>
+
+
+<h2 class="text-2xl font-black mb-6">
+
+Available Plans
+
+</h2>
+
+
+
+
+
+<div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+
+
+
+
+{% for plan in plans %}
+
+
+
+<div class="glass rounded-3xl p-6 relative overflow-hidden">
+
+
+
+<div class="absolute right-0 top-0 w-32 h-32 bg-red-600/20 blur-3xl">
+
+</div>
+
+
+
+
+
+<div class="relative">
+
+
+
+<h2 class="text-2xl font-black">
+
+{{plan.name}}
+
+</h2>
+
+
+<p class="text-zinc-400 mt-2">
+
+XCoin Growth Plan
+
+</p>
+
+
+
+
+
+
+
+
+<div class="mt-8 space-y-4">
+
+
+
+<div class="flex justify-between">
+
+
+<span class="text-zinc-400">
+
+ROI
+
+</span>
+
+
+<span class="text-green-400 font-bold">
+
+{{plan.roi_percent}}%
+
+</span>
+
+
+</div>
+
+
+
+
+
+<div class="flex justify-between">
+
+
+<span class="text-zinc-400">
+
+Duration
+
+</span>
+
+
+<span class="font-bold">
+
+{{plan.duration_days}} Days
+
+</span>
+
+
+</div>
+
+
+
+
+
+
+<div class="flex justify-between">
+
+
+<span class="text-zinc-400">
+
+Minimum
+
+</span>
+
+
+<span class="font-bold">
+
+${{plan.minimum_amount}}
+
+</span>
+
+
+</div>
+
+
+
+
+
+
+<div class="flex justify-between">
+
+
+<span class="text-zinc-400">
+
+Maximum
+
+</span>
+
+
+<span class="font-bold">
+
+${{plan.maximum_amount}}
+
+</span>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<a href="{% url 'invest' plan.id %}"
+
+class="block bg-red-600 hover:bg-red-500 text-center py-4 rounded-xl mt-8 font-bold">
+
+
+Start Investing
+
+
+</a>
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+{% empty %}
+
+
+
+<div class="glass rounded-3xl p-8 text-zinc-400">
+
+
+No investment plans available.
+
+
+</div>
+
+
+
+{% endfor %}
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+{% endblock %}

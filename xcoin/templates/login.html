@@ -1,0 +1,266 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>
+
+Login | XCoin
+
+</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Inter,sans-serif;
+}
+
+body{
+background:#09090B;
+color:white;
+overflow-x:hidden;
+}
+
+.glass{
+background:rgba(255,255,255,.05);
+backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,.08);
+}
+
+.input{
+width:100%;
+padding:15px;
+background:#18181B;
+border:1px solid #27272A;
+border-radius:14px;
+color:white;
+outline:none;
+transition:.3s;
+}
+
+.input:focus{
+border-color:#DC2626;
+}
+
+.btn{
+width:100%;
+padding:15px;
+background:#DC2626;
+border-radius:14px;
+font-weight:700;
+transition:.3s;
+}
+
+.btn:hover{
+background:#ef4444;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="min-h-screen grid lg:grid-cols-2">
+
+    <!-- Left Side -->
+
+    <div class="hidden lg:flex items-center justify-center relative overflow-hidden">
+
+        <div class="absolute w-96 h-96 rounded-full bg-red-600/20 blur-[120px]"></div>
+
+        <div class="relative z-10 max-w-lg px-10">
+
+            <p class="uppercase tracking-[6px] text-red-500 font-semibold">
+
+                NEXT GENERATION INVESTING
+
+            </p>
+
+            <h1 class="text-6xl font-black mt-6 leading-tight">
+
+                Trade
+
+                <span class="text-red-500">
+
+                    Crypto,
+
+                </span>
+
+                Stocks & Futures.
+
+            </h1>
+
+            <p class="text-zinc-400 mt-8 text-lg leading-8">
+
+                Buy Bitcoin, Ethereum, Stocks, ETFs and Investment Plans from one secure platform.
+
+            </p>
+
+            <div class="mt-10 flex gap-10">
+
+                <div>
+
+                    <h2 class="text-3xl font-black">
+
+                        150K+
+
+                    </h2>
+
+                    <p class="text-zinc-500">
+
+                        Investors
+
+                    </p>
+
+                </div>
+
+                <div>
+
+                    <h2 class="text-3xl font-black">
+
+                        $1.8B
+
+                    </h2>
+
+                    <p class="text-zinc-500">
+
+                        Trading Volume
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Right Side -->
+
+    <div class="flex items-center justify-center p-6">
+
+        <div class="glass rounded-3xl w-full max-w-md p-8">
+
+            <div class="text-center">
+
+                <div class="w-16 h-16 rounded-2xl bg-red-600 mx-auto flex items-center justify-center text-3xl font-black">
+
+                    X
+
+                </div>
+
+                <h2 class="text-3xl font-black mt-5">
+
+                    Welcome Back
+
+                </h2>
+
+                <p class="text-zinc-500 mt-2">
+
+                    Login to your XCoin account
+
+                </p>
+
+            </div>
+
+            {% if messages %}
+
+                {% for message in messages %}
+
+                <div class="mt-5 bg-red-600/20 border border-red-600 rounded-xl p-4">
+
+                    {{ message }}
+
+                </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+            <form method="POST" class="mt-8 space-y-5">
+
+                {% csrf_token %}
+
+                <div>
+
+                    <label class="block mb-2 text-zinc-400">
+
+                        Email Address
+
+                    </label>
+
+                    <input
+                    type="email"
+                    name="email"
+                    class="input"
+                    placeholder="Enter your email"
+                    required>
+
+                </div>
+
+                <div>
+
+                    <label class="block mb-2 text-zinc-400">
+
+                        Password
+
+                    </label>
+
+                    <input
+                    type="password"
+                    name="password"
+                    class="input"
+                    placeholder="Enter your password"
+                    required>
+
+                </div>
+
+                <button class="btn">
+
+                    Login
+
+                </button>
+
+            </form>
+
+            <p class="text-center mt-8 text-zinc-500">
+
+                Don't have an account?
+
+                <a href="{% url 'register' %}" class="text-red-500">
+
+                    Create Account
+
+                </a>
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

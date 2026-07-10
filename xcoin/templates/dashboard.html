@@ -1,0 +1,677 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+XCoin Dashboard
+
+{% endblock %}
+
+
+
+{% block page_title %}
+
+Dashboard
+
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+
+<div class="space-y-8">
+
+
+
+<!-- HERO -->
+
+<div class="glass rounded-3xl p-8 relative overflow-hidden">
+
+
+<div class="absolute right-0 top-0 w-72 h-72 bg-red-600/20 blur-[120px]">
+
+</div>
+
+
+
+<div class="relative">
+
+
+<p class="uppercase tracking-[5px] text-red-500 font-semibold">
+
+XCOIN INVESTING
+
+</p>
+
+
+
+<h1 class="text-4xl lg:text-5xl font-black mt-4">
+
+Welcome back,
+
+<span class="text-red-500">
+
+{{request.user.username}}
+
+</span>
+
+</h1>
+
+
+
+<p class="text-zinc-400 mt-4 text-lg">
+
+Trade crypto, stocks and grow your investments from one secure platform.
+
+</p>
+
+
+
+<div class="flex flex-wrap gap-4 mt-8">
+
+
+<a href="{% url 'deposit' %}"
+
+class="btn">
+
+
+Deposit Funds
+
+</a>
+
+
+
+<a href="{% url 'market' %}"
+
+class="glass px-6 py-3 rounded-xl font-semibold">
+
+
+Explore Markets
+
+</a>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<!-- WALLET CARDS -->
+
+
+<div class="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
+
+
+
+<div class="glass rounded-3xl p-6">
+
+
+<p class="text-zinc-400">
+
+Available Balance
+
+</p>
+
+
+<h2 class="text-4xl font-black mt-4">
+
+${{wallet.balance|default:"0.00"}}
+
+</h2>
+
+
+<div class="mt-4 text-green-400">
+
+Ready to trade
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="glass rounded-3xl p-6">
+
+
+<p class="text-zinc-400">
+
+Invested Capital
+
+</p>
+
+
+<h2 class="text-4xl font-black mt-4">
+
+${{wallet.invested_balance|default:"0.00"}}
+
+</h2>
+
+
+<div class="mt-4 text-blue-400">
+
+Active investments
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="glass rounded-3xl p-6">
+
+
+<p class="text-zinc-400">
+
+Total Profit
+
+</p>
+
+
+<h2 class="text-4xl font-black mt-4 text-green-400">
+
+${{wallet.total_profit|default:"0.00"}}
+
+</h2>
+
+
+<div class="mt-4 text-green-400">
+
+Growth
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="glass rounded-3xl p-6">
+
+
+<p class="text-zinc-400">
+
+Bonus
+
+</p>
+
+
+<h2 class="text-4xl font-black mt-4">
+
+${{wallet.bonus|default:"0.00"}}
+
+</h2>
+
+
+<div class="mt-4 text-red-400">
+
+XCoin Rewards
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+<!-- QUICK ACTIONS -->
+
+
+<div>
+
+
+<h2 class="text-2xl font-black mb-5">
+
+Quick Actions
+
+</h2>
+
+
+
+<div class="grid md:grid-cols-3 gap-5">
+
+
+
+<a href="{% url 'market' %}"
+
+class="glass rounded-3xl p-6 hover:border-red-500 transition">
+
+
+<div class="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center">
+
+
+<i data-lucide="bitcoin"></i>
+
+
+</div>
+
+
+<h3 class="text-xl font-bold mt-5">
+
+Buy Crypto
+
+</h3>
+
+
+<p class="text-zinc-400 mt-2">
+
+Purchase digital assets instantly.
+
+</p>
+
+
+</a>
+
+
+
+
+
+<a href="{% url 'investment_plans' %}"
+
+class="glass rounded-3xl p-6 hover:border-red-500 transition">
+
+
+<div class="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center">
+
+
+<i data-lucide="trending-up"></i>
+
+
+</div>
+
+
+<h3 class="text-xl font-bold mt-5">
+
+Invest
+
+</h3>
+
+
+<p class="text-zinc-400 mt-2">
+
+Grow your capital with XCoin plans.
+
+</p>
+
+
+</a>
+
+
+
+
+
+<a href="{% url 'withdraw' %}"
+
+class="glass rounded-3xl p-6 hover:border-red-500 transition">
+
+
+<div class="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center">
+
+
+<i data-lucide="send"></i>
+
+
+</div>
+
+
+<h3 class="text-xl font-bold mt-5">
+
+Withdraw
+
+</h3>
+
+
+<p class="text-zinc-400 mt-2">
+
+Request your funds anytime.
+
+</p>
+
+
+</a>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- MARKETS -->
+
+
+<div>
+
+
+<div class="flex justify-between items-center mb-5">
+
+
+<h2 class="text-2xl font-black">
+
+Market Overview
+
+</h2>
+
+
+<a href="{% url 'market' %}"
+
+class="text-red-500">
+
+View all
+
+</a>
+
+
+</div>
+
+
+
+
+
+<div class="grid md:grid-cols-2 xl:grid-cols-4 gap-5">
+
+
+
+{% for asset in assets %}
+
+
+<div class="glass rounded-3xl p-5">
+
+
+<div class="flex justify-between">
+
+
+<div>
+
+<h3 class="font-black text-xl">
+
+{{asset.symbol}}
+
+</h3>
+
+
+<p class="text-zinc-400">
+
+{{asset.name}}
+
+</p>
+
+
+</div>
+
+
+
+<span class="text-green-400">
+
++{{asset.change}}%
+
+</span>
+
+
+</div>
+
+
+
+<h2 class="text-3xl font-black mt-5">
+
+${{asset.current_price}}
+
+</h2>
+
+
+<a href="{% url 'asset_detail' asset.id %}"
+
+class="block bg-red-600 text-center py-3 rounded-xl mt-5 font-bold">
+
+Trade
+
+</a>
+
+
+
+</div>
+
+
+
+{% empty %}
+
+
+<div class="text-zinc-400">
+
+No assets available.
+
+</div>
+
+
+{% endfor %}
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- INVESTMENTS -->
+
+
+<div>
+
+
+<h2 class="text-2xl font-black mb-5">
+
+Active Investments
+
+</h2>
+
+
+<div class="glass rounded-3xl">
+
+
+{% for investment in investments %}
+
+
+<div class="p-5 border-b border-white/10 flex justify-between">
+
+
+<div>
+
+<h3 class="font-bold">
+
+{{investment.plan.name}}
+
+</h3>
+
+
+<p class="text-zinc-500">
+
+Ends {{investment.end_date}}
+
+</p>
+
+
+</div>
+
+
+
+<div class="text-right">
+
+
+<p class="text-green-400 font-bold">
+
+${{investment.expected_profit}}
+
+</p>
+
+
+<p class="text-xs text-zinc-500">
+
+Expected Profit
+
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
+{% empty %}
+
+
+<div class="p-6 text-zinc-400">
+
+No active investments.
+
+</div>
+
+
+{% endfor %}
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- TRANSACTIONS -->
+
+
+<div>
+
+
+<h2 class="text-2xl font-black mb-5">
+
+Recent Transactions
+
+</h2>
+
+
+
+<div class="glass rounded-3xl">
+
+
+{% for transaction in transactions %}
+
+
+<div class="flex justify-between p-5 border-b border-white/10">
+
+
+<div>
+
+<h4 class="font-bold">
+
+{{transaction.transaction_type|title}}
+
+</h4>
+
+
+<p class="text-zinc-500 text-sm">
+
+{{transaction.created_at}}
+
+</p>
+
+
+</div>
+
+
+
+<div>
+
+
+<p class="font-bold">
+
+${{transaction.amount}}
+
+</p>
+
+
+<p class="text-sm text-zinc-500">
+
+{{transaction.status}}
+
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
+{% empty %}
+
+
+<div class="p-6 text-zinc-400">
+
+No transactions yet.
+
+</div>
+
+
+{% endfor %}
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+{% endblock %}

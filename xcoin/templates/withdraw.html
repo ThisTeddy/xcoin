@@ -1,0 +1,319 @@
+{% extends "base.html" %}
+
+
+
+{% block title %}
+
+Withdraw | XCoin
+
+{% endblock %}
+
+
+
+{% block page_title %}
+
+Withdraw Funds
+
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+
+
+<div class="max-w-3xl mx-auto space-y-8">
+
+
+
+
+
+<!-- HEADER -->
+
+
+<div class="glass rounded-3xl p-8">
+
+
+<p class="uppercase tracking-[5px] text-red-500 font-semibold">
+
+XCOIN WALLET
+
+</p>
+
+
+
+<h1 class="text-4xl font-black mt-4">
+
+Withdraw Assets
+
+</h1>
+
+
+
+<p class="text-zinc-400 mt-3">
+
+Request withdrawal of your available funds.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- BALANCE -->
+
+
+<div class="glass rounded-3xl p-8">
+
+
+<p class="text-zinc-400">
+
+Available Balance
+
+</p>
+
+
+
+<h2 class="text-5xl font-black mt-3">
+
+${{wallet.balance}}
+
+</h2>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- FORM -->
+
+
+<form
+
+method="POST"
+
+class="glass rounded-3xl p-8 space-y-6"
+
+
+>
+
+
+{% csrf_token %}
+
+
+
+
+
+
+<div>
+
+
+<label class="text-zinc-400">
+
+Amount
+
+</label>
+
+
+<input
+
+type="number"
+
+step="0.01"
+
+name="amount"
+
+placeholder="Enter withdrawal amount"
+
+class="input mt-3"
+
+required
+
+>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div>
+
+
+<label class="text-zinc-400">
+
+Network
+
+</label>
+
+
+
+<select
+
+name="network"
+
+class="input mt-3"
+
+required
+
+>
+
+
+<option value="BTC">
+
+Bitcoin
+
+</option>
+
+
+<option value="ETH">
+
+Ethereum
+
+</option>
+
+
+<option value="USDT_TRC20">
+
+USDT TRC20
+
+</option>
+
+
+<option value="USDT_ERC20">
+
+USDT ERC20
+
+</option>
+
+
+<option value="BNB">
+
+BNB Chain
+
+</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div>
+
+
+<label class="text-zinc-400">
+
+Wallet Address
+
+</label>
+
+
+
+<textarea
+
+name="wallet_address"
+
+placeholder="Enter destination wallet address"
+
+class="input mt-3 h-32"
+
+required
+
+></textarea>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="bg-yellow-500/10 border border-yellow-500/20 rounded-2xl p-5">
+
+
+<p class="text-sm text-zinc-300">
+
+
+Withdrawals are manually reviewed by XCoin.
+Make sure your wallet address is correct before submitting.
+
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<button
+
+type="submit"
+
+class="btn w-full text-lg"
+
+>
+
+
+Submit Withdrawal
+
+
+</button>
+
+
+
+
+
+
+</form>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+{% endblock %}

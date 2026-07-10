@@ -1,0 +1,389 @@
+{% extends "base.html" %}
+
+
+
+{% block title %}
+
+XCoin Markets
+
+{% endblock %}
+
+
+
+{% block page_title %}
+
+Markets
+
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+
+
+<div class="space-y-8">
+
+
+
+<!-- HEADER -->
+
+<div class="glass rounded-3xl p-8">
+
+
+<p class="uppercase tracking-[5px] text-red-500 font-semibold">
+
+XCOIN MARKETPLACE
+
+</p>
+
+
+
+<h1 class="text-4xl font-black mt-4">
+
+Trade Global Assets
+
+</h1>
+
+
+
+<p class="text-zinc-400 mt-3 text-lg">
+
+Buy cryptocurrency, stocks, forex and commodities.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- SEARCH -->
+
+
+<form method="GET"
+
+class="flex flex-col md:flex-row gap-4">
+
+
+<div class="flex-1">
+
+
+<input
+
+name="q"
+
+placeholder="Search Bitcoin, Tesla, Gold..."
+
+class="input"
+
+/>
+
+
+</div>
+
+
+
+<button
+
+class="btn">
+
+Search
+
+</button>
+
+
+</form>
+
+
+
+
+
+
+
+<!-- FILTERS -->
+
+
+<div class="flex flex-wrap gap-3">
+
+
+<a href="{% url 'market' %}"
+
+class="glass px-5 py-3 rounded-xl">
+
+
+All
+
+
+</a>
+
+
+
+
+<a href="?type=crypto"
+
+class="glass px-5 py-3 rounded-xl">
+
+
+Crypto
+
+
+</a>
+
+
+
+
+<a href="?type=stock"
+
+class="glass px-5 py-3 rounded-xl">
+
+
+Stocks
+
+
+</a>
+
+
+
+
+<a href="?type=forex"
+
+class="glass px-5 py-3 rounded-xl">
+
+
+Forex
+
+
+</a>
+
+
+
+
+<a href="?type=commodity"
+
+class="glass px-5 py-3 rounded-xl">
+
+
+Commodities
+
+
+</a>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- ASSETS -->
+
+
+<div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-6">
+
+
+
+{% for asset in assets %}
+
+
+
+<div class="glass rounded-3xl p-6 hover:border-red-500 transition">
+
+
+
+<div class="flex justify-between items-start">
+
+
+
+<div>
+
+
+<div class="flex items-center gap-3">
+
+
+{% if asset.logo %}
+
+
+<img
+
+src="{{asset.logo.url}}"
+
+class="w-10 h-10 rounded-full object-cover"
+
+>
+
+
+{% endif %}
+
+
+
+<div>
+
+
+<h2 class="text-xl font-black">
+
+{{asset.symbol}}
+
+</h2>
+
+
+<p class="text-zinc-400 text-sm">
+
+{{asset.name}}
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<span
+
+class="{% if asset.change >= 0 %}text-green-400{% else %}text-red-400{% endif %} font-bold">
+
+
+{% if asset.change >= 0 %}
+
+▲
+
+{% else %}
+
+▼
+
+{% endif %}
+
+
+{{asset.change}}%
+
+
+</span>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="mt-8">
+
+
+<p class="text-zinc-500">
+
+Current Price
+
+</p>
+
+
+
+<h1 class="text-4xl font-black mt-2">
+
+${{asset.current_price}}
+
+</h1>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="grid grid-cols-2 gap-3 mt-8">
+
+
+
+<a href="{% url 'asset_detail' asset.id %}"
+
+class="glass rounded-xl py-3 text-center">
+
+
+View
+
+
+</a>
+
+
+
+
+
+<a href="{% url 'buy_asset' asset.id %}"
+
+class="bg-red-600 rounded-xl py-3 text-center font-bold hover:bg-red-500">
+
+
+Buy
+
+
+</a>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+{% empty %}
+
+
+
+<div class="glass rounded-3xl p-8 text-zinc-400">
+
+
+No assets found.
+
+
+</div>
+
+
+
+{% endfor %}
+
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+{% endblock %}

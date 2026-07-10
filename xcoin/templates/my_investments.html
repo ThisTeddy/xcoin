@@ -1,0 +1,488 @@
+{% extends "base.html" %}
+
+
+
+{% block title %}
+
+My Investments | XCoin
+
+{% endblock %}
+
+
+
+{% block page_title %}
+
+My Investments
+
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+
+
+<div class="space-y-8">
+
+
+
+
+
+
+<!-- HEADER -->
+
+
+<div class="glass rounded-3xl p-8">
+
+
+<p class="uppercase tracking-[5px] text-red-500 font-semibold">
+
+XCOIN INVESTMENTS
+
+</p>
+
+
+
+<h1 class="text-4xl font-black mt-4">
+
+Your Investment Portfolio
+
+</h1>
+
+
+
+<p class="text-zinc-400 mt-3">
+
+Track your active plans, profits and maturity dates.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- SUMMARY -->
+
+
+<div class="grid md:grid-cols-3 gap-6">
+
+
+
+
+
+<div class="glass rounded-3xl p-6">
+
+
+<p class="text-zinc-400">
+
+Total Invested
+
+</p>
+
+
+<h2 class="text-4xl font-black mt-3">
+
+${{total_invested}}
+
+</h2>
+
+
+</div>
+
+
+
+
+
+
+<div class="glass rounded-3xl p-6">
+
+
+<p class="text-zinc-400">
+
+Expected Profit
+
+</p>
+
+
+<h2 class="text-4xl font-black mt-3 text-green-400">
+
+${{total_profit}}
+
+</h2>
+
+
+</div>
+
+
+
+
+
+
+<div class="glass rounded-3xl p-6">
+
+
+<p class="text-zinc-400">
+
+Active Plans
+
+</p>
+
+
+<h2 class="text-4xl font-black mt-3">
+
+{{active_count}}
+
+</h2>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- INVESTMENT LIST -->
+
+
+<div>
+
+
+<h2 class="text-2xl font-black mb-5">
+
+Investment History
+
+</h2>
+
+
+
+
+
+<div class="space-y-5">
+
+
+
+
+
+{% for investment in investments %}
+
+
+
+
+
+<div class="glass rounded-3xl p-6">
+
+
+
+
+
+<div class="flex flex-col md:flex-row md:justify-between gap-5">
+
+
+
+
+
+<div>
+
+
+<div class="flex items-center gap-3">
+
+
+<h2 class="text-2xl font-black">
+
+{{investment.plan.name}}
+
+</h2>
+
+
+
+
+{% if investment.status == "running" %}
+
+
+<span class="bg-green-500/10 text-green-400 px-3 py-1 rounded-full text-xs">
+
+
+Running
+
+
+</span>
+
+
+{% elif investment.status == "completed" %}
+
+
+<span class="bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full text-xs">
+
+
+Completed
+
+
+</span>
+
+
+{% else %}
+
+
+<span class="bg-red-500/10 text-red-400 px-3 py-1 rounded-full text-xs">
+
+
+Cancelled
+
+
+</span>
+
+
+{% endif %}
+
+
+
+</div>
+
+
+
+
+
+
+<p class="text-zinc-400 mt-2">
+
+
+Started:
+
+{{investment.start_date}}
+
+
+</p>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="text-left md:text-right">
+
+
+<p class="text-zinc-400">
+
+Expected Return
+
+</p>
+
+
+
+<h2 class="text-3xl font-black text-green-400">
+
+
+${{investment.expected_profit}}
+
+
+</h2>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- DETAILS -->
+
+
+<div class="grid md:grid-cols-3 gap-5 mt-8">
+
+
+
+
+
+<div class="glass rounded-2xl p-4">
+
+
+<p class="text-zinc-400 text-sm">
+
+Amount
+
+</p>
+
+
+<p class="font-bold text-lg">
+
+${{investment.amount}}
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="glass rounded-2xl p-4">
+
+
+<p class="text-zinc-400 text-sm">
+
+Maturity Date
+
+</p>
+
+
+<p class="font-bold text-lg">
+
+{{investment.end_date}}
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="glass rounded-2xl p-4">
+
+
+<p class="text-zinc-400 text-sm">
+
+ROI
+
+</p>
+
+
+<p class="font-bold text-lg text-green-400">
+
+{{investment.plan.roi_percent}}%
+
+</p>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+{% empty %}
+
+
+
+
+
+<div class="glass rounded-3xl p-8 text-zinc-400">
+
+
+You don't have any investments yet.
+
+
+<br>
+
+
+Start growing your capital with XCoin.
+
+
+</div>
+
+
+
+
+
+{% endfor %}
+
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- BUTTON -->
+
+
+<a href="{% url 'investment_plans' %}"
+
+class="inline-block btn">
+
+
+Create New Investment
+
+
+</a>
+
+
+
+
+
+
+</div>
+
+
+
+
+{% endblock %}

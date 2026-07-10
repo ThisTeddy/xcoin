@@ -1,0 +1,627 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>
+
+{% block title %}
+
+XCoin
+
+{% endblock %}
+
+</title>
+
+
+<!-- Tailwind -->
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+
+<!-- Alpine -->
+
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+
+<!-- Lucide Icons -->
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+
+
+<style>
+
+
+*{
+
+font-family:Inter,system-ui,sans-serif;
+
+}
+
+
+body{
+
+background:#09090B;
+
+color:white;
+
+}
+
+
+/* Glass */
+
+.glass{
+
+background:rgba(255,255,255,0.05);
+
+border:1px solid rgba(255,255,255,0.08);
+
+backdrop-filter:blur(20px);
+
+}
+
+
+/* Sidebar links */
+
+.sidebar-link{
+
+display:flex;
+
+align-items:center;
+
+gap:14px;
+
+padding:14px 16px;
+
+border-radius:14px;
+
+color:#a1a1aa;
+
+transition:.3s;
+
+}
+
+
+.sidebar-link:hover{
+
+background:rgba(255,255,255,.06);
+
+color:white;
+
+}
+
+
+.sidebar-active{
+
+background:#dc2626;
+
+color:white;
+
+}
+
+
+/* Buttons */
+
+.btn{
+
+background:#dc2626;
+
+padding:12px 20px;
+
+border-radius:14px;
+
+font-weight:700;
+
+transition:.3s;
+
+}
+
+
+.btn:hover{
+
+background:#ef4444;
+
+}
+
+
+/* Inputs */
+
+.input{
+
+width:100%;
+
+background:#18181b;
+
+border:1px solid #27272a;
+
+padding:14px;
+
+border-radius:14px;
+
+outline:none;
+
+}
+
+
+.input:focus{
+
+border-color:#dc2626;
+
+}
+
+
+[x-cloak]{
+
+display:none;
+
+}
+
+
+</style>
+
+
+</head>
+
+
+
+<body
+
+
+x-data="{sidebarOpen:false}"
+
+
+class="min-h-screen"
+
+>
+
+
+
+<!-- MOBILE OVERLAY -->
+
+
+<div
+
+x-show="sidebarOpen"
+
+x-cloak
+
+@click="sidebarOpen=false"
+
+class="fixed inset-0 bg-black/70 z-40 lg:hidden"
+
+></div>
+
+
+
+
+
+<!-- SIDEBAR -->
+
+
+<aside
+
+
+:class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
+
+
+class="fixed top-0 left-0 h-screen w-72 bg-[#111111] border-r border-white/10 z-50 transition-transform duration-300"
+
+>
+
+
+<!-- LOGO -->
+
+
+<div class="h-20 flex items-center px-7 border-b border-white/10">
+
+
+<div class="w-12 h-12 bg-red-600 rounded-2xl flex items-center justify-center text-2xl font-black">
+
+X
+
+</div>
+
+
+<div class="ml-3">
+
+
+<h1 class="text-2xl font-black">
+
+XCoin
+
+</h1>
+
+
+<p class="text-xs text-zinc-500">
+
+Invest • Trade • Grow
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- MENU -->
+
+
+<nav class="p-5 space-y-2">
+
+
+<a href="{% url 'dashboard' %}"
+
+class="sidebar-link">
+
+
+<i data-lucide="layout-dashboard"></i>
+
+
+Dashboard
+
+
+</a>
+
+
+
+
+<a href="{% url 'market' %}"
+
+class="sidebar-link">
+
+
+<i data-lucide="chart-line"></i>
+
+
+Markets
+
+
+</a>
+
+
+
+
+<a href="{% url 'portfolio' %}"
+
+class="sidebar-link">
+
+
+<i data-lucide="briefcase"></i>
+
+
+Portfolio
+
+
+</a>
+
+
+
+
+<a href="{% url 'deposit' %}"
+
+class="sidebar-link">
+
+
+<i data-lucide="wallet"></i>
+
+
+Deposit
+
+
+</a>
+
+
+
+
+<a href="{% url 'withdraw' %}"
+
+class="sidebar-link">
+
+
+<i data-lucide="arrow-up-circle"></i>
+
+
+Withdraw
+
+
+</a>
+
+
+
+
+
+<a href="{% url 'investment_plans' %}"
+
+class="sidebar-link">
+
+
+<i data-lucide="trending-up"></i>
+
+
+Investments
+
+
+</a>
+
+
+
+
+
+<a href="{% url 'transactions' %}"
+
+class="sidebar-link">
+
+
+<i data-lucide="receipt"></i>
+
+
+Transactions
+
+
+</a>
+
+
+
+
+
+<a href="{% url 'profile' %}"
+
+class="sidebar-link">
+
+
+<i data-lucide="user"></i>
+
+
+Profile
+
+
+</a>
+
+
+
+</nav>
+
+
+
+
+
+
+<!-- WALLET CARD -->
+
+
+<div class="absolute bottom-20 left-5 right-5">
+
+
+<div class="glass rounded-3xl p-5">
+
+
+<p class="text-zinc-400 text-sm">
+
+Wallet Balance
+
+</p>
+
+
+<h2 class="text-3xl font-black mt-2">
+
+
+${{request.user.wallet.balance|default:"0"}}
+
+
+</h2>
+
+
+<a href="{% url 'deposit' %}"
+
+class="btn block text-center mt-5">
+
+
+Deposit
+
+
+</a>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- LOGOUT -->
+
+
+<div class="absolute bottom-0 left-0 right-0 p-5 border-t border-white/10">
+
+
+<a href="{% url 'logout' %}"
+
+class="sidebar-link">
+
+
+<i data-lucide="log-out"></i>
+
+
+Logout
+
+
+</a>
+
+
+</div>
+
+
+
+</aside>
+
+
+
+
+
+
+
+<!-- MAIN CONTENT -->
+
+
+<div class="lg:ml-72 min-h-screen">
+
+
+
+
+
+<!-- NAVBAR -->
+
+
+<header class="h-20 border-b border-white/10 bg-[#09090B]/80 backdrop-blur-xl sticky top-0 z-30">
+
+
+<div class="h-full px-5 lg:px-8 flex items-center justify-between">
+
+
+
+<button
+
+@click="sidebarOpen=true"
+
+class="lg:hidden glass w-11 h-11 rounded-xl flex items-center justify-center"
+
+>
+
+
+<i data-lucide="menu"></i>
+
+
+</button>
+
+
+
+
+
+<h1 class="text-xl lg:text-2xl font-black">
+
+
+{% block page_title %}
+
+Dashboard
+
+{% endblock %}
+
+
+</h1>
+
+
+
+
+
+<div class="flex items-center gap-4">
+
+
+
+<div class="hidden md:block">
+
+
+<div class="glass rounded-xl px-4 py-2">
+
+
+<p class="text-xs text-zinc-500">
+
+BTC
+
+</p>
+
+
+<p class="font-bold">
+
+$117,542
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<div class="w-11 h-11 rounded-full bg-red-600 flex items-center justify-center font-black">
+
+
+{{request.user.username|first|upper}}
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+</header>
+
+
+
+
+
+
+<!-- PAGE -->
+
+
+<main class="p-5 lg:p-8">
+
+
+{% block content %}
+
+
+
+{% endblock %}
+
+
+</main>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+<script>
+
+
+lucide.createIcons();
+
+
+</script>
+
+
+</body>
+
+</html>
