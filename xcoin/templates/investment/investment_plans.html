@@ -1,0 +1,334 @@
+{% extends "base.html" %}
+
+{% block title %}
+Investment Plans
+{% endblock %}
+
+{% block content %}
+
+<section class="p-6">
+
+    <!-- Header -->
+
+    <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-6">
+
+        <div>
+
+            <p class="uppercase tracking-[0.3em] text-xs text-red-500">
+
+                Investments
+
+            </p>
+
+            <h1 class="text-4xl font-black mt-2">
+
+                Investment Plans
+
+            </h1>
+
+            <p class="text-zinc-400 mt-2">
+
+                Choose an investment package and start earning returns.
+
+            </p>
+
+        </div>
+
+        <a
+        href="{% url 'my_investments' %}"
+
+        class="h-11 px-6 rounded-xl bg-red-600 hover:bg-red-700 transition flex items-center gap-2">
+
+            <i data-lucide="briefcase-business" class="w-4 h-4"></i>
+
+            My Investments
+
+        </a>
+
+    </div>
+
+
+    <!-- Stats -->
+
+    <div class="grid md:grid-cols-3 gap-5 mt-10">
+
+        <div class="glass rounded-2xl border border-zinc-800 p-6">
+
+            <p class="text-zinc-500 text-sm">
+
+                Active Plans
+
+            </p>
+
+            <h2 class="text-4xl font-black mt-3">
+
+                {{ plans|length }}
+
+            </h2>
+
+        </div>
+
+        <div class="glass rounded-2xl border border-zinc-800 p-6">
+
+            <p class="text-zinc-500 text-sm">
+
+                Highest ROI
+
+            </p>
+
+            <h2 class="text-4xl font-black mt-3 text-green-500">
+
+                Up to 45%
+
+            </h2>
+
+        </div>
+
+        <div class="glass rounded-2xl border border-zinc-800 p-6">
+
+            <p class="text-zinc-500 text-sm">
+
+                Withdrawals
+
+            </p>
+
+            <h2 class="text-4xl font-black mt-3">
+
+                Instant
+
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <!-- Plans -->
+
+    <div class="grid lg:grid-cols-2 xl:grid-cols-3 gap-8 mt-12">
+
+        {% for plan in plans %}
+
+        <div
+        class="glass
+        rounded-3xl
+        border
+        border-zinc-800
+        hover:border-red-600
+        hover:-translate-y-2
+        transition-all
+        duration-300
+        overflow-hidden">
+
+            {% if plan.featured %}
+
+            <div class="bg-red-600 text-center py-2 text-sm font-semibold">
+
+                ★ MOST POPULAR
+
+            </div>
+
+            {% endif %}
+
+            <div class="p-8">
+
+                <div class="flex justify-between items-start">
+
+                    <div>
+
+                        <h2 class="text-2xl font-black">
+
+                            {{ plan.name }}
+
+                        </h2>
+
+                        <p class="text-zinc-400 text-sm mt-2">
+
+                            {{ plan.description }}
+
+                        </p>
+
+                    </div>
+
+                    <div
+                    class="w-14 h-14
+                    rounded-2xl
+                    bg-red-600/10
+                    flex
+                    items-center
+                    justify-center">
+
+                        <i
+                        data-lucide="badge-dollar-sign"
+                        class="text-red-500">
+
+                        </i>
+
+                    </div>
+
+                </div>
+
+
+                <div class="mt-8">
+
+                    <p class="text-zinc-500 text-sm">
+
+                        Return On Investment
+
+                    </p>
+
+                    <h1 class="text-5xl font-black text-red-500 mt-2">
+
+                        {{ plan.roi_percent }}%
+
+                    </h1>
+
+                </div>
+
+
+                <div class="space-y-5 mt-8">
+
+                    <div class="flex justify-between">
+
+                        <span class="text-zinc-500">
+
+                            Minimum
+
+                        </span>
+
+                        <strong>
+
+                            ${{ plan.minimum_amount }}
+
+                        </strong>
+
+                    </div>
+
+                    <div class="flex justify-between">
+
+                        <span class="text-zinc-500">
+
+                            Maximum
+
+                        </span>
+
+                        <strong>
+
+                            ${{ plan.maximum_amount }}
+
+                        </strong>
+
+                    </div>
+
+                    <div class="flex justify-between">
+
+                        <span class="text-zinc-500">
+
+                            Duration
+
+                        </span>
+
+                        <strong>
+
+                            {{ plan.duration_days }} Days
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="border-t border-zinc-800 mt-8 pt-8">
+
+                    <div class="space-y-4 text-sm">
+
+                        <div class="flex items-center gap-3">
+
+                            <i data-lucide="check-circle-2"
+                               class="text-green-500 w-5 h-5"></i>
+
+                            Capital Protection
+
+                        </div>
+
+                        <div class="flex items-center gap-3">
+
+                            <i data-lucide="check-circle-2"
+                               class="text-green-500 w-5 h-5"></i>
+
+                            Secure Wallet
+
+                        </div>
+
+                        <div class="flex items-center gap-3">
+
+                            <i data-lucide="check-circle-2"
+                               class="text-green-500 w-5 h-5"></i>
+
+                            Automatic Profit
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <a
+
+                href="{% url 'invest' plan.id %}"
+
+                class="mt-8
+                h-12
+                rounded-xl
+                bg-red-600
+                hover:bg-red-700
+                transition
+                flex
+                items-center
+                justify-center
+                gap-2
+                font-semibold">
+
+                    <i data-lucide="arrow-right"></i>
+
+                    Invest Now
+
+                </a>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="col-span-full">
+
+            <div class="glass rounded-3xl border border-zinc-800 p-20 text-center">
+
+                <i data-lucide="briefcase-business"
+                   class="mx-auto w-16 h-16 text-zinc-600"></i>
+
+                <h2 class="text-3xl font-black mt-6">
+
+                    No Active Plans
+
+                </h2>
+
+                <p class="text-zinc-500 mt-3">
+
+                    Investment plans will appear here once created by the administrator.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

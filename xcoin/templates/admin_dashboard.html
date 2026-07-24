@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+
+XCoin Admin Dashboard
+
+</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+rel="stylesheet">
+
+<style>
+
+*{
+
+font-family:'Inter',sans-serif;
+
+}
+
+body{
+
+background:#09090b;
+
+color:white;
+
+}
+
+.glass{
+
+background:#18181b;
+
+border:1px solid #27272a;
+
+}
+
+.sidebar-link{
+
+display:flex;
+
+align-items:center;
+
+gap:14px;
+
+padding:14px 18px;
+
+border-radius:14px;
+
+transition:.25s;
+
+}
+
+.sidebar-link:hover{
+
+background:#dc2626;
+
+}
+
+.card{
+
+background:#18181b;
+
+border:1px solid #27272a;
+
+border-radius:24px;
+
+padding:24px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="flex min-h-screen">
+
+<!-- Sidebar -->
+
+<aside
+class="w-72 bg-black border-r border-zinc-800 hidden lg:flex flex-col">
+
+<div class="p-8">
+
+<h1 class="text-4xl font-black">
+
+XCoin
+
+</h1>
+
+<p class="text-red-500 mt-1">
+
+Administration
+
+</p>
+
+</div>
+
+<nav class="px-5 space-y-2">
+
+<a
+href="{% url 'admin_dashboard' %}"
+class="sidebar-link bg-red-600">
+
+<i data-lucide="layout-dashboard"></i>
+
+Dashboard
+
+</a>
+
+<a
+href="#"
+class="sidebar-link">
+
+<i data-lucide="users"></i>
+
+Users
+
+</a>
+
+<a
+href="#"
+class="sidebar-link">
+
+<i data-lucide="coins"></i>
+
+Assets
+
+</a>
+
+<a
+href="#"
+class="sidebar-link">
+
+<i data-lucide="wallet"></i>
+
+Investments
+
+</a>
+
+<a
+href="#"
+class="sidebar-link">
+
+<i data-lucide="arrow-down-circle"></i>
+
+Deposits
+
+</a>
+
+<a
+href="#"
+class="sidebar-link">
+
+<i data-lucide="arrow-up-circle"></i>
+
+Withdrawals
+
+</a>
+
+<a
+href="#"
+class="sidebar-link">
+
+<i data-lucide="bell"></i>
+
+Notifications
+
+</a>
+
+<a
+href="#"
+class="sidebar-link">
+
+<i data-lucide="settings"></i>
+
+Settings
+
+</a>
+
+</nav>
+
+<div class="mt-auto p-6">
+
+<a
+href="{% url 'logout' %}"
+class="w-full flex items-center justify-center rounded-xl bg-red-600 py-3 font-bold hover:bg-red-700">
+
+Logout
+
+</a>
+
+</div>
+
+</aside>
+
+<!-- Main -->
+
+<div class="flex-1">
+
+<!-- Top Navigation -->
+
+<header
+class="border-b border-zinc-800 bg-black">
+
+<div class="flex justify-between items-center px-10 py-6">
+
+<div>
+
+<p class="uppercase tracking-[0.3em] text-red-500 text-xs">
+
+Control Center
+
+</p>
+
+<h2 class="text-4xl font-black mt-2">
+
+Admin Dashboard
+
+</h2>
+
+</div>
+
+<div class="flex items-center gap-5">
+
+<button
+class="rounded-xl bg-red-600 px-5 py-3 font-bold">
+
++ Add Asset
+
+</button>
+
+<div
+class="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center font-bold">
+
+{{ request.user.username|slice:":1"|upper }}
+
+</div>
+
+</div>
+
+</div>
+
+</header>
+
+<!-- Content -->
+
+<div class="p-10">
+
+<!-- Statistics -->
+
+<div class="grid xl:grid-cols-4 md:grid-cols-2 gap-6">
+
+<div class="card">
+
+<p class="text-zinc-500">
+
+Total Users
+
+</p>
+
+<h2 class="text-4xl font-black mt-3">
+
+{{ total_users }}
+
+</h2>
+
+</div>
+
+<div class="card">
+
+<p class="text-zinc-500">
+
+Verified Users
+
+</p>
+
+<h2 class="text-4xl font-black mt-3 text-green-500">
+
+{{ verified_users }}
+
+</h2>
+
+</div>
+
+<div class="card">
+
+<p class="text-zinc-500">
+
+Assets
+
+</p>
+
+<h2 class="text-4xl font-black mt-3">
+
+{{ total_assets }}
+
+</h2>
+
+</div>
+
+<div class="card">
+
+<p class="text-zinc-500">
+
+Notifications
+
+</p>
+
+<h2 class="text-4xl font-black mt-3">
+
+{{ total_notifications }}
+
+</h2>
+
+</div>
+
+<div class="card">
+
+<p class="text-zinc-500">
+
+Completed Deposits
+
+</p>
+
+<h2 class="text-3xl font-black mt-3 text-green-500">
+
+${{ completed_deposits|floatformat:2 }}
+
+</h2>
+
+</div>
+
+<div class="card">
+
+<p class="text-zinc-500">
+
+Completed Withdrawals
+
+</p>
+
+<h2 class="text-3xl font-black mt-3 text-red-500">
+
+${{ completed_withdrawals|floatformat:2 }}
+
+</h2>
+
+</div>
+
+<div class="card">
+
+<p class="text-zinc-500">
+
+Investments
+
+</p>
+
+<h2 class="text-3xl font-black mt-3">
+
+${{ total_investments|floatformat:2 }}
+
+</h2>
+
+</div>
+
+<div class="card">
+
+<p class="text-zinc-500">
+
+Active Assets
+
+</p>
+
+<h2 class="text-4xl font-black mt-3">
+
+{{ active_assets }}
+
+</h2>
+
+</div>
+
+</div>
+
+<!-- Charts -->
+
+<div class="grid lg:grid-cols-2 gap-8 mt-10">
+
+<div class="card">
+
+<h3 class="text-2xl font-bold mb-6">
+
+Deposits vs Withdrawals
+
+</h3>
+
+<canvas id="financeChart"></canvas>
+
+</div>
+
+<div class="card">
+
+<h3 class="text-2xl font-bold mb-6">
+
+User Growth
+
+</h3>
+
+<canvas id="usersChart"></canvas>
+
+</div>
+
+</div>
+<!-- Pending Deposits -->
+
+<div class="card mt-10">
+
+    <div class="flex justify-between items-center mb-6">
+
+        <div>
+
+            <p class="text-red-500 uppercase text-xs tracking-[0.3em]">
+
+                Deposit Queue
+
+            </p>
+
+            <h2 class="text-3xl font-black mt-2">
+
+                Pending Deposits
+
+            </h2>
+
+        </div>
+
+        <span class="bg-yellow-500/20 text-yellow-400 px-4 py-2 rounded-xl">
+
+            {{ pending_deposits.count }} Pending
+
+        </span>
+
+    </div>
+
+    <div class="overflow-x-auto">
+
+        <table class="w-full">
+
+            <thead>
+
+                <tr class="border-b border-zinc-800 text-zinc-400">
+
+                    <th class="text-left py-4">User</th>
+
+                    <th class="text-left">Amount</th>
+
+                    <th class="text-left">Network</th>
+
+                    <th class="text-left">TxID</th>
+
+                    <th class="text-left">Proof</th>
+
+                    <th class="text-left">Submitted</th>
+
+                    <th class="text-right">Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for tx in pending_deposits %}
+
+                <tr class="border-b border-zinc-900 hover:bg-zinc-900">
+
+                    <td class="py-5">
+
+                        <div>
+
+                            <h4 class="font-semibold">
+
+                                {{ tx.user.username }}
+
+                            </h4>
+
+                            <p class="text-sm text-zinc-500">
+
+                                {{ tx.user.email }}
+
+                            </p>
+
+                        </div>
+
+                    </td>
+
+                    <td>
+
+                        <span class="font-bold text-green-400">
+
+                            ${{ tx.amount }}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        {{ tx.metadata.network|default:"-" }}
+
+                    </td>
+
+                    <td>
+
+                        <span class="font-mono text-xs">
+
+                            {{ tx.txid|truncatechars:20 }}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        {% if tx.proof %}
+
+                        <a href="{{ tx.proof.url }}"
+
+                           target="_blank"
+
+                           class="text-blue-400 hover:text-blue-300">
+
+                            View
+
+                        </a>
+
+                        {% else %}
+
+                        -
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        {{ tx.created_at|date:"M d, Y H:i" }}
+
+                    </td>
+
+                    <td>
+
+                        <div class="flex justify-end gap-2">
+
+                            <a href="#"
+
+                               class="bg-green-600 hover:bg-green-700 rounded-xl px-4 py-2">
+
+                                Approve
+
+                            </a>
+
+                            <a href="#"
+
+                               class="bg-red-600 hover:bg-red-700 rounded-xl px-4 py-2">
+
+                                Reject
+
+                            </a>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            {% empty %}
+
+                <tr>
+
+                    <td colspan="7"
+
+                        class="text-center py-16 text-zinc-500">
+
+                        No pending deposits.
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+
+<!-- Pending Withdrawals -->
+
+<div class="card mt-10">
+
+    <div class="flex justify-between items-center mb-6">
+
+        <div>
+
+            <p class="text-red-500 uppercase tracking-[0.3em] text-xs">
+
+                Withdrawal Queue
+
+            </p>
+
+            <h2 class="text-3xl font-black mt-2">
+
+                Pending Withdrawals
+
+            </h2>
+
+        </div>
+
+        <span class="bg-yellow-500/20 text-yellow-400 px-4 py-2 rounded-xl">
+
+            {{ pending_withdrawals.count }} Pending
+
+        </span>
+
+    </div>
+
+    <div class="overflow-x-auto">
+
+        <table class="w-full">
+
+            <thead>
+
+                <tr class="border-b border-zinc-800 text-zinc-400">
+
+                    <th class="text-left py-4">User</th>
+
+                    <th class="text-left">Amount</th>
+
+                    <th class="text-left">Wallet</th>
+
+                    <th class="text-left">Requested</th>
+
+                    <th class="text-right">Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for tx in pending_withdrawals %}
+
+                <tr class="border-b border-zinc-900 hover:bg-zinc-900">
+
+                    <td class="py-5">
+
+                        {{ tx.user.username }}
+
+                    </td>
+
+                    <td>
+
+                        <span class="text-red-400 font-bold">
+
+                            ${{ tx.amount }}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <span class="font-mono text-xs">
+
+                            {{ tx.metadata.wallet|default:"-" }}
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        {{ tx.created_at|date:"M d, Y H:i" }}
+
+                    </td>
+
+                    <td>
+
+                        <div class="flex justify-end gap-2">
+
+                            <a href="#"
+
+                               class="bg-green-600 hover:bg-green-700 rounded-xl px-4 py-2">
+
+                                Approve
+
+                            </a>
+
+                            <a href="#"
+
+                               class="bg-red-600 hover:bg-red-700 rounded-xl px-4 py-2">
+
+                                Reject
+
+                            </a>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            {% empty %}
+
+                <tr>
+
+                    <td colspan="5"
+
+                        class="text-center py-16 text-zinc-500">
+
+                        No pending withdrawals.
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+<!-- Bottom Grid -->
+
+<div class="grid lg:grid-cols-3 gap-8 mt-10">
+
+    <!-- Recent Transactions -->
+
+    <div class="lg:col-span-2 card">
+
+        <div class="flex justify-between items-center mb-6">
+
+            <div>
+
+                <p class="text-red-500 uppercase tracking-[0.3em] text-xs">
+
+                    Activity
+
+                </p>
+
+                <h2 class="text-3xl font-black mt-2">
+
+                    Recent Transactions
+
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div class="overflow-x-auto">
+
+            <table class="w-full">
+
+                <thead>
+
+                    <tr class="border-b border-zinc-800 text-zinc-400">
+
+                        <th class="text-left py-4">Reference</th>
+
+                        <th class="text-left">User</th>
+
+                        <th class="text-left">Type</th>
+
+                        <th class="text-left">Amount</th>
+
+                        <th class="text-left">Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for tx in recent_transactions %}
+
+                    <tr class="border-b border-zinc-900 hover:bg-zinc-900">
+
+                        <td class="py-4 font-mono text-xs">
+
+                            {{ tx.reference }}
+
+                        </td>
+
+                        <td>
+
+                            {{ tx.user.username }}
+
+                        </td>
+
+                        <td class="capitalize">
+
+                            {{ tx.transaction_type }}
+
+                        </td>
+
+                        <td>
+
+                            ${{ tx.amount }}
+
+                        </td>
+
+                        <td>
+
+                            {% if tx.status == "completed" %}
+
+                                <span class="px-3 py-1 rounded-full bg-green-600/20 text-green-400">
+
+                                    Completed
+
+                                </span>
+
+                            {% elif tx.status == "pending" %}
+
+                                <span class="px-3 py-1 rounded-full bg-yellow-500/20 text-yellow-400">
+
+                                    Pending
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="px-3 py-1 rounded-full bg-red-600/20 text-red-400">
+
+                                    {{ tx.status }}
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="5"
+
+                            class="text-center py-10 text-zinc-500">
+
+                            No transactions found.
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Quick Panel -->
+
+    <div class="space-y-6">
+
+        <div class="card">
+
+            <h3 class="text-2xl font-bold mb-6">
+
+                System Overview
+
+            </h3>
+
+            <div class="space-y-5">
+
+                <div class="flex justify-between">
+
+                    <span class="text-zinc-500">
+
+                        Total Users
+
+                    </span>
+
+                    <strong>
+
+                        {{ total_users }}
+
+                    </strong>
+
+                </div>
+
+                <div class="flex justify-between">
+
+                    <span class="text-zinc-500">
+
+                        Active Assets
+
+                    </span>
+
+                    <strong>
+
+                        {{ active_assets }}
+
+                    </strong>
+
+                </div>
+
+                <div class="flex justify-between">
+
+                    <span class="text-zinc-500">
+
+                        Pending Deposits
+
+                    </span>
+
+                    <strong class="text-yellow-400">
+
+                        {{ pending_deposits.count }}
+
+                    </strong>
+
+                </div>
+
+                <div class="flex justify-between">
+
+                    <span class="text-zinc-500">
+
+                        Pending Withdrawals
+
+                    </span>
+
+                    <strong class="text-yellow-400">
+
+                        {{ pending_withdrawals.count }}
+
+                    </strong>
+
+                </div>
+
+                <div class="flex justify-between">
+
+                    <span class="text-zinc-500">
+
+                        Notifications
+
+                    </span>
+
+                    <strong>
+
+                        {{ total_notifications }}
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="card">
+
+            <h3 class="text-2xl font-bold mb-6">
+
+                Quick Actions
+
+            </h3>
+
+            <div class="grid gap-3">
+
+                <button class="rounded-xl bg-red-600 py-3 hover:bg-red-700">
+
+                    Add Asset
+
+                </button>
+
+                <button class="rounded-xl bg-zinc-800 py-3 hover:bg-zinc-700">
+
+                    Send Notification
+
+                </button>
+
+                <button class="rounded-xl bg-zinc-800 py-3 hover:bg-zinc-700">
+
+                    View Reports
+
+                </button>
+
+                <button class="rounded-xl bg-zinc-800 py-3 hover:bg-zinc-700">
+
+                    Export Transactions
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Footer -->
+
+<footer class="py-10 text-center text-zinc-600">
+
+    © {% now "Y" %} XCoin Exchange Administration Panel
+
+</footer>
+
+</div>
+
+</div>
+
+<script>
+
+lucide.createIcons();
+
+new Chart(
+
+document.getElementById("financeChart"),
+
+{
+
+type:"bar",
+
+data:{
+
+labels:["Deposits","Withdrawals"],
+
+datasets:[{
+
+label:"USD",
+
+data:[
+
+{{ completed_deposits|default:0 }},
+
+{{ completed_withdrawals|default:0 }}
+
+],
+
+backgroundColor:[
+
+"#16a34a",
+
+"#dc2626"
+
+],
+
+borderRadius:12
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+
+legend:{display:false}
+
+}
+
+}
+
+});
+
+new Chart(
+
+document.getElementById("usersChart"),
+
+{
+
+type:"line",
+
+data:{
+
+labels:["Jan","Feb","Mar","Apr","May","Jun"],
+
+datasets:[{
+
+label:"Users",
+
+data:[12,35,62,95,140,{{ total_users|default:0 }}],
+
+borderColor:"#dc2626",
+
+backgroundColor:"rgba(220,38,38,.15)",
+
+fill:true,
+
+tension:.4
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+
+legend:{display:false}
+
+}
+
+}
+
+});
+
+</script>
+
+</body>
+
+</html>

@@ -36,7 +36,7 @@ ALLOWED_HOSTS = config(
 
 INSTALLED_APPS = [
     "xcoin",
-
+    "django.contrib.humanize",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -95,7 +95,7 @@ TEMPLATES = [
             "context_processors": [
 
                 "django.template.context_processors.request",
-
+                "xcoin.context_processors.notifications",
                 "django.contrib.auth.context_processors.auth",
 
                 "django.contrib.messages.context_processors.messages",
@@ -234,3 +234,17 @@ MEDIA_ROOT = BASE_DIR / "media"
 # --------------------------------------------------
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+EMAIL_HOST = "smtp.gmail.com"
+
+EMAIL_PORT = 587
+
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = "saviourb705@gmail.com"
+
+EMAIL_HOST_PASSWORD = "ddyf puqb zlpb ylcy"
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

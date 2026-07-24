@@ -1,319 +1,397 @@
 {% extends "base.html" %}
 
-
-
 {% block title %}
-
-Withdraw | XCoin
-
-{% endblock %}
-
-
-
-{% block page_title %}
-
 Withdraw Funds
-
 {% endblock %}
-
-
-
-
 
 {% block content %}
 
+<section class="p-6">
 
+    <!-- Header -->
 
-<div class="max-w-3xl mx-auto space-y-8">
+    <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-6">
 
+        <div>
 
+            <p class="uppercase tracking-[0.3em] text-xs text-red-500">
 
+                Wallet
 
+            </p>
 
-<!-- HEADER -->
+            <h1 class="text-4xl font-black mt-2">
 
+                Withdraw Funds
 
-<div class="glass rounded-3xl p-8">
+            </h1>
 
+            <p class="text-zinc-400 mt-2">
 
-<p class="uppercase tracking-[5px] text-red-500 font-semibold">
+                Withdraw funds securely to your preferred wallet.
 
-XCOIN WALLET
+            </p>
 
-</p>
+        </div>
 
+        <div class="glass border border-zinc-800 rounded-2xl px-6 py-4">
 
+            <p class="text-zinc-500 text-sm">
 
-<h1 class="text-4xl font-black mt-4">
+                Available Balance
 
-Withdraw Assets
+            </p>
 
-</h1>
+            <h2 class="text-3xl font-black mt-2">
 
+                ${{ wallet.available_balance }}
 
+            </h2>
 
-<p class="text-zinc-400 mt-3">
+        </div>
 
-Request withdrawal of your available funds.
+    </div>
 
-</p>
 
 
-</div>
+    <div class="grid xl:grid-cols-3 gap-8 mt-10">
 
+        <!-- LEFT -->
 
+        <div class="xl:col-span-2">
 
+            <form method="POST">
 
+                {% csrf_token %}
 
+                <div class="glass rounded-3xl border border-zinc-800 p-8">
 
+                    <h2 class="text-2xl font-bold">
 
+                        Withdrawal Details
 
+                    </h2>
 
-<!-- BALANCE -->
+                    <p class="text-zinc-500 mt-2">
 
+                        Enter your withdrawal information.
 
-<div class="glass rounded-3xl p-8">
+                    </p>
 
 
-<p class="text-zinc-400">
 
-Available Balance
+                    <!-- Amount -->
 
-</p>
+                    <div class="mt-8">
 
+                        <label class="text-xs uppercase tracking-[0.25em] text-zinc-500">
 
+                            Withdrawal Amount
 
-<h2 class="text-5xl font-black mt-3">
+                        </label>
 
-${{wallet.balance}}
+                        <div class="relative mt-3">
 
-</h2>
+                            <i data-lucide="badge-dollar-sign"
 
+                               class="absolute left-5 top-1/2 -translate-y-1/2 text-red-500 w-5 h-5">
 
-</div>
+                            </i>
 
+                            <input
 
+                                type="number"
 
+                                name="amount"
 
+                                required
 
+                                step="0.01"
 
+                                placeholder="100.00"
 
+                                class="w-full
+                                h-16
+                                rounded-2xl
+                                bg-zinc-950
+                                border-2
+                                border-zinc-800
+                                focus:border-red-600
+                                focus:ring-4
+                                focus:ring-red-600/20
+                                outline-none
+                                transition
+                                pl-14
+                                pr-5">
 
+                        </div>
 
-<!-- FORM -->
+                    </div>
 
 
-<form
 
-method="POST"
+                    <!-- Wallet Address -->
 
-class="glass rounded-3xl p-8 space-y-6"
+                    <div class="mt-8">
 
+                        <label class="text-xs uppercase tracking-[0.25em] text-zinc-500">
 
->
+                            Destination Wallet
 
+                        </label>
 
-{% csrf_token %}
+                        <div class="relative mt-3">
 
+                            <i data-lucide="wallet"
 
+                               class="absolute left-5 top-1/2 -translate-y-1/2 text-red-500 w-5 h-5">
 
+                            </i>
 
+                            <input
 
+                                type="text"
 
-<div>
+                                name="wallet_address"
 
+                                required
 
-<label class="text-zinc-400">
+                                placeholder="Enter wallet address"
 
-Amount
+                                class="w-full
+                                h-16
+                                rounded-2xl
+                                bg-zinc-950
+                                border-2
+                                border-zinc-800
+                                focus:border-red-600
+                                focus:ring-4
+                                focus:ring-red-600/20
+                                outline-none
+                                transition
+                                pl-14
+                                pr-5">
 
-</label>
+                        </div>
 
+                    </div>
 
-<input
 
-type="number"
 
-step="0.01"
+                    <!-- Network -->
 
-name="amount"
+                    <div class="mt-8">
 
-placeholder="Enter withdrawal amount"
+                        <label class="text-xs uppercase tracking-[0.25em] text-zinc-500">
 
-class="input mt-3"
+                            Network
 
-required
+                        </label>
 
->
+                        <select
 
+                            name="network"
 
-</div>
+                            class="mt-3
+                            w-full
+                            h-16
+                            rounded-2xl
+                            bg-zinc-950
+                            border-2
+                            border-zinc-800
+                            px-5
+                            outline-none
+                            focus:border-red-600">
 
+                            <option>Bitcoin</option>
 
+                            <option>Ethereum (ERC20)</option>
 
+                            <option>USDT (TRC20)</option>
 
+                            <option>BNB Smart Chain</option>
 
+                        </select>
 
+                    </div>
 
 
-<div>
 
+                    <!-- Submit -->
 
-<label class="text-zinc-400">
+                    <button
 
-Network
+                        class="mt-10
+                        w-full
+                        h-14
+                        rounded-2xl
+                        bg-red-600
+                        hover:bg-red-700
+                        transition
+                        font-semibold">
 
-</label>
+                        Request Withdrawal
 
+                    </button>
 
+                </div>
 
-<select
+            </form>
 
-name="network"
+        </div>
 
-class="input mt-3"
 
-required
 
->
+        <!-- RIGHT -->
 
+        <div class="space-y-6">
 
-<option value="BTC">
+            <div class="glass rounded-3xl border border-zinc-800 p-8">
 
-Bitcoin
+                <h2 class="text-xl font-bold">
 
-</option>
+                    Withdrawal Summary
 
+                </h2>
 
-<option value="ETH">
+                <div class="space-y-5 mt-6">
 
-Ethereum
+                    <div class="flex justify-between">
 
-</option>
+                        <span class="text-zinc-500">
 
+                            Available
 
-<option value="USDT_TRC20">
+                        </span>
 
-USDT TRC20
+                        <strong>
 
-</option>
+                            ${{ wallet.available_balance }}
 
+                        </strong>
 
-<option value="USDT_ERC20">
+                    </div>
 
-USDT ERC20
+                    <div class="flex justify-between">
 
-</option>
+                        <span class="text-zinc-500">
 
+                            Processing Fee
 
-<option value="BNB">
+                        </span>
 
-BNB Chain
+                        <strong>
 
-</option>
+                            0%
 
+                        </strong>
 
-</select>
+                    </div>
 
+                    <div class="flex justify-between">
 
-</div>
+                        <span class="text-zinc-500">
 
+                            Processing Time
 
+                        </span>
 
+                        <strong>
 
+                            1 - 24 Hours
 
+                        </strong>
 
+                    </div>
 
+                </div>
 
+            </div>
 
-<div>
 
 
-<label class="text-zinc-400">
+            <div class="glass rounded-3xl border border-zinc-800 p-8">
 
-Wallet Address
+                <h2 class="font-bold text-xl">
 
-</label>
+                    Withdrawal Rules
 
+                </h2>
 
+                <div class="space-y-4 mt-6 text-sm">
 
-<textarea
+                    <div class="flex gap-3">
 
-name="wallet_address"
+                        <i data-lucide="check-circle-2"
 
-placeholder="Enter destination wallet address"
+                           class="text-green-500">
 
-class="input mt-3 h-32"
+                        </i>
 
-required
+                        <span>
 
-></textarea>
+                            Withdraw only to your own wallet.
 
+                        </span>
 
+                    </div>
 
-</div>
+                    <div class="flex gap-3">
 
+                        <i data-lucide="check-circle-2"
 
+                           class="text-green-500">
 
+                        </i>
 
+                        <span>
 
+                            Double-check the wallet address.
 
+                        </span>
 
+                    </div>
 
+                    <div class="flex gap-3">
 
-<div class="bg-yellow-500/10 border border-yellow-500/20 rounded-2xl p-5">
+                        <i data-lucide="check-circle-2"
 
+                           class="text-green-500">
 
-<p class="text-sm text-zinc-300">
+                        </i>
 
+                        <span>
 
-Withdrawals are manually reviewed by XCoin.
-Make sure your wallet address is correct before submitting.
+                            Withdrawals are reviewed before approval.
 
+                        </span>
 
-</p>
+                    </div>
 
+                    <div class="flex gap-3">
 
-</div>
+                        <i data-lucide="triangle-alert"
 
+                           class="text-yellow-500">
 
+                        </i>
 
+                        <span>
 
+                            Incorrect wallet addresses cannot be reversed.
 
+                        </span>
 
+                    </div>
 
+                </div>
 
+            </div>
 
-<button
+        </div>
 
-type="submit"
+    </div>
 
-class="btn w-full text-lg"
-
->
-
-
-Submit Withdrawal
-
-
-</button>
-
-
-
-
-
-
-</form>
-
-
-
-
-
-
-
-</div>
-
-
-
+</section>
 
 {% endblock %}

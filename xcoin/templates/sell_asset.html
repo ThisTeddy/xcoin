@@ -1,344 +1,191 @@
 {% extends "base.html" %}
 
-
-
 {% block title %}
-
-Sell {{asset.symbol}} | XCoin
-
+Sell {{ asset.name }}
 {% endblock %}
-
-
-
-{% block page_title %}
-
-Sell {{asset.symbol}}
-
-{% endblock %}
-
-
-
-
-
 
 {% block content %}
 
-
-
-<div
+<section
+class="max-w-6xl mx-auto p-6"
 
 x-data="{
 
+price: {{ asset.current_price }},
+
+owned: {{ portfolio.quantity }},
+
 quantity:0,
 
-price:{{asset.current_price}},
+total(){
 
-total:0,
+if(!this.quantity) return 0;
 
-
-calculate(){
-
-this.total = (this.quantity * this.price).toFixed(2)
+return (this.quantity*this.price).toFixed(2)
 
 }
 
+}">
 
-}"
+<div class="grid lg:grid-cols-3 gap-8">
 
-class="max-w-3xl mx-auto space-y-8"
+<div class="lg:col-span-2">
 
->
+<div class="glass rounded-3xl border border-zinc-800 p-8">
 
-
-
-
-
-
-
-<!-- HEADER -->
-
-
-<div class="glass rounded-3xl p-8">
-
-
-<div class="flex items-center gap-5">
-
-
+<div class="flex items-center gap-5 mb-8">
 
 {% if asset.logo %}
 
-
 <img
 
-src="{{asset.logo.url}}"
+src="{{ asset.logo.url }}"
 
-class="w-16 h-16 rounded-2xl object-cover"
-
->
-
-
-{% else %}
-
-
-<div class="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center text-2xl font-black">
-
-{{asset.symbol|first}}
-
-</div>
-
+class="w-16 h-16 rounded-full">
 
 {% endif %}
 
-
-
-
-
 <div>
 
+<p class="uppercase tracking-[0.3em] text-xs text-red-500">
 
-<h1 class="text-3xl font-black">
+Sell Asset
 
-Sell {{asset.name}}
+</p>
+
+<h1 class="text-4xl font-black">
+
+{{ asset.name }}
 
 </h1>
 
+<p class="text-zinc-500">
 
-<p class="text-zinc-400">
-
-{{asset.symbol}}
-
-</p>
-
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<!-- HOLDING CARD -->
-
-
-<div class="glass rounded-3xl p-6">
-
-
-<p class="text-zinc-400">
-
-Your Holdings
+{{ asset.symbol }}
 
 </p>
 
-
-<h2 class="text-4xl font-black mt-3">
-
-{{portfolio.quantity}}
-
-{{asset.symbol}}
-
-</h2>
-
-
+</div>
 
 </div>
 
-
-
-
-
-
-
-
-
-<!-- SELL FORM -->
-
-
-<form method="POST"
-
-class="glass rounded-3xl p-8 space-y-6">
-
+<form
+method="POST"
+action="{% url 'sell_asset' asset.id %}">
 
 {% csrf_token %}
 
-
-
-
-
-
-<div>
-
-
-<label class="text-zinc-400">
+<label class="block font-semibold mb-3">
 
 Quantity to Sell
 
 </label>
 
-
-
 <input
 
 type="number"
 
-step="0.00000001"
-
 name="quantity"
 
-x-model="quantity"
+step="0.00000001"
 
-@input="calculate()"
+min="0.00000001"
 
-placeholder="Enter quantity"
-
-class="input mt-3"
+max="{{ portfolio.quantity }}"
 
 required
 
+x-model.number="quantity"
 
->
+placeholder="Enter quantity"
 
+class="w-full
+h-16
+rounded-2xl
+bg-zinc-950
+border-2
+border-zinc-800
+focus:border-red-600
+outline-none
+px-5">
 
-</div>
+<div class="grid md:grid-cols-2 gap-6 mt-8">
 
+<div class="rounded-2xl bg-zinc-900 border border-zinc-800 p-6">
 
-
-
-
-
-
-
-<!-- PREVIEW -->
-
-
-<div class="grid md:grid-cols-2 gap-5">
-
-
-
-
-
-<div class="glass rounded-2xl p-5">
-
-
-<p class="text-zinc-400">
+<p class="text-zinc-500 text-sm">
 
 Current Price
 
 </p>
 
+<h3 class="text-3xl font-bold mt-2">
 
-<h2 class="text-2xl font-black mt-2">
+${{ asset.current_price }}
 
-${{asset.current_price}}
-
-</h2>
-
+</h3>
 
 </div>
 
+<div class="rounded-2xl bg-zinc-900 border border-zinc-800 p-6">
 
+<p class="text-zinc-500 text-sm">
 
-
-
-
-<div class="glass rounded-2xl p-5">
-
-
-<p class="text-zinc-400">
-
-Estimated Return
+You Own
 
 </p>
 
+<h3 class="text-3xl font-bold mt-2">
 
-<h2 class="text-2xl font-black mt-2 text-green-400">
+{{ portfolio.quantity }}
 
-
-$<span x-text="total">
-
-</span>
-
-
-</h2>
-
+</h3>
 
 </div>
 
-
-
-
 </div>
 
+<div class="rounded-2xl bg-green-600 mt-8 p-6">
 
+<p class="text-green-100">
 
-
-
-
-
-
-<!-- WARNING -->
-
-
-<div class="bg-red-600/10 border border-red-600/20 rounded-2xl p-5">
-
-
-<p class="text-sm text-zinc-300">
-
-
-Sell requests are reviewed by XCoin.
-Funds will be credited after approval.
-
+Estimated Credit
 
 </p>
 
+<h2 class="text-4xl font-black mt-2">
+
+$
+
+<span x-text="total()"></span>
+
+</h2>
 
 </div>
 
-
-
-
-
-
+<div class="mt-8">
 
 <button
 
 type="submit"
 
-class="btn w-full text-lg"
+class="w-full
+h-16
+rounded-2xl
+bg-red-600
+hover:bg-red-700
+transition
+font-bold
+text-lg">
 
-
->
-
-
-Submit Sell Request
-
+Sell {{ asset.symbol }}
 
 </button>
 
-
-
-
-
+</div>
 
 </form>
 
-
-
-
-
-
-
 </div>
 
-
-
-{% endblock %}
+</div>

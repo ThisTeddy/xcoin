@@ -1,0 +1,254 @@
+{% extends "base.html" %}
+
+{% block title %}Wallet{% endblock %}
+
+{% block content %}
+
+<section class="max-w-7xl mx-auto p-6">
+
+    <div class="flex items-center justify-between mb-10">
+
+        <div>
+
+            <p class="uppercase tracking-[0.35em] text-red-500 text-xs">
+
+                Finance
+
+            </p>
+
+            <h1 class="text-4xl font-black mt-2">
+
+                Wallet
+
+            </h1>
+
+        </div>
+
+        <div class="flex gap-4">
+
+            <a href="{% url 'deposit' %}"
+               class="px-6 py-3 rounded-xl bg-green-600 hover:bg-green-700 font-semibold">
+
+                Deposit
+
+            </a>
+
+            <a href="{% url 'withdraw' %}"
+               class="px-6 py-3 rounded-xl bg-red-600 hover:bg-red-700 font-semibold">
+
+                Withdraw
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Balance -->
+
+    <div class="glass rounded-3xl border border-zinc-800 p-10 mb-8">
+
+        <p class="text-zinc-400">
+
+            Available Balance
+
+        </p>
+
+        <h2 class="text-5xl font-black mt-3">
+
+            ${{ wallet.balance|floatformat:2 }}
+
+        </h2>
+
+        <p class="text-green-500 mt-3">
+
+            Funds available for trading and investing
+
+        </p>
+
+    </div>
+
+
+    <!-- Stats -->
+
+    <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
+
+        <div class="glass rounded-2xl border border-zinc-800 p-6">
+
+            <p class="text-zinc-500 text-sm">
+
+                Locked Balance
+
+            </p>
+
+            <h3 class="text-3xl font-bold mt-2">
+
+                ${{ wallet.locked_balance }}
+
+            </h3>
+
+        </div>
+
+        <div class="glass rounded-2xl border border-zinc-800 p-6">
+
+            <p class="text-zinc-500 text-sm">
+
+                Deposits
+
+            </p>
+
+            <h3 class="text-3xl font-bold mt-2">
+
+                ${{ wallet.total_deposit }}
+
+            </h3>
+
+        </div>
+
+        <div class="glass rounded-2xl border border-zinc-800 p-6">
+
+            <p class="text-zinc-500 text-sm">
+
+                Withdrawals
+
+            </p>
+
+            <h3 class="text-3xl font-bold mt-2">
+
+                ${{ wallet.total_withdrawal }}
+
+            </h3>
+
+        </div>
+
+        <div class="glass rounded-2xl border border-zinc-800 p-6">
+
+            <p class="text-zinc-500 text-sm">
+
+                Total Profit
+
+            </p>
+
+            <h3 class="text-3xl font-bold text-green-500 mt-2">
+
+                ${{ wallet.total_profit }}
+
+            </h3>
+
+        </div>
+
+    </div>
+
+
+    <!-- Transactions -->
+
+    <div class="glass rounded-3xl border border-zinc-800 overflow-hidden">
+
+        <div class="p-6 border-b border-zinc-800">
+
+            <h2 class="text-2xl font-bold">
+
+                Recent Wallet Activity
+
+            </h2>
+
+        </div>
+
+        <table class="w-full">
+
+            <thead class="bg-zinc-900">
+
+                <tr>
+
+                    <th class="text-left px-6 py-4">Type</th>
+
+                    <th class="text-left px-6 py-4">Amount</th>
+
+                    <th class="text-left px-6 py-4">Status</th>
+
+                    <th class="text-left px-6 py-4">Date</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for transaction in transactions %}
+
+                <tr class="border-t border-zinc-800">
+
+                    <td class="px-6 py-5">
+
+                        {{ transaction.get_transaction_type_display }}
+
+                    </td>
+
+                    <td class="px-6 py-5 font-semibold">
+
+                        ${{ transaction.amount }}
+
+                    </td>
+
+                    <td class="px-6 py-5">
+
+                        {% if transaction.status == "completed" %}
+
+                        <span class="px-3 py-1 rounded-full bg-green-600 text-xs">
+
+                            Completed
+
+                        </span>
+
+                        {% elif transaction.status == "pending" %}
+
+                        <span class="px-3 py-1 rounded-full bg-yellow-500 text-xs">
+
+                            Pending
+
+                        </span>
+
+                        {% else %}
+
+                        <span class="px-3 py-1 rounded-full bg-red-600 text-xs">
+
+                            {{ transaction.status }}
+
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td class="px-6 py-5 text-zinc-400">
+
+                        {{ transaction.created_at|date:"M d, Y" }}
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="4" class="py-16 text-center text-zinc-500">
+
+                        No wallet activity yet.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+{% endblock %}

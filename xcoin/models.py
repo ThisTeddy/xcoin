@@ -1,18 +1,30 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db import models
+import random 
+import string 
 
-
-# ==========================
-# USER
-# ==========================
-
+def generate_referral_code():
+    while True:
+        code = ''.join(
+            random.choices(string.ascii_uppercase + string.digits, k=8)
+        )
+        if not User.objects.filter(referral_code=code).exists():
+            return code
 class User(AbstractUser):
 
-    email = models.EmailField(unique=True)
+    email = models.EmailField(
+        unique=True
+    )
 
-    phone = models.CharField(max_length=20, blank=True)
+    phone = models.CharField(
+        max_length=20,
+        unique=True
+    )
 
-    country = models.CharField(max_length=100, blank=True)
+    country = models.CharField(
+        max_length=120,
+        blank=True
+    )
 
     avatar = models.ImageField(
         upload_to="avatars/",
@@ -20,21 +32,55 @@ class User(AbstractUser):
         null=True
     )
 
-    email_verified = models.BooleanField(default=False)
+    email_verified = models.BooleanField(
+        default=False
+    )
 
-    created_at = models.DateTimeField(auto_now_add=True)
+    is_verified = models.BooleanField(
+        default=False
+    )
 
+    is_suspended = models.BooleanField(
+        default=False
+    )
+
+    referral_code = models.CharField(
+        max_length=20,
+        unique=True,
+        blank=True
+    )
+
+    referred_by = models.ForeignKey(
+        "self",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
+    def save(self, *args, **kwargs):
+        if not self.referral_code:
+            self.referral_code = generate_referral_code()
+
+        super().save(*args, **kwargs)
     USERNAME_FIELD = "email"
 
     REQUIRED_FIELDS = ["username"]
 
+    class Meta:
+
+        ordering = ["-created_at"]
+
     def __str__(self):
+
         return self.email
 
-
-# ==========================
-# WALLET
-# ==========================
 
 class Wallet(models.Model):
 
@@ -56,50 +102,74 @@ class Wallet(models.Model):
         default=0
     )
 
+    locked_balance = models.DecimalField(
+        max_digits=20,
+        decimal_places=2,
+        default=0,
+        help_text="Funds locked in investments or pending trades"
+    )
+
+    total_deposit = models.DecimalField(
+        max_digits=20,
+        decimal_places=2,
+        default=0
+    )
+
+    total_withdrawal = models.DecimalField(
+        max_digits=20,
+        decimal_places=2,
+        default=0
+    )
+
+    total_profit = models.DecimalField(
+        max_digits=20,
+        decimal_places=2,
+        default=0
+    )
+
+    total_bonus = models.DecimalField(
+        max_digits=20,
+        decimal_places=2,
+        default=0
+    )
+
     updated_at = models.DateTimeField(
         auto_now=True
     )
+
+    def available_balance(self):
+        return self.balance - self.locked_balance
 
     def __str__(self):
         return f"{self.user.email} Wallet"
 
 
-# ==========================
-# MARKET
-# ==========================
+from django.db import models
+
 
 class Asset(models.Model):
 
-    TYPES = (
-
-        ("crypto", "Crypto"),
-
+    ASSET_TYPES = (
+        ("crypto", "Cryptocurrency"),
         ("stock", "Stock"),
-
         ("forex", "Forex"),
-
         ("commodity", "Commodity"),
-
+        ("etf", "ETF"),
+        ("index", "Index"),
     )
 
-    symbol = models.CharField(max_length=20)
+    name = models.CharField(
+        max_length=100
+    )
 
-    name = models.CharField(max_length=100)
+    symbol = models.CharField(
+        max_length=20,
+        unique=True
+    )
 
     asset_type = models.CharField(
         max_length=20,
-        choices=TYPES
-    )
-
-    current_price = models.DecimalField(
-        max_digits=20,
-        decimal_places=2
-    )
-
-    change = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        default=0
+        choices=ASSET_TYPES
     )
 
     logo = models.ImageField(
@@ -108,30 +178,108 @@ class Asset(models.Model):
         null=True
     )
 
-    active = models.BooleanField(default=True)
+    description = models.TextField(
+        blank=True
+    )
+
+    current_price = models.DecimalField(
+        max_digits=20,
+        decimal_places=8
+    )
+
+    market_cap = models.DecimalField(
+        max_digits=25,
+        decimal_places=2,
+        default=0
+    )
+
+    volume_24h = models.DecimalField(
+        max_digits=25,
+        decimal_places=2,
+        default=0
+    )
+
+    circulating_supply = models.DecimalField(
+        max_digits=30,
+        decimal_places=2,
+        default=0
+    )
+
+    high_24h = models.DecimalField(
+        max_digits=20,
+        decimal_places=8,
+        default=0
+    )
+
+    low_24h = models.DecimalField(
+        max_digits=20,
+        decimal_places=8,
+        default=0
+    )
+
+    ath = models.DecimalField(
+        max_digits=20,
+        decimal_places=8,
+        default=0,
+        verbose_name="All Time High"
+    )
+
+    atl = models.DecimalField(
+        max_digits=20,
+        decimal_places=8,
+        default=0,
+        verbose_name="All Time Low"
+    )
+
+    change = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        default=0,
+        help_text="24 Hour Percentage Change"
+    )
+
+    active = models.BooleanField(
+        default=True
+    )
+
+    featured = models.BooleanField(
+        default=False
+    )
+
+    rank = models.PositiveIntegerField(
+        default=0
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
+
+    class Meta:
+        ordering = ["rank", "name"]
 
     def __str__(self):
-        return self.symbol
-
-
-# ==========================
-# PORTFOLIO
-# ==========================
+        return f"{self.symbol} ({self.name})"
 
 class Portfolio(models.Model):
 
     user = models.ForeignKey(
         User,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name="portfolio"
     )
 
     asset = models.ForeignKey(
         Asset,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name="holders"
     )
 
     quantity = models.DecimalField(
-        max_digits=25,
+        max_digits=30,
         decimal_places=10,
         default=0
     )
@@ -142,20 +290,50 @@ class Portfolio(models.Model):
         default=0
     )
 
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
+
     class Meta:
+
         unique_together = ("user", "asset")
 
+        ordering = ["asset__name"]
+
     def __str__(self):
-        return f"{self.user.email} - {self.asset.symbol}"
+
+        return f"{self.user.email} • {self.asset.symbol}"
 
 
-# ==========================
-# INVESTMENT PLANS
-# ==========================
 
 class InvestmentPlan(models.Model):
 
-    name = models.CharField(max_length=100)
+    PLAN_TYPES = (
+
+        ("fixed", "Fixed ROI"),
+
+        ("flexible", "Flexible"),
+
+    )
+
+    name = models.CharField(
+        max_length=100,
+        unique=True
+    )
+
+    description = models.TextField(
+        blank=True
+    )
+
+    plan_type = models.CharField(
+        max_length=20,
+        choices=PLAN_TYPES,
+        default="fixed"
+    )
 
     minimum_amount = models.DecimalField(
         max_digits=20,
@@ -174,34 +352,59 @@ class InvestmentPlan(models.Model):
 
     duration_days = models.PositiveIntegerField()
 
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(
+        default=True
+    )
+
+    featured = models.BooleanField(
+        default=False
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
+
+    class Meta:
+
+        ordering = ["minimum_amount"]
 
     def __str__(self):
+
         return self.name
 
 
-# ==========================
-# INVESTMENTS
-# ==========================
+from django.db import models
+from django.utils import timezone
+
 
 class Investment(models.Model):
 
     STATUS = (
 
+        ("pending", "Pending"),
+
         ("running", "Running"),
 
         ("completed", "Completed"),
+
+        ("cancelled", "Cancelled"),
 
     )
 
     user = models.ForeignKey(
         User,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name="investments"
     )
 
     plan = models.ForeignKey(
         InvestmentPlan,
-        on_delete=models.CASCADE
+        on_delete=models.PROTECT,
+        related_name="investments"
     )
 
     amount = models.DecimalField(
@@ -218,147 +421,83 @@ class Investment(models.Model):
     status = models.CharField(
         max_length=20,
         choices=STATUS,
-        default="running"
+        default="pending",
+        db_index=True
     )
 
-    start_date = models.DateTimeField(
-        auto_now_add=True
-    )
+    start_date = models.DateTimeField(auto_now_add=True)
 
     end_date = models.DateTimeField()
 
-    def __str__(self):
-        return f"{self.user.email} - {self.plan.name}"
-
-
-class Payment(models.Model):
-
-    METHODS = (
-
-        ("wallet","Wallet"),
-
-        ("crypto","Crypto"),
-
-        ("bank","Bank"),
-
-    )
-
-    PURPOSES = (
-
-        ("deposit","Deposit"),
-
-        ("investment","Investment"),
-
-        ("buy_asset","Buy Asset"),
-
-    )
-
-    STATUS = (
-
-        ("pending","Pending"),
-
-        ("approved","Approved"),
-
-        ("rejected","Rejected"),
-
-    )
-
-    user=models.ForeignKey(
-        User,
-        on_delete=models.CASCADE
-    )
-
-    amount=models.DecimalField(
-        max_digits=20,
-        decimal_places=2
-    )
-
-    purpose=models.CharField(
-        max_length=30,
-        choices=PURPOSES
-    )
-
-    method=models.CharField(
-        max_length=20,
-        choices=METHODS
-    )
-
-    network=models.CharField(
-        max_length=30,
-        blank=True
-    )
-
-    txid=models.CharField(
-        max_length=300,
-        blank=True
-    )
-
-    proof=models.ImageField(
-        upload_to="payments/",
+    completed_at = models.DateTimeField(
         blank=True,
         null=True
     )
 
-    reference=models.CharField(
-        max_length=100,
-        unique=True
-    )
-
-    metadata=models.JSONField(
-        default=dict,
-        blank=True
-    )
-
-    status=models.CharField(
-        max_length=20,
-        choices=STATUS,
-        default="pending"
-    )
-
-    created_at=models.DateTimeField(
+    created_at = models.DateTimeField(
         auto_now_add=True
     )
 
-    def __str__(self):
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
 
-        return self.reference
-# ==========================
-# TRANSACTIONS
-# ==========================
+    class Meta:
+
+        ordering = ["-created_at"]
+
+        indexes = [
+
+            models.Index(fields=["user"]),
+
+            models.Index(fields=["status"]),
+
+            models.Index(fields=["end_date"]),
+
+            models.Index(fields=["user", "status"]),
+
+        ]
+
+    @property
+    def is_active(self):
+        return (
+            self.status == "running"
+            and self.end_date > timezone.now()
+        )
+
+    def __str__(self):
+        return f"{self.user.email} - {self.plan.name}"
 
 class Transaction(models.Model):
 
     TYPES = (
-
         ("deposit", "Deposit"),
-
         ("withdrawal", "Withdrawal"),
-
         ("buy", "Buy"),
-
         ("sell", "Sell"),
-
         ("investment", "Investment"),
-
         ("profit", "Profit"),
-
         ("bonus", "Bonus"),
-
     )
 
     STATUS = (
-
         ("pending", "Pending"),
-
         ("completed", "Completed"),
-
         ("failed", "Failed"),
-
+        ("cancelled", "Cancelled"),
     )
 
     user = models.ForeignKey(
         User,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name="transactions"
+    )
+
+    asset = models.ForeignKey(
+        Asset,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
     )
 
     transaction_type = models.CharField(
@@ -371,10 +510,32 @@ class Transaction(models.Model):
         decimal_places=2
     )
 
-    status = models.CharField(
-        max_length=20,
-        choices=STATUS,
-        default="completed"
+    quantity = models.DecimalField(
+        max_digits=20,
+        decimal_places=8,
+        default=0
+    )
+
+    price = models.DecimalField(
+        max_digits=20,
+        decimal_places=8,
+        default=0
+    )
+    txid = models.CharField(
+    max_length=255,
+    blank=True,
+    null=True,
+    )
+
+    proof = models.ImageField(
+    upload_to="deposit_proofs/",
+    blank=True,
+    null=True,
+    )
+    fee = models.DecimalField(
+        max_digits=20,
+        decimal_places=2,
+        default=0
     )
 
     reference = models.CharField(
@@ -382,46 +543,222 @@ class Transaction(models.Model):
         unique=True
     )
 
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS,
+        default="pending"
+    )
+
+    remarks = models.TextField(
+        blank=True
+    )
+
+    metadata = models.JSONField(
+        default=dict,
+        blank=True
+    )
+
     created_at = models.DateTimeField(
         auto_now_add=True
     )
 
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def total_value(self):
+        return self.amount + self.fee
+
     def __str__(self):
-        return self.reference
+        return f"{self.reference} ({self.transaction_type})"
 
 
-# ==========================
-# NOTIFICATIONS
-# ==========================
+class Payment(models.Model):
 
-class Notification(models.Model):
+    METHODS = (
+
+        ("wallet", "Wallet"),
+
+        ("crypto", "Crypto"),
+
+        ("bank", "Bank"),
+
+    )
+
+    PURPOSES = (
+
+        ("deposit", "Deposit"),
+
+        ("investment", "Investment"),
+
+        ("buy_asset", "Buy Asset"),
+
+    )
+
+    NETWORKS = (
+
+        ("", "Select Network"),
+
+        ("BTC", "Bitcoin"),
+
+        ("ETH", "Ethereum"),
+
+        ("USDT_TRC20", "USDT (TRC20)"),
+
+        ("USDT_ERC20", "USDT (ERC20)"),
+
+        ("USDT_BEP20", "USDT (BEP20)"),
+
+        ("BNB", "BNB Smart Chain"),
+
+        ("SOL", "Solana"),
+
+        ("LTC", "Litecoin"),
+
+        ("DOGE", "Dogecoin"),
+
+        ("BANK", "Bank Transfer"),
+
+    )
+
+    STATUS = (
+
+        ("pending", "Pending"),
+
+        ("approved", "Approved"),
+
+        ("rejected", "Rejected"),
+
+        ("cancelled", "Cancelled"),
+
+    )
 
     user = models.ForeignKey(
         User,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name="payments"
     )
 
-    title = models.CharField(max_length=100)
+    amount = models.DecimalField(
+        max_digits=20,
+        decimal_places=2
+    )
 
-    message = models.TextField()
+    purpose = models.CharField(
+        max_length=30,
+        choices=PURPOSES,
+        db_index=True
+    )
 
-    is_read = models.BooleanField(default=False)
+    method = models.CharField(
+        max_length=20,
+        choices=METHODS,
+        db_index=True
+    )
+
+    network = models.CharField(
+        max_length=30,
+        choices=NETWORKS,
+        blank=True,
+        default=""
+    )
+
+    txid = models.CharField(
+        max_length=300,
+        blank=True
+    )
+
+    proof = models.ImageField(
+        upload_to="payments/",
+        blank=True,
+        null=True
+    )
+
+    reference = models.CharField(
+        max_length=100,
+        unique=True,
+        db_index=True
+    )
+
+    description = models.CharField(
+        max_length=255,
+        blank=True
+    )
+
+    metadata = models.JSONField(
+        default=dict,
+        blank=True
+    )
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS,
+        default="pending",
+        db_index=True
+    )
 
     created_at = models.DateTimeField(
         auto_now_add=True
     )
 
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
+
+    class Meta:
+
+        ordering = ["-created_at"]
+
+        indexes = [
+
+            models.Index(fields=["user"]),
+
+            models.Index(fields=["status"]),
+
+            models.Index(fields=["purpose"]),
+
+            models.Index(fields=["method"]),
+
+            models.Index(fields=["user", "status"]),
+
+        ]
+
     def __str__(self):
-        return self.title
+        return f"{self.reference} ({self.user.email})"
 
-
-# ==========================
-# DEPOSIT WALLET
-# ==========================
 
 class DepositWallet(models.Model):
 
-    network = models.CharField(max_length=30)
+    NETWORKS = (
+
+        ("BTC", "Bitcoin"),
+
+        ("ETH", "Ethereum"),
+
+        ("USDT_TRC20", "USDT (TRC20)"),
+
+        ("USDT_ERC20", "USDT (ERC20)"),
+
+        ("USDT_BEP20", "USDT (BEP20)"),
+
+        ("BNB", "BNB Smart Chain"),
+
+        ("SOL", "Solana"),
+
+        ("LTC", "Litecoin"),
+
+        ("DOGE", "Dogecoin"),
+
+    )
+
+    network = models.CharField(
+        max_length=30,
+        choices=NETWORKS,
+        unique=True
+    )
 
     wallet_address = models.TextField()
 
@@ -431,21 +768,39 @@ class DepositWallet(models.Model):
         null=True
     )
 
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(
+        default=True,
+        db_index=True
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
+
+    class Meta:
+
+        ordering = ["network"]
 
     def __str__(self):
-        return self.network
 
-
-# ==========================
-# SITE SETTINGS
-# ==========================
+        return self.get_network_display()
 
 class SiteSettings(models.Model):
 
-    site_name = models.CharField(max_length=100)
+    site_name = models.CharField(
+        max_length=100
+    )
 
     support_email = models.EmailField()
+
+    support_phone = models.CharField(
+        max_length=30,
+        blank=True
+    )
 
     minimum_deposit = models.DecimalField(
         max_digits=20,
@@ -459,5 +814,213 @@ class SiteSettings(models.Model):
         default=20
     )
 
+    maintenance_mode = models.BooleanField(
+        default=False
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
+
+    def save(self, *args, **kwargs):
+
+        self.pk = 1
+
+        super().save(*args, **kwargs)
+
+    class Meta:
+
+        verbose_name = "Site Settings"
+
+        verbose_name_plural = "Site Settings"
+
     def __str__(self):
+
         return self.site_name
+
+class Notification(models.Model):
+
+    TYPES = (
+
+        ("system", "System"),
+
+        ("deposit", "Deposit"),
+
+        ("withdrawal", "Withdrawal"),
+
+        ("investment", "Investment"),
+
+        ("market", "Market"),
+
+        ("security", "Security"),
+
+    )
+
+    PRIORITY = (
+
+        ("low", "Low"),
+
+        ("normal", "Normal"),
+
+        ("high", "High"),
+
+    )
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="notifications"
+    )
+
+    notification_type = models.CharField(
+        max_length=30,
+        choices=TYPES,
+        default="system",
+        db_index=True
+    )
+
+    title = models.CharField(
+        max_length=150
+    )
+
+    message = models.TextField()
+
+    priority = models.CharField(
+        max_length=20,
+        choices=PRIORITY,
+        default="normal"
+    )
+
+    is_read = models.BooleanField(
+        default=False,
+        db_index=True
+    )
+    send_email = models.BooleanField(default=False)
+    action_url = models.CharField(
+        max_length=255,
+        blank=True
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
+
+    class Meta:
+
+        ordering = ["-created_at"]
+
+        indexes = [
+
+            models.Index(fields=["user"]),
+
+            models.Index(fields=["user", "is_read"]),
+
+            models.Index(fields=["notification_type"]),
+
+        ]
+
+    def __str__(self):
+
+        return f"{self.user.email} - {self.title}"
+
+class EmailTemplate(models.Model):
+
+    name = models.CharField(
+        max_length=100,
+        unique=True
+    )
+
+    subject = models.CharField(
+        max_length=200
+    )
+
+    html_body = models.TextField()
+
+    text_body = models.TextField(
+        blank=True
+    )
+
+    active = models.BooleanField(
+        default=True
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
+
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+class EmailLog(models.Model):
+
+    STATUS = (
+
+        ("pending", "Pending"),
+
+        ("sent", "Sent"),
+
+        ("failed", "Failed"),
+
+    )
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="email_logs"
+    )
+
+    template = models.ForeignKey(
+        EmailTemplate,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+
+    subject = models.CharField(
+        max_length=200
+    )
+
+    recipient = models.EmailField()
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS,
+        default="pending",
+        db_index=True
+    )
+
+    error_message = models.TextField(
+        blank=True
+    )
+
+    sent_at = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.recipient} - {self.subject}"
+
+    

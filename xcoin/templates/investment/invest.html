@@ -1,0 +1,523 @@
+{% extends "base.html" %}
+
+{% block title %}
+Invest
+{% endblock %}
+
+{% block content %}
+
+<section
+class="p-6"
+
+x-data="{
+
+amount: {{ plan.minimum_amount }},
+
+roi: {{ plan.roi_percent }},
+
+profit(){
+
+return ((this.amount*this.roi)/100).toFixed(2)
+
+},
+
+total(){
+
+return (Number(this.amount)+Number(this.profit())).toFixed(2)
+
+}
+
+}">
+
+<!-- Header -->
+
+<div class="flex flex-col lg:flex-row justify-between gap-6">
+
+    <div>
+
+        <p class="uppercase tracking-[0.35em] text-xs text-red-500">
+
+            Investment
+
+        </p>
+
+        <h1 class="text-4xl font-black mt-2">
+
+            {{ plan.name }}
+
+        </h1>
+
+        <p class="text-zinc-400 mt-3">
+
+            Start investing in this plan.
+
+        </p>
+
+    </div>
+
+    <a
+
+    href="{% url 'investment_plans' %}"
+
+    class="bg-zinc-900 border border-zinc-800 hover:border-red-600 transition rounded-xl h-11 px-6 flex items-center gap-2">
+
+        <i data-lucide="arrow-left"></i>
+
+        Back
+
+    </a>
+
+</div>
+
+
+{% if messages %}
+
+<div class="space-y-4 mt-8">
+
+{% for message in messages %}
+
+<div class="{% if message.tags == 'success' %}bg-green-500/10 border-green-500/30 text-green-400{% else %}bg-red-500/10 border-red-500/30 text-red-400{% endif %} border rounded-2xl p-5">
+
+{{ message }}
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endif %}
+
+
+<div class="grid xl:grid-cols-3 gap-8 mt-10">
+
+<!-- LEFT -->
+
+<div class="xl:col-span-2">
+
+<form method="POST">
+
+{% csrf_token %}
+
+<div class="glass rounded-3xl border border-zinc-800 p-8">
+
+<h2 class="text-2xl font-bold">
+
+Investment Details
+
+</h2>
+
+<p class="text-zinc-500 mt-2">
+
+Enter how much you would like to invest.
+
+</p>
+
+
+<div class="mt-8">
+
+<label class="text-sm text-zinc-400">
+
+Investment Amount
+
+</label>
+
+<input
+
+type="number"
+
+name="amount"
+
+step="0.01"
+
+required
+
+min="{{ plan.minimum_amount }}"
+
+max="{{ plan.maximum_amount }}"
+
+x-model.number="amount"
+
+class="mt-3
+w-full
+rounded-2xl
+bg-zinc-900
+border
+border-zinc-800
+px-5
+py-4
+outline-none
+focus:border-red-600">
+
+<p class="text-xs text-zinc-500 mt-3">
+
+Minimum:
+<strong>${{ plan.minimum_amount }}</strong>
+
+•
+
+Maximum:
+<strong>${{ plan.maximum_amount }}</strong>
+
+</p>
+
+</div>
+
+
+<div class="grid md:grid-cols-3 gap-5 mt-10">
+
+<div class="bg-zinc-900 rounded-2xl border border-zinc-800 p-5">
+
+<p class="text-zinc-500 text-xs">
+
+Investment
+
+</p>
+
+<h2 class="text-2xl font-bold mt-2">
+
+$
+
+<span x-text="Number(amount).toLocaleString()"></span>
+
+</h2>
+
+</div>
+
+<div class="bg-green-500/10 rounded-2xl border border-green-500/20 p-5">
+
+<p class="text-green-400 text-xs">
+
+Expected Profit
+
+</p>
+
+<h2 class="text-2xl font-bold text-green-400 mt-2">
+
+$
+
+<span x-text="profit()"></span>
+
+</h2>
+
+</div>
+
+<div class="bg-red-600 rounded-2xl p-5">
+
+<p class="text-white/70 text-xs">
+
+Total Return
+
+</p>
+
+<h2 class="text-3xl font-black mt-2">
+
+$
+
+<span x-text="total()"></span>
+
+</h2>
+
+</div>
+
+</div>
+
+
+<div class="mt-8 bg-zinc-900 rounded-2xl border border-zinc-800 p-5">
+
+<div class="flex justify-between">
+
+<span class="text-zinc-500">
+
+Wallet Balance
+
+</span>
+
+<strong>
+
+${{ wallet.balance }}
+
+</strong>
+
+</div>
+
+<div class="flex justify-between mt-4">
+
+<span class="text-zinc-500">
+
+Balance After Investment
+
+</span>
+
+<strong>
+
+$
+
+<span x-text="({{ wallet.balance }}-amount).toFixed(2)"></span>
+
+</strong>
+
+</div>
+
+</div>
+
+
+<label class="flex gap-3 items-start mt-8">
+
+<input
+
+required
+
+type="checkbox"
+
+class="mt-1 accent-red-600">
+
+<span class="text-sm text-zinc-500">
+
+I agree to the investment terms and understand this investment cannot be cancelled until maturity.
+
+</span>
+
+</label>
+
+
+<button
+
+:disabled="amount > {{ wallet.balance }}"
+
+class="mt-8
+w-full
+h-12
+rounded-xl
+bg-red-600
+hover:bg-red-700
+disabled:bg-zinc-700
+disabled:cursor-not-allowed
+transition
+font-semibold">
+
+Confirm Investment
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+<!-- RIGHT -->
+
+<div class="space-y-6">
+
+<div class="glass rounded-3xl border border-zinc-800 p-8">
+
+<h2 class="text-xl font-bold">
+
+Plan Summary
+
+</h2>
+
+<div class="space-y-5 mt-8">
+
+<div class="flex justify-between">
+
+<span class="text-zinc-500">
+
+Plan
+
+</span>
+
+<strong>
+
+{{ plan.name }}
+
+</strong>
+
+</div>
+
+<div class="flex justify-between">
+
+<span class="text-zinc-500">
+
+ROI
+
+</span>
+
+<strong class="text-green-400">
+
+{{ plan.roi_percent }}%
+
+</strong>
+
+</div>
+
+<div class="flex justify-between">
+
+<span class="text-zinc-500">
+
+Duration
+
+</span>
+
+<strong>
+
+{{ plan.duration_days }} Days
+
+</strong>
+
+</div>
+
+<div class="flex justify-between">
+
+<span class="text-zinc-500">
+
+Minimum
+
+</span>
+
+<strong>
+
+${{ plan.minimum_amount }}
+
+</strong>
+
+</div>
+
+<div class="flex justify-between">
+
+<span class="text-zinc-500">
+
+Maximum
+
+</span>
+
+<strong>
+
+${{ plan.maximum_amount }}
+
+</strong>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="glass rounded-3xl border border-zinc-800 p-8">
+
+<h2 class="text-xl font-bold">
+
+Investment Benefits
+
+</h2>
+
+<div class="space-y-5 mt-8">
+
+<div class="flex items-center gap-3">
+
+<i data-lucide="shield-check" class="text-green-500"></i>
+
+Capital Protection
+
+</div>
+
+<div class="flex items-center gap-3">
+
+<i data-lucide="wallet" class="text-red-500"></i>
+
+Secure Wallet
+
+</div>
+
+<div class="flex items-center gap-3">
+
+<i data-lucide="badge-dollar-sign" class="text-yellow-500"></i>
+
+{{ plan.roi_percent }}% ROI
+
+</div>
+
+<div class="flex items-center gap-3">
+
+<i data-lucide="clock-3" class="text-blue-500"></i>
+
+{{ plan.duration_days }} Day Duration
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="glass rounded-3xl border border-zinc-800 p-8">
+
+<h2 class="text-xl font-bold">
+
+Timeline
+
+</h2>
+
+<div class="space-y-6 mt-8 text-sm">
+
+<div>
+
+<strong>
+
+Today
+
+</strong>
+
+<p class="text-zinc-500 mt-1">
+
+Investment starts.
+
+</p>
+
+</div>
+
+<div>
+
+<strong>
+
+{{ plan.duration_days }} Days
+
+</strong>
+
+<p class="text-zinc-500 mt-1">
+
+Investment matures.
+
+</p>
+
+</div>
+
+<div>
+
+<strong>
+
+Completion
+
+</strong>
+
+<p class="text-zinc-500 mt-1">
+
+Capital and profit are returned.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}

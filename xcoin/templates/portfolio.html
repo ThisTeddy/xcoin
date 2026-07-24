@@ -1,498 +1,663 @@
 {% extends "base.html" %}
 
-
-
 {% block title %}
-
-Portfolio | XCoin
-
-{% endblock %}
-
-
-
-{% block page_title %}
-
 Portfolio
-
 {% endblock %}
-
-
-
-
 
 {% block content %}
 
+<section class="p-6">
+
+    <!-- Header -->
+
+    <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-6">
+
+        <div>
+
+            <p class="uppercase tracking-[0.3em] text-xs text-red-500">
+
+                Portfolio
+
+            </p>
+
+            <h1 class="text-4xl font-black mt-2">
+
+                My Portfolio
+
+            </h1>
+
+            <p class="text-zinc-400 mt-2">
+
+                Monitor your investments and asset performance.
+
+            </p>
+
+        </div>
+
+        <div class="flex gap-3">
+
+            <a href="{% url 'market' %}"
+
+               class="bg-zinc-900 border border-zinc-800 hover:border-red-600 rounded-xl h-11 px-5 flex items-center gap-2 transition">
+
+                <i data-lucide="chart-candlestick"></i>
+
+                Market
+
+            </a>
+
+            <a href="{% url 'transaction_history' %}"
+
+               class="bg-red-600 hover:bg-red-700 rounded-xl h-11 px-5 flex items-center gap-2 transition">
+
+                <i data-lucide="history"></i>
+
+                History
+
+            </a>
+
+        </div>
+
+    </div>
 
 
-<div class="space-y-8">
+    <!-- Portfolio Cards -->
+
+    <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-6 mt-10">
+
+        <div class="glass rounded-3xl border border-zinc-800 p-6">
+
+            <p class="text-zinc-500 text-sm">
+
+                Portfolio Value
+
+            </p>
+
+            <h2 class="text-4xl font-black mt-3">
+
+                ${{ total_value|floatformat:2 }}
+
+            </h2>
+
+        </div>
+
+        <div class="glass rounded-3xl border border-zinc-800 p-6">
+
+            <p class="text-zinc-500 text-sm">
+
+                Total Profit
+
+            </p>
+
+            <h2 class="text-4xl font-black text-green-500 mt-3">
+
+                ${{ total_profit }}
+
+            </h2>
+
+        </div>
+
+        <div class="glass rounded-3xl border border-zinc-800 p-6">
+
+            <p class="text-zinc-500 text-sm">
+
+                Assets
+
+            </p>
+
+            <h2 class="text-4xl font-black mt-3">
+
+                {{ assets|length }}
+
+            </h2>
+
+        </div>
+
+        <div class="glass rounded-3xl border border-zinc-800 p-6">
+
+            <p class="text-zinc-500 text-sm">
+
+                Today's Change
+
+            </p>
+
+            <h2 class="text-4xl font-black text-red-500 mt-3">
+
+                {{ today_change }}%
+
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <!-- Chart + Allocation -->
+
+    <div class="grid xl:grid-cols-3 gap-8 mt-10">
+
+        <!-- Performance Chart -->
+
+        <div class="xl:col-span-2 glass rounded-3xl border border-zinc-800 p-8">
+
+            <div class="flex justify-between items-center">
+
+                <h2 class="text-2xl font-bold">
+
+                    Portfolio Performance
+
+                </h2>
+
+                <span class="text-zinc-500 text-sm">
+
+                    Last 30 Days
+
+                </span>
+
+            </div>
+
+            <div class="mt-8 h-80">
+
+                <canvas id="portfolioChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- Allocation -->
+
+        <div class="glass rounded-3xl border border-zinc-800 p-8">
+
+            <h2 class="text-2xl font-bold">
+
+                Asset Allocation
+
+            </h2>
+
+            <div class="space-y-6 mt-8">
+
+                <div>
+
+                    <div class="flex justify-between mb-2">
+
+                        <span>Bitcoin</span>
+
+                        <span>45%</span>
+
+                    </div>
+
+                    <div class="h-2 rounded-full bg-zinc-800">
+
+                        <div class="h-2 rounded-full bg-orange-500 w-[45%]"></div>
+
+                    </div>
+
+                </div>
+
+                <div>
+
+                    <div class="flex justify-between mb-2">
+
+                        <span>Ethereum</span>
+
+                        <span>25%</span>
+
+                    </div>
+
+                    <div class="h-2 rounded-full bg-zinc-800">
+
+                        <div class="h-2 rounded-full bg-blue-500 w-[25%]"></div>
+
+                    </div>
+
+                </div>
+
+                <div>
+
+                    <div class="flex justify-between mb-2">
+
+                        <span>Stocks</span>
+
+                        <span>20%</span>
+
+                    </div>
+
+                    <div class="h-2 rounded-full bg-zinc-800">
+
+                        <div class="h-2 rounded-full bg-green-500 w-[20%]"></div>
+
+                    </div>
+
+                </div>
+
+                <div>
+
+                    <div class="flex justify-between mb-2">
+
+                        <span>Gold</span>
+
+                        <span>10%</span>
+
+                    </div>
+
+                    <div class="h-2 rounded-full bg-zinc-800">
+
+                        <div class="h-2 rounded-full bg-yellow-500 w-[10%]"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <!-- Holdings -->
+
+<div class="glass rounded-3xl border border-zinc-800 p-8 mt-10">
+
+    <div class="flex items-center justify-between mb-8">
+
+        <div>
+
+            <h2 class="text-2xl font-bold">
+
+                Asset Holdings
+
+            </h2>
+
+            <p class="text-zinc-500 mt-2">
+
+                Your current investment portfolio.
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- Desktop -->
+
+    <div class="hidden lg:block overflow-x-auto">
+
+        <table class="w-full">
+
+            <thead>
+
+                <tr class="border-b border-zinc-800 text-zinc-500 text-sm">
+
+                    <th class="text-left py-4">Asset</th>
+
+                    <th class="text-left">Quantity</th>
+
+                    <th class="text-left">Price</th>
+
+                    <th class="text-left">Value</th>
+
+                    <th class="text-left">Profit</th>
+
+                    <th class="text-right">Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for holding in holdings %}
+
+                <tr class="border-b border-zinc-900 hover:bg-zinc-900/50 transition">
+
+                    <td class="py-5">
+
+                        <div class="flex items-center gap-4">
+
+                            {% if holding.asset.logo %}
+
+                            <img
+
+                            src="{{ holding.asset.logo.url }}"
+
+                            class="w-10 h-10 rounded-full">
+
+                            {% else %}
+
+                            <div class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center">
+
+                                {{ holding.asset.symbol|slice:":1" }}
+
+                            </div>
+
+                            {% endif %}
+
+                            <div>
+
+                                <h3 class="font-semibold">
+
+                                    {{ holding.asset.name }}
+
+                                </h3>
+
+                                <p class="text-zinc-500 text-sm">
+
+                                    {{ holding.asset.symbol }}
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </td>
+
+                    <td>
+
+                        {{ holding.quantity }}
+
+                    </td>
+
+                    <td>
+
+                        ${{ holding.asset.current_price }}
+
+                    </td>
+
+                    <td class="font-semibold">
+
+                        ${{ holding.market_value }}
+
+                    </td>
+
+                    <td>
+
+                        {% if holding.profit >= 0 %}
+
+                        <span class="text-green-500">
+
+                            +${{ holding.profit }}
+
+                        </span>
+
+                        {% else %}
+
+                        <span class="text-red-500">
+
+                            -${{ holding.profit|cut:"-" }}
+
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td class="text-right">
+
+                        <a
+
+                        href="{% url 'asset_detail' holding.asset.id %}"
+
+                        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 transition">
+
+                            View
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="6" class="py-16 text-center text-zinc-500">
+
+                        No assets in your portfolio.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 
 
+    <!-- Mobile -->
 
+    <div class="lg:hidden space-y-5">
 
-<!-- HEADER -->
+        {% for holding in holdings %}
 
-<div class="glass rounded-3xl p-8">
+        <div class="rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
 
+            <div class="flex justify-between">
 
-<p class="uppercase tracking-[5px] text-red-500 font-semibold">
+                <div>
 
-XCOIN PORTFOLIO
+                    <h3 class="font-bold">
 
-</p>
+                        {{ holding.asset.name }}
 
+                    </h3>
 
-<h1 class="text-4xl font-black mt-4">
+                    <p class="text-zinc-500 text-sm">
 
-Your Digital Assets
+                        {{ holding.asset.symbol }}
 
-</h1>
+                    </p>
 
+                </div>
 
-<p class="text-zinc-400 mt-3">
+                <span class="text-red-500">
 
-Track your crypto and investment performance.
+                    ${{ holding.market_value }}
 
-</p>
+                </span>
 
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mt-5 text-sm">
+
+                <div>
+
+                    <p class="text-zinc-500">
+
+                        Quantity
+
+                    </p>
+
+                    <strong>
+
+                        {{ holding.quantity }}
+
+                    </strong>
+
+                </div>
+
+                <div>
+
+                    <p class="text-zinc-500">
+
+                        Price
+
+                    </p>
+
+                    <strong>
+
+                        ${{ holding.asset.current_price }}
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <a
+
+            href="{% url 'asset_detail' holding.asset.id %}"
+
+            class="mt-6 w-full h-11 rounded-xl bg-red-600 flex items-center justify-center hover:bg-red-700 transition">
+
+                View Asset
+
+            </a>
+
+        </div>
+
+        {% empty %}
+
+        <div class="text-center text-zinc-500 py-10">
+
+            No assets available.
+
+        </div>
+
+        {% endfor %}
+
+    </div>
 
 </div>
 
 
 
+<!-- Recent Activity -->
 
+<div class="glass rounded-3xl border border-zinc-800 p-8 mt-10">
 
+    <h2 class="text-2xl font-bold">
 
+        Recent Portfolio Activity
 
+    </h2>
 
+    <div class="space-y-5 mt-8">
 
-<!-- TOTAL VALUE -->
+        {% for transaction in recent_transactions|slice:":5" %}
 
+        <div class="flex items-center justify-between border-b border-zinc-900 pb-5">
 
-<div class="glass rounded-3xl p-8">
+            <div class="flex items-center gap-4">
 
+                <div class="w-12 h-12 rounded-xl bg-red-600/10 flex items-center justify-center">
 
-<p class="text-zinc-400">
+                    <i data-lucide="arrow-left-right" class="text-red-500"></i>
 
-Total Portfolio Value
+                </div>
 
-</p>
+                <div>
 
+                    <h4 class="font-semibold">
 
+                        {{ transaction.transaction_type|title }}
 
-<h1 class="text-5xl font-black mt-3">
+                    </h4>
 
-${{total_value|floatformat:2}}
+                    <p class="text-zinc-500 text-sm">
 
-</h1>
+                        {{ transaction.created_at|date:"M d, Y • H:i" }}
 
+                    </p>
 
+                </div>
+
+            </div>
+
+            <strong>
+
+                ${{ transaction.amount }}
+
+            </strong>
+
+        </div>
+
+        {% empty %}
+
+        <p class="text-center text-zinc-500 py-10">
+
+            No recent activity.
+
+        </p>
+
+        {% endfor %}
+
+    </div>
 
 </div>
 
+</section>
 
+<script>
 
+const ctx = document.getElementById('portfolioChart');
 
+new Chart(ctx, {
 
+type:'line',
 
+data:{
 
+labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
 
+datasets:[{
 
-<!-- HOLDINGS -->
+label:'Portfolio',
 
+data:[1200,1350,1320,1480,1600,1700,1820],
 
-<div>
+borderColor:'#dc2626',
 
+backgroundColor:'rgba(220,38,38,.15)',
 
-<h2 class="text-2xl font-black mb-5">
+fill:true,
 
-Your Holdings
+tension:.4
 
-</h2>
+}]
 
+},
 
+options:{
 
+responsive:true,
 
+plugins:{
 
-<div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+legend:{
 
+display:false
 
+}
 
+},
 
+scales:{
 
-{% for item in portfolio %}
+x:{
 
+grid:{color:'#27272a'}
 
+},
 
+y:{
 
-<div class="glass rounded-3xl p-6">
+grid:{color:'#27272a'}
 
+}
 
+}
 
+}
 
+});
 
-<div class="flex justify-between items-start">
-
-
-
-<div class="flex items-center gap-3">
-
-
-
-{% if item.asset.logo %}
-
-
-<img
-
-src="{{item.asset.logo.url}}"
-
-class="w-12 h-12 rounded-xl object-cover"
-
->
-
-
-{% else %}
-
-
-<div class="w-12 h-12 rounded-xl bg-red-600 flex items-center justify-center font-black">
-
-
-{{item.asset.symbol|first}}
-
-
-</div>
-
-
-{% endif %}
-
-
-
-
-<div>
-
-
-<h2 class="font-black text-xl">
-
-{{item.asset.symbol}}
-
-</h2>
-
-
-<p class="text-zinc-400">
-
-{{item.asset.name}}
-
-</p>
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-<div>
-
-
-<p class="
-
-{% if item.profit >= 0 %}
-
-text-green-400
-
-{% else %}
-
-text-red-400
-
-{% endif %}
-
-font-bold">
-
-
-{% if item.profit >= 0 %}
-
-+
-
-{% endif %}
-
-
-${{item.profit|floatformat:2}}
-
-
-</p>
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<!-- DETAILS -->
-
-
-<div class="mt-8 space-y-4">
-
-
-
-<div class="flex justify-between">
-
-
-<span class="text-zinc-400">
-
-Quantity
-
-</span>
-
-
-<span class="font-bold">
-
-{{item.quantity}}
-
-</span>
-
-
-</div>
-
-
-
-
-
-
-<div class="flex justify-between">
-
-
-<span class="text-zinc-400">
-
-Average Price
-
-</span>
-
-
-<span class="font-bold">
-
-${{item.average_buy_price}}
-
-</span>
-
-
-</div>
-
-
-
-
-
-
-<div class="flex justify-between">
-
-
-<span class="text-zinc-400">
-
-Current Value
-
-</span>
-
-
-<span class="font-bold">
-
-${{item.current_value|floatformat:2}}
-
-</span>
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-<a href="{% url 'sell_asset' item.asset.id %}"
-
-class="block mt-8 text-center bg-red-600 hover:bg-red-500 transition py-3 rounded-xl font-bold">
-
-
-Sell {{item.asset.symbol}}
-
-
-</a>
-
-
-
-
-
-
-</div>
-
-
-
-
-
-{% empty %}
-
-
-
-
-
-<div class="glass rounded-3xl p-8 text-zinc-400">
-
-
-You don't own any assets yet.
-
-
-<br>
-
-
-Start trading on XCoin.
-
-
-</div>
-
-
-
-
-
-{% endfor %}
-
-
-
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<!-- PERFORMANCE -->
-
-
-<div class="glass rounded-3xl p-8">
-
-
-<h2 class="text-2xl font-black">
-
-Portfolio Performance
-
-</h2>
-
-
-<div class="grid md:grid-cols-3 gap-5 mt-6">
-
-
-
-
-
-<div>
-
-
-<p class="text-zinc-400">
-
-Assets Owned
-
-</p>
-
-
-<h3 class="text-3xl font-black mt-2">
-
-{{portfolio|length}}
-
-</h3>
-
-
-</div>
-
-
-
-
-
-
-<div>
-
-
-<p class="text-zinc-400">
-
-Platform
-
-</p>
-
-
-<h3 class="text-3xl font-black mt-2">
-
-XCoin
-
-</h3>
-
-
-</div>
-
-
-
-
-
-
-
-<div>
-
-
-<p class="text-zinc-400">
-
-Status
-
-</p>
-
-
-<h3 class="text-3xl font-black text-green-400 mt-2">
-
-Active
-
-</h3>
-
-
-</div>
-
-
-
-
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-</div>
-
-
+</script>
 
 {% endblock %}

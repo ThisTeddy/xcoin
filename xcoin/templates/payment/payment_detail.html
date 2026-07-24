@@ -1,0 +1,587 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Payment Details
+{% endblock %}
+
+
+
+{% block content %}
+
+
+
+<div class="max-w-5xl mx-auto px-4 sm:px-6 py-10">
+
+
+
+
+
+<!-- HEADER -->
+
+<div class="bg-primary text-white rounded-2xl p-8 shadow-lg">
+
+
+<div class="flex items-center gap-4">
+
+
+<div class="bg-white text-primary p-4 rounded-xl">
+
+
+<i data-lucide="receipt" class="w-8 h-8"></i>
+
+
+</div>
+
+
+
+
+<div>
+
+
+<h1 class="text-3xl font-bold">
+
+Payment Details
+
+</h1>
+
+
+<p class="text-blue-100">
+
+Reference: {{ payment.reference }}
+
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- SUMMARY CARDS -->
+
+
+<div class="grid md:grid-cols-3 gap-6 mt-8">
+
+
+
+
+
+<div class="bg-white shadow rounded-2xl p-6">
+
+
+<p class="text-gray-500">
+
+Amount
+
+</p>
+
+
+<h2 class="text-3xl font-bold text-primary mt-2">
+
+${{ payment.amount }}
+
+</h2>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="bg-white shadow rounded-2xl p-6">
+
+
+<p class="text-gray-500">
+
+Purpose
+
+</p>
+
+
+<h2 class="text-xl font-bold mt-3">
+
+{{ payment.purpose|title }}
+
+</h2>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="bg-white shadow rounded-2xl p-6">
+
+
+<p class="text-gray-500">
+
+Status
+
+</p>
+
+
+
+{% if payment.status == "approved" %}
+
+
+<span class="inline-block mt-3 bg-green-100 text-green-700 px-4 py-2 rounded-full">
+
+Approved
+
+</span>
+
+
+
+{% elif payment.status == "pending" %}
+
+
+<span class="inline-block mt-3 bg-yellow-100 text-yellow-700 px-4 py-2 rounded-full">
+
+Pending
+
+</span>
+
+
+
+{% else %}
+
+
+<span class="inline-block mt-3 bg-red-100 text-red-700 px-4 py-2 rounded-full">
+
+Rejected
+
+</span>
+
+
+
+{% endif %}
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- DETAILS -->
+
+
+<div class="bg-white shadow rounded-2xl p-8 mt-8">
+
+
+
+<h2 class="text-xl font-bold text-primary mb-6">
+
+Payment Information
+
+</h2>
+
+
+
+
+
+
+<div class="grid md:grid-cols-2 gap-6">
+
+
+
+
+
+<div class="flex justify-between border-b pb-3">
+
+
+<span class="text-gray-500 flex items-center gap-2">
+
+
+<i data-lucide="credit-card" class="w-4"></i>
+
+
+Method
+
+
+</span>
+
+
+
+<strong>
+
+{{ payment.method|title }}
+
+</strong>
+
+
+
+</div>
+
+
+
+
+
+
+<div class="flex justify-between border-b pb-3">
+
+
+<span class="text-gray-500 flex items-center gap-2">
+
+
+<i data-lucide="hash" class="w-4"></i>
+
+
+Reference
+
+
+</span>
+
+
+
+<strong class="text-sm">
+
+{{ payment.reference }}
+
+</strong>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="flex justify-between border-b pb-3">
+
+
+<span class="text-gray-500 flex items-center gap-2">
+
+
+<i data-lucide="network" class="w-4"></i>
+
+
+Network
+
+
+</span>
+
+
+
+<strong>
+
+{{ payment.network|default:"N/A" }}
+
+</strong>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="flex justify-between border-b pb-3">
+
+
+<span class="text-gray-500 flex items-center gap-2">
+
+
+<i data-lucide="calendar" class="w-4"></i>
+
+
+Date
+
+
+</span>
+
+
+
+<strong>
+
+{{ payment.created_at|date:"M d, Y" }}
+
+</strong>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- TRANSACTION ID -->
+
+
+{% if payment.txid %}
+
+
+<div class="bg-white shadow rounded-2xl p-8 mt-8">
+
+
+<h2 class="text-xl font-bold text-primary mb-4">
+
+Transaction ID
+
+</h2>
+
+
+
+<div class="bg-gray-100 p-4 rounded-xl break-all text-sm">
+
+
+{{ payment.txid }}
+
+
+</div>
+
+
+
+</div>
+
+
+{% endif %}
+
+
+
+
+
+
+
+
+
+<!-- PROOF -->
+
+
+{% if payment.proof %}
+
+
+<div class="bg-white shadow rounded-2xl p-8 mt-8">
+
+
+<h2 class="text-xl font-bold text-primary mb-5">
+
+Payment Proof
+
+</h2>
+
+
+
+<img
+
+src="{{ payment.proof.url }}"
+
+class="max-w-sm rounded-xl shadow"
+
+>
+
+
+
+</div>
+
+
+{% endif %}
+
+
+
+
+
+
+
+
+
+<!-- TIMELINE -->
+
+
+<div class="bg-white shadow rounded-2xl p-8 mt-8">
+
+
+<h2 class="text-xl font-bold text-primary mb-6">
+
+Payment Timeline
+
+</h2>
+
+
+
+
+<div class="space-y-6">
+
+
+
+
+
+<div class="flex gap-4">
+
+
+<div class="bg-primary text-white rounded-full w-10 h-10 flex items-center justify-center">
+
+
+<i data-lucide="send" class="w-5"></i>
+
+
+</div>
+
+
+
+<div>
+
+
+<h3 class="font-semibold">
+
+Payment Submitted
+
+</h3>
+
+
+<p class="text-gray-500">
+
+{{ payment.created_at|date:"M d, Y H:i" }}
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+{% if payment.status == "approved" %}
+
+
+
+<div class="flex gap-4">
+
+
+<div class="bg-green-600 text-white rounded-full w-10 h-10 flex items-center justify-center">
+
+
+<i data-lucide="check" class="w-5"></i>
+
+
+</div>
+
+
+
+<div>
+
+
+<h3 class="font-semibold">
+
+Payment Approved
+
+</h3>
+
+
+<p class="text-gray-500">
+
+Your payment has been confirmed.
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+{% endif %}
+
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<a href="{% url 'payment_history' %}"
+
+class="inline-flex items-center gap-2 mt-8 text-primary font-semibold">
+
+
+<i data-lucide="arrow-left" class="w-4"></i>
+
+
+Back to Payments
+
+
+</a>
+
+
+
+
+
+
+</div>
+
+
+
+{% endblock %}

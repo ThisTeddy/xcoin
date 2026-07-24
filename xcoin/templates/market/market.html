@@ -1,0 +1,405 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Market
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+
+
+
+<!-- HEADER -->
+
+<div class="mb-8">
+
+
+<h1 class="text-3xl font-bold text-primary">
+
+Market
+
+</h1>
+
+
+<p class="text-gray-600 mt-2">
+
+Explore available digital assets and investment opportunities.
+
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- SEARCH -->
+
+<div class="bg-white shadow rounded-2xl p-5 mb-8">
+
+
+<form method="GET">
+
+
+<div class="relative">
+
+
+<i data-lucide="search"
+
+class="absolute left-4 top-3.5 text-gray-400 w-5">
+
+</i>
+
+
+<input
+
+type="text"
+
+name="q"
+
+value="{{ request.GET.q }}"
+
+placeholder="Search asset..."
+
+class="w-full border rounded-xl pl-12 py-3"
+
+>
+
+
+</div>
+
+
+</form>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- FILTERS -->
+
+
+<div class="flex gap-3 overflow-x-auto mb-8">
+
+
+<a href="?type="
+
+class="px-5 py-2 rounded-full bg-primary text-white">
+
+All
+
+</a>
+
+
+
+<a href="?type=crypto"
+
+class="px-5 py-2 rounded-full bg-white border">
+
+Crypto
+
+</a>
+
+
+
+<a href="?type=stock"
+
+class="px-5 py-2 rounded-full bg-white border">
+
+Stocks
+
+</a>
+
+
+
+
+<a href="?type=forex"
+
+class="px-5 py-2 rounded-full bg-white border">
+
+Forex
+
+</a>
+
+
+
+
+<a href="?type=commodity"
+
+class="px-5 py-2 rounded-full bg-white border">
+
+Commodity
+
+</a>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- ASSET GRID -->
+
+
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+
+
+{% for asset in assets %}
+
+
+
+<div class="bg-white rounded-2xl shadow hover:shadow-xl transition p-6 border">
+
+
+
+
+
+<div class="flex justify-between items-start">
+
+
+<div class="flex items-center gap-4">
+
+
+{% if asset.logo %}
+
+
+<img
+
+src="{{ asset.logo.url }}"
+
+class="w-12 h-12 rounded-full object-cover"
+
+>
+
+
+{% else %}
+
+
+<div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center">
+
+
+<i data-lucide="coins"></i>
+
+
+</div>
+
+
+{% endif %}
+
+
+
+
+<div>
+
+
+<h3 class="font-bold text-lg">
+
+{{ asset.name }}
+
+</h3>
+
+
+<p class="text-gray-500">
+
+{{ asset.symbol }}
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<span class="text-sm px-3 py-1 rounded-full bg-blue-100 text-primary">
+
+{{ asset.asset_type|title }}
+
+</span>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- PRICE -->
+
+
+<div class="mt-6">
+
+
+<p class="text-gray-500">
+
+Current Price
+
+</p>
+
+
+
+<h2 class="text-3xl font-bold text-primary">
+
+${{ asset.current_price }}
+
+</h2>
+
+
+
+<div class="mt-2 flex items-center gap-2">
+
+
+{% if asset.change >= 0 %}
+
+
+<span class="text-green-600 flex items-center gap-1">
+
+
+<i data-lucide="trending-up" class="w-4"></i>
+
+
+{{ asset.change }}%
+
+</span>
+
+
+
+{% else %}
+
+
+<span class="text-red-600 flex items-center gap-1">
+
+
+<i data-lucide="trending-down" class="w-4"></i>
+
+
+{{ asset.change }}%
+
+</span>
+
+
+
+{% endif %}
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- ACTIONS -->
+
+
+<div class="mt-6 flex gap-3">
+
+
+<a href="{% url 'asset_detail' asset.id %}"
+
+class="flex-1 text-center border border-primary text-primary py-3 rounded-xl">
+
+
+View
+
+</a>
+
+
+
+
+<a href="{% url 'buy_asset' asset.id %}"
+
+class="flex-1 text-center bg-secondary text-white py-3 rounded-xl">
+
+
+Buy
+
+</a>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+{% empty %}
+
+
+
+<div class="col-span-full text-center py-10">
+
+
+<i data-lucide="package-open"
+
+class="mx-auto w-12 h-12 text-gray-400">
+
+</i>
+
+
+
+<p class="mt-3 text-gray-500">
+
+No assets available.
+
+</p>
+
+
+</div>
+
+
+
+{% endfor %}
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+{% endblock %}

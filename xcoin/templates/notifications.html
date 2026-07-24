@@ -1,254 +1,138 @@
 {% extends "base.html" %}
 
-
-
-{% block title %}
-
-Notifications | XCoin
-
-{% endblock %}
-
-
-
-{% block page_title %}
-
-Notifications
-
-{% endblock %}
-
-
-
-
+{% block title %}Notifications{% endblock %}
 
 {% block content %}
 
+<div class="max-w-7xl mx-auto">
 
+    <div class="flex items-center justify-between mb-8">
 
-<div class="space-y-8">
+        <div>
+            <p class="uppercase tracking-[0.3em] text-red-500 text-xs">
+                Notification Center
+            </p>
+            <h1 class="text-4xl font-black mt-2">
+                Notifications
+            </h1>
+        </div>
 
+        <a href="{% url 'mark_all_notifications_read' %}"
+           class="px-5 py-3 rounded-xl bg-red-600 hover:bg-red-700 transition font-semibold">
 
+            Mark All Read
 
+        </a>
 
+    </div>
 
+    <div class="glass rounded-3xl border border-zinc-800 overflow-hidden">
 
-<!-- HEADER -->
+        {% for notification in notifications %}
 
+        <div class="p-6 border-b border-zinc-800 hover:bg-zinc-900 transition">
 
-<div class="glass rounded-3xl p-8">
+            <div class="flex justify-between items-start gap-6">
 
+                <div class="flex gap-5">
 
-<p class="uppercase tracking-[5px] text-red-500 font-semibold">
+                    <div class="h-12 w-12 rounded-2xl bg-red-600 flex items-center justify-center">
 
-XCOIN ALERTS
+                        <i data-lucide="bell"></i>
 
-</p>
+                    </div>
 
+                    <div>
 
+                        <div class="flex items-center gap-3">
 
-<h1 class="text-4xl font-black mt-4">
+                            <h3 class="font-bold text-lg">
 
-Notifications
+                                {{ notification.title }}
 
-</h1>
+                            </h3>
 
+                            {% if not notification.is_read %}
 
+                            <span class="px-2 py-1 rounded-full bg-red-600 text-xs">
 
-<p class="text-zinc-400 mt-3">
+                                New
 
-Stay updated with your account activities.
+                            </span>
 
-</p>
+                            {% endif %}
 
+                        </div>
+
+                        <p class="text-zinc-400 mt-2">
+
+                            {{ notification.message }}
+
+                        </p>
+
+                        <div class="flex items-center gap-4 mt-4 text-xs text-zinc-500">
+
+                            <span>
+
+                                {{ notification.get_notification_type_display }}
+
+                            </span>
+
+                            <span>
+
+                                {{ notification.created_at|timesince }} ago
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% if not notification.is_read %}
+
+                <a href="{% url 'mark_notification_read' notification.id %}"
+                   class="text-red-500 hover:text-red-400 text-sm">
+
+                    Mark Read
+
+                </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="py-24 text-center">
+
+            <div class="h-20 w-20 rounded-full bg-zinc-900 mx-auto flex items-center justify-center">
+
+                <i data-lucide="bell-off" class="w-10 h-10 text-zinc-500"></i>
+
+            </div>
+
+            <h3 class="text-2xl font-bold mt-6">
+
+                No Notifications
+
+            </h3>
+
+            <p class="text-zinc-500 mt-2">
+
+                You're all caught up.
+
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
 
 </div>
-
-
-
-
-
-
-
-
-
-<!-- NOTIFICATION LIST -->
-
-
-<div class="space-y-5">
-
-
-
-
-
-
-{% for notification in notifications %}
-
-
-
-
-<div class="glass rounded-3xl p-6
-
-{% if not notification.is_read %}
-
-border border-red-500/40
-
-{% endif %}
-
-">
-
-
-
-
-
-<div class="flex gap-5">
-
-
-
-
-
-<div class="w-12 h-12 rounded-xl bg-red-600 flex items-center justify-center">
-
-
-<i data-lucide="bell"></i>
-
-
-</div>
-
-
-
-
-
-
-
-<div class="flex-1">
-
-
-<div class="flex justify-between gap-4">
-
-
-
-<h2 class="text-xl font-black">
-
-{{notification.title}}
-
-</h2>
-
-
-
-{% if not notification.is_read %}
-
-
-<span class="text-xs bg-red-600 px-3 py-1 rounded-full">
-
-
-New
-
-
-</span>
-
-
-{% endif %}
-
-
-
-</div>
-
-
-
-
-
-
-<p class="text-zinc-400 mt-3 leading-7">
-
-
-{{notification.message}}
-
-
-</p>
-
-
-
-
-
-
-
-<p class="text-zinc-600 text-sm mt-4">
-
-
-{{notification.created_at}}
-
-
-</p>
-
-
-
-
-
-</div>
-
-
-
-
-
-
-</div>
-
-
-
-
-
-
-</div>
-
-
-
-
-
-
-{% empty %}
-
-
-
-
-
-<div class="glass rounded-3xl p-8 text-zinc-400 text-center">
-
-
-<div class="text-5xl mb-4">
-
-
-🔔
-
-
-</div>
-
-
-No notifications yet.
-
-
-
-</div>
-
-
-
-
-
-{% endfor %}
-
-
-
-
-
-
-</div>
-
-
-
-
-
-
-
-</div>
-
-
 
 {% endblock %}

@@ -1,0 +1,499 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Investment Details
+{% endblock %}
+
+
+
+
+{% block content %}
+
+
+
+<div class="max-w-5xl mx-auto px-4 sm:px-6 py-10">
+
+
+
+
+
+<!-- HEADER -->
+
+<div class="bg-primary text-white rounded-2xl p-8 shadow-lg">
+
+
+<div class="flex items-center gap-4">
+
+
+<div class="bg-white text-primary p-4 rounded-xl">
+
+
+<i data-lucide="chart-no-axes-combined" class="w-8 h-8"></i>
+
+
+</div>
+
+
+
+
+<div>
+
+
+<h1 class="text-3xl font-bold">
+
+{{ investment.plan.name }}
+
+</h1>
+
+
+
+<p class="text-blue-100">
+
+Investment Overview
+
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- SUMMARY -->
+
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+
+
+
+
+
+<div class="bg-white shadow rounded-2xl p-6">
+
+
+<p class="text-gray-500">
+
+Invested Amount
+
+</p>
+
+
+<h2 class="text-3xl font-bold text-primary mt-2">
+
+${{ investment.amount }}
+
+</h2>
+
+
+</div>
+
+
+
+
+
+
+<div class="bg-white shadow rounded-2xl p-6">
+
+
+<p class="text-gray-500">
+
+Expected Profit
+
+</p>
+
+
+<h2 class="text-3xl font-bold text-green-600 mt-2">
+
+${{ investment.expected_profit }}
+
+</h2>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="bg-white shadow rounded-2xl p-6">
+
+
+<p class="text-gray-500">
+
+ROI
+
+</p>
+
+
+<h2 class="text-3xl font-bold text-secondary mt-2">
+
+{{ investment.plan.roi_percent }}%
+
+</h2>
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- DETAILS -->
+
+
+<div class="bg-white shadow rounded-2xl p-8 mt-8">
+
+
+
+<h2 class="text-xl font-bold text-primary mb-6">
+
+Investment Details
+
+</h2>
+
+
+
+
+
+<div class="grid md:grid-cols-2 gap-6">
+
+
+
+
+
+
+<div class="flex justify-between border-b pb-3">
+
+
+<span class="text-gray-500 flex gap-2 items-center">
+
+
+<i data-lucide="calendar" class="w-4"></i>
+
+
+Start Date
+
+
+</span>
+
+
+
+<strong>
+
+{{ investment.start_date|date:"M d, Y" }}
+
+</strong>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="flex justify-between border-b pb-3">
+
+
+<span class="text-gray-500 flex gap-2 items-center">
+
+
+<i data-lucide="calendar-check" class="w-4"></i>
+
+
+End Date
+
+
+</span>
+
+
+
+<strong>
+
+{{ investment.end_date|date:"M d, Y" }}
+
+</strong>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="flex justify-between border-b pb-3">
+
+
+<span class="text-gray-500 flex gap-2 items-center">
+
+
+<i data-lucide="clock" class="w-4"></i>
+
+
+Duration
+
+
+</span>
+
+
+
+<strong>
+
+{{ investment.plan.duration_days }} Days
+
+</strong>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="flex justify-between border-b pb-3">
+
+
+<span class="text-gray-500 flex gap-2 items-center">
+
+
+<i data-lucide="activity" class="w-4"></i>
+
+
+Status
+
+
+</span>
+
+
+
+
+
+{% if investment.status == "running" %}
+
+<span class="bg-blue-100 text-primary px-3 py-1 rounded-full">
+
+Running
+
+</span>
+
+
+{% elif investment.status == "completed" %}
+
+
+<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full">
+
+Completed
+
+</span>
+
+
+{% else %}
+
+
+<span class="bg-red-100 text-red-700 px-3 py-1 rounded-full">
+
+Cancelled
+
+</span>
+
+
+{% endif %}
+
+
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- TIMELINE -->
+
+
+<div class="bg-white shadow rounded-2xl p-8 mt-8">
+
+
+<h2 class="text-xl font-bold text-primary mb-6">
+
+Investment Timeline
+
+</h2>
+
+
+
+
+<div class="space-y-5">
+
+
+
+
+
+<div class="flex gap-4">
+
+
+<div class="bg-primary text-white rounded-full w-10 h-10 flex items-center justify-center">
+
+
+<i data-lucide="check" class="w-5"></i>
+
+
+</div>
+
+
+<div>
+
+
+<h3 class="font-semibold">
+
+Investment Started
+
+</h3>
+
+
+<p class="text-gray-500">
+
+{{ investment.start_date|date:"M d, Y H:i" }}
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+{% if investment.completed_at %}
+
+
+<div class="flex gap-4">
+
+
+<div class="bg-green-600 text-white rounded-full w-10 h-10 flex items-center justify-center">
+
+
+<i data-lucide="flag" class="w-5"></i>
+
+
+</div>
+
+
+<div>
+
+
+<h3 class="font-semibold">
+
+Investment Completed
+
+</h3>
+
+
+<p class="text-gray-500">
+
+{{ investment.completed_at|date:"M d, Y H:i" }}
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+{% endif %}
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- BACK BUTTON -->
+
+
+<a href="{% url 'my_investments' %}"
+
+class="inline-flex items-center gap-2 mt-8 text-primary font-semibold">
+
+
+<i data-lucide="arrow-left" class="w-4"></i>
+
+
+Back to Investments
+
+
+</a>
+
+
+
+
+
+</div>
+
+
+
+{% endblock %}
