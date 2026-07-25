@@ -1,279 +1,209 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% block title %}
-Login
-{% endblock %}
+<title>Login | XCoin</title>
 
+<script src="https://cdn.tailwindcss.com"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
 
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
+<style>
 
-{% block content %}
+body{
+font-family:Inter,sans-serif;
+background:#09090b;
+color:white;
+}
 
+.glass{
+background:#18181b;
+border:1px solid #27272a;
+backdrop-filter:blur(20px);
+}
+
+</style>
+
+</head>
+
+<body>
 
 <div class="min-h-screen flex items-center justify-center px-4 py-10">
 
+<div class="w-full max-w-md glass rounded-3xl p-8">
 
+<div class="text-center">
 
-<div class="bg-white shadow-xl rounded-2xl w-full max-w-md p-8">
+<div class="w-16 h-16 rounded-2xl bg-red-600 flex items-center justify-center mx-auto">
 
-
-
-
-
-<!-- HEADER -->
-
-<div class="text-center mb-8">
-
-
-<div class="mx-auto bg-primary text-white w-16 h-16 rounded-full flex items-center justify-center text-2xl">
-
-
-<i class="fa-solid fa-lock"></i>
-
+<i data-lucide="bitcoin"></i>
 
 </div>
 
-
-
-<h1 class="text-3xl font-bold text-primary mt-4">
+<h1 class="text-4xl font-black mt-5">
 
 Welcome Back
 
 </h1>
 
+<p class="text-zinc-400 mt-2">
 
-
-<p class="text-gray-600 mt-2">
-
-Login to access your account.
+Login to your XCoin account
 
 </p>
 
-
 </div>
 
-
-
-
-
-
-
-<form method="POST">
-
+<form method="POST" class="mt-8" x-data="{show:false}">
 
 {% csrf_token %}
 
+<div>
 
+<label class="text-sm text-zinc-400">
 
-
-
-
-<!-- EMAIL -->
-
-
-<div class="mb-5">
-
-
-<label class="block font-semibold mb-2">
-
-Email Address
+Email or Username
 
 </label>
 
-
-
-<div class="relative">
-
-
-<span class="absolute left-4 top-3 text-gray-400">
-
-<i class="fa-solid fa-envelope"></i>
-
-</span>
-
-
 <input
 
-type="email"
+type="text"
 
-name="email"
+name="username"
 
 required
 
-class="w-full border rounded-xl pl-12 pr-4 py-3 focus:ring-2 focus:ring-blue-500"
+class="w-full h-14 rounded-2xl bg-zinc-950 border border-zinc-800 focus:border-red-600 outline-none px-5 mt-2"
 
-placeholder="Enter your email"
-
->
-
+placeholder="Enter username">
 
 </div>
 
+<div class="mt-5">
 
-</div>
-
-
-
-
-
-
-
-<!-- PASSWORD -->
-
-
-<div class="mb-5">
-
-
-<label class="block font-semibold mb-2">
+<label class="text-sm text-zinc-400">
 
 Password
 
 </label>
 
-
-
-<div class="relative">
-
-
-<span class="absolute left-4 top-3 text-gray-400">
-
-<i class="fa-solid fa-key"></i>
-
-</span>
-
-
+<div class="relative mt-2">
 
 <input
 
-type="password"
+:type="show ? 'text' : 'password'"
 
 name="password"
 
 required
 
-class="w-full border rounded-xl pl-12 pr-4 py-3"
+class="w-full h-14 rounded-2xl bg-zinc-950 border border-zinc-800 focus:border-red-600 outline-none px-5 pr-14"
 
-placeholder="Enter your password"
+placeholder="Password">
 
->
+<button
 
+type="button"
+
+@click="show=!show"
+
+class="absolute right-4 top-4 text-zinc-500">
+
+<i data-lucide="eye"></i>
+
+</button>
 
 </div>
 
-
 </div>
 
+<div class="flex justify-between items-center mt-5 text-sm">
 
+<label class="flex items-center gap-2">
 
-
-
-
-<!-- REMEMBER + FORGOT -->
-
-
-<div class="flex justify-between items-center mb-6">
-
-
-<label class="flex items-center gap-2 text-sm">
-
-
-<input
-
-type="checkbox"
-
-class="rounded"
-
->
-
+<input type="checkbox" class="accent-red-600">
 
 Remember me
 
-
 </label>
-
-
-
 
 <a href="{% url 'forgot_password' %}"
 
-class="text-secondary text-sm font-semibold">
-
+class="text-red-500 hover:underline">
 
 Forgot Password?
 
-
 </a>
 
-
-
 </div>
-
-
-
-
-
-
-
 
 <button
 
 type="submit"
 
-class="w-full bg-primary text-white py-3 rounded-xl font-semibold hover:bg-blue-900 transition"
-
->
-
+class="w-full h-14 rounded-2xl bg-red-600 hover:bg-red-700 transition font-bold mt-8">
 
 Login
 
+</button>
+
+<div class="flex items-center gap-4 my-6">
+
+<div class="flex-1 h-px bg-zinc-800"></div>
+
+<span class="text-zinc-500 text-sm">
+
+OR
+
+</span>
+
+<div class="flex-1 h-px bg-zinc-800"></div>
+
+</div>
+
+<button
+
+type="button"
+
+class="w-full h-14 rounded-2xl border border-zinc-700 hover:border-red-600 transition">
+
+Continue with Google
 
 </button>
 
-
-
-
-</form>
-
-
-
-
-
-
-
-
-<!-- REGISTER -->
-
-
-<div class="text-center mt-6 text-gray-600">
-
+<p class="text-center text-zinc-400 mt-8">
 
 Don't have an account?
 
+<a
 
-<a href="{% url 'register' %}"
+href="{% url 'register' %}"
 
-class="text-secondary font-bold">
-
+class="text-red-500 font-semibold hover:underline">
 
 Create Account
 
-
 </a>
 
+</p>
+
+</form>
 
 </div>
 
-
-
-
-
-
 </div>
 
+<script>
 
-</div>
+lucide.createIcons();
 
+</script>
 
-
-{% endblock %}
+</body>
+</html>
