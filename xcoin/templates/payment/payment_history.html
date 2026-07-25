@@ -1,0 +1,489 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Payment History
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+
+
+
+
+
+<!-- HEADER -->
+
+<div class="mb-8">
+
+
+<div class="flex items-center gap-4">
+
+
+<div class="bg-primary text-white p-3 rounded-xl">
+
+<i data-lucide="credit-card" class="w-7 h-7"></i>
+
+</div>
+
+
+
+<div>
+
+
+<h1 class="text-3xl font-bold text-primary">
+
+Payment History
+
+</h1>
+
+
+<p class="text-gray-600">
+
+Track all your payments and deposits.
+
+</p>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- DESKTOP TABLE -->
+
+
+<div class="hidden md:block bg-white rounded-2xl shadow border overflow-hidden">
+
+
+
+<table class="w-full">
+
+
+
+<thead class="bg-gray-50">
+
+
+<tr class="text-left">
+
+
+<th class="p-5">
+Reference
+</th>
+
+
+<th>
+Purpose
+</th>
+
+
+<th>
+Method
+</th>
+
+
+<th>
+Amount
+</th>
+
+
+<th>
+Status
+</th>
+
+
+<th>
+Date
+</th>
+
+
+<th>
+Action
+</th>
+
+
+</tr>
+
+
+</thead>
+
+
+
+
+
+
+<tbody>
+
+
+{% for payment in payments %}
+
+
+
+<tr class="border-t">
+
+
+
+<td class="p-5 font-semibold">
+
+{{ payment.reference }}
+
+</td>
+
+
+
+
+<td>
+
+{{ payment.purpose|title }}
+
+</td>
+
+
+
+
+
+<td>
+
+{{ payment.method|title }}
+
+</td>
+
+
+
+
+
+<td class="font-semibold">
+
+${{ payment.amount }}
+
+</td>
+
+
+
+
+
+<td>
+
+
+{% if payment.status == "approved" %}
+
+
+<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+
+Approved
+
+</span>
+
+
+
+{% elif payment.status == "pending" %}
+
+
+
+<span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
+
+Pending
+
+</span>
+
+
+
+{% else %}
+
+
+
+<span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm">
+
+Rejected
+
+</span>
+
+
+
+{% endif %}
+
+
+
+</td>
+
+
+
+
+
+<td>
+
+{{ payment.created_at|date:"M d, Y" }}
+
+</td>
+
+
+
+
+<td>
+
+
+<a href="{% url 'payment_detail' payment.id %}"
+
+class="text-primary font-semibold">
+
+
+View
+
+
+</a>
+
+
+</td>
+
+
+
+</tr>
+
+
+
+
+
+{% empty %}
+
+
+
+<tr>
+
+
+<td colspan="7" class="text-center p-10 text-gray-500">
+
+
+No payments found.
+
+
+</td>
+
+
+</tr>
+
+
+
+{% endfor %}
+
+
+
+
+
+</tbody>
+
+
+
+</table>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- MOBILE CARDS -->
+
+
+<div class="md:hidden space-y-5">
+
+
+
+{% for payment in payments %}
+
+
+
+
+<div class="bg-white rounded-2xl shadow border p-5">
+
+
+
+
+
+<div class="flex justify-between">
+
+
+<div>
+
+
+<h3 class="font-bold">
+
+{{ payment.reference }}
+
+</h3>
+
+
+<p class="text-gray-500 text-sm">
+
+{{ payment.purpose|title }}
+
+</p>
+
+
+</div>
+
+
+
+
+
+{% if payment.status == "approved" %}
+
+
+<span class="text-green-600">
+
+Approved
+
+</span>
+
+
+
+{% elif payment.status == "pending" %}
+
+
+
+<span class="text-yellow-600">
+
+Pending
+
+</span>
+
+
+
+{% else %}
+
+
+<span class="text-red-600">
+
+Rejected
+
+</span>
+
+
+
+{% endif %}
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="mt-5 space-y-3">
+
+
+
+<div class="flex justify-between">
+
+
+<span class="text-gray-500">
+
+Amount
+
+</span>
+
+
+<strong>
+
+${{ payment.amount }}
+
+</strong>
+
+
+</div>
+
+
+
+
+
+<div class="flex justify-between">
+
+
+<span class="text-gray-500">
+
+Method
+
+</span>
+
+
+<strong>
+
+{{ payment.method|title }}
+
+</strong>
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+<a href="{% url 'payment_detail' payment.id %}"
+
+class="block mt-5 text-center bg-primary text-white py-3 rounded-xl">
+
+
+View Details
+
+
+</a>
+
+
+
+
+</div>
+
+
+
+
+
+
+{% endfor %}
+
+
+
+</div>
+
+
+
+
+
+
+
+
+</div>
+
+
+{% endblock %}
