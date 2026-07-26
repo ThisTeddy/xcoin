@@ -46,69 +46,84 @@ def home(request):
         },
     )
 
+  
+         
+        
+from django.contrib import messages
+from django.contrib.auth import login
+from django.shortcuts import render, redirect
+
+from .models import User, Wallet, Notification
+
 
 def register(request):
-    print("========== REGISTER ==========")
-    print(request.method)
 
     if request.user.is_authenticated:
         return redirect("dashboard")
 
     if request.method == "POST":
 
-        username = request.POST.get("username")
-        email = request.POST.get("email")
-        phone = request.POST.get("phone")
-        country = request.POST.get("country")
+        first_name = request.POST.get("first_name", "").strip()
+        last_name = request.POST.get("last_name", "").strip()
+        email = request.POST.get("email", "").strip().lower()
+        phone = request.POST.get("phone", "").strip()
+        country = request.POST.get("country", "").strip()
         password = request.POST.get("password")
         confirm_password = request.POST.get("confirm_password")
 
+        # Required fields
+        if not all([
+            first_name,
+            last_name,
+            email,
+            phone,
+            country,
+            password,
+            confirm_password,
+        ]):
+            messages.error(request, "Please fill in all required fields.")
+            return redirect("register")
+
+        # Password confirmation
         if password != confirm_password:
-
             messages.error(request, "Passwords do not match.")
-
             return redirect("register")
 
+        # Email uniqueness
         if User.objects.filter(email=email).exists():
-
-            messages.error(request, "Email already exists.")
-
+            messages.error(request, "An account with this email already exists.")
             return redirect("register")
 
-        if User.objects.filter(username=username).exists():
-
-            messages.error(request, "Username already exists.")
-
-            return redirect("register")
-
+        # Create user
         user = User.objects.create_user(
-            username=username,
             email=email,
+            first_name=first_name,
+            last_name=last_name,
             phone=phone,
             country=country,
-            first_name=request.POST.get("first_name"),
-            last_name=request.POST.get("last_name"),
             password=password,
-)
-       
+        )
+
+        # Create wallet
         Wallet.objects.get_or_create(user=user)
 
+        # Welcome notification
         Notification.objects.create(
             user=user,
             notification_type="system",
-            title="Welcome",
-            message="Welcome to our investment platform.",
+            title="Welcome to XCoin",
+            message="Your account has been created successfully. Welcome aboard!",
             send_email=False,
         )
-        
-
-        messages.success(request, "Registration successful.")
 
         login(request, user)
+
+        messages.success(request, "Account created successfully.")
 
         return redirect("dashboard")
 
     return render(request, "auth/register.html")
+     
 
 @login_required
 def logout_view(request):

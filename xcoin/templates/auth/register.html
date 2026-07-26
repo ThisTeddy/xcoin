@@ -1,81 +1,72 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="en" x-data="{ dark:true }">
+<html lang="en" x-data="{ showPassword:false, showConfirmPassword:false }">
 
 <head>
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Create Account | XCoin</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <script defer
-            src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <link rel="preconnect"
-          href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
-    <link rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
 
         *{
-
-            font-family:'Inter',sans-serif;
-
+            font-family:Inter,sans-serif;
         }
 
         body{
-
-            background:#09090b;
-
+            background:#070707;
             color:white;
-
-            overflow-x:hidden;
-
         }
 
         .glass{
-
-            background:rgba(24,24,27,.82);
-
-            backdrop-filter:blur(18px);
-
+            background:rgba(255,255,255,.05);
+            backdrop-filter:blur(20px);
             border:1px solid rgba(255,255,255,.08);
+        }
+
+        .input{
+
+            width:100%;
+
+            height:50px;
+
+            background:#111111;
+
+            border:1px solid #27272a;
+
+            border-radius:14px;
+
+            padding:0 16px;
+
+            color:white;
+
+            transition:.3s;
 
         }
 
-        .gradient{
+        .input:focus{
 
-            background:
+            outline:none;
 
-            radial-gradient(circle at top left,#dc2626 0%,transparent 40%),
+            border-color:#dc2626;
 
-            radial-gradient(circle at bottom right,#7f1d1d 0%,transparent 40%),
-
-            #09090b;
-
-        }
-
-        input{
-
-            transition:.25s;
-
-        }
-
-        input:focus{
-
-            transform:translateY(-2px);
+            box-shadow:0 0 0 4px rgba(220,38,38,.15);
 
         }
 
@@ -83,183 +74,86 @@
 
 </head>
 
-<body class="gradient">
+<body>
 
-<div class="min-h-screen grid lg:grid-cols-2">
+<section class="min-h-screen flex items-center justify-center px-4 py-10">
 
-    <!-- LEFT SIDE -->
+<div class="w-full max-w-md">
 
-    <section class="hidden lg:flex flex-col justify-between p-16">
+<!-- Logo -->
 
-        <div>
+<div class="text-center mb-8">
 
-            <a href="{% url 'home' %}"
+<a href="/"
+class="text-4xl font-black">
 
-               class="flex items-center gap-4">
+<span class="text-red-600">
 
-                <div class="w-14 h-14 rounded-2xl bg-red-600 flex items-center justify-center">
+X
 
-                    <i data-lucide="bitcoin"></i>
+</span>Coin
 
-                </div>
+</a>
 
-                <div>
+<p class="text-zinc-400 mt-3">
 
-                    <h1 class="text-3xl font-black">
+Create your investment account
 
-                        XCoin
+</p>
 
-                    </h1>
+</div>
 
-                    <p class="text-zinc-400">
+<!-- Card -->
 
-                        Digital Investment Platform
+<div class="glass rounded-3xl p-6 sm:p-8">
 
-                    </p>
+<h1 class="text-3xl font-black">
 
-                </div>
+Create Account
 
-            </a>
+</h1>
 
-        </div>
+<p class="text-zinc-400 mt-2">
 
-        <div>
+Start investing in crypto, stocks, ETFs and forex.
 
-            <h2 class="text-6xl font-black leading-tight">
+</p>
 
-                Build Wealth
+<!-- Django Messages -->
 
-                <span class="text-red-500">
+{% if messages %}
 
-                    Globally.
+<div class="mt-6 space-y-3">
 
-                </span>
+{% for message in messages %}
 
-            </h2>
+<div class="rounded-xl px-4 py-3 text-sm
+{% if message.tags == 'success' %}
+bg-green-600/20 text-green-400 border border-green-600/30
+{% else %}
+bg-red-600/20 text-red-300 border border-red-600/30
+{% endif %}">
 
-            <p class="text-zinc-400 text-xl mt-8 max-w-xl">
+{{ message }}
 
-                Buy crypto, invest in global assets,
+</div>
 
-                track your portfolio,
+{% endfor %}
 
-                and grow your wealth from anywhere.
+</div>
 
-            </p>
+{% endif %}
 
-            <div class="grid grid-cols-3 gap-6 mt-16">
+<form method="POST" class="mt-8 space-y-5">
 
-                <div class="glass rounded-3xl p-6">
-
-                    <h3 class="text-4xl font-black">
-
-                        150K+
-
-                    </h3>
-
-                    <p class="text-zinc-400 mt-2">
-
-                        Investors
-
-                    </p>
-
-                </div>
-
-                <div class="glass rounded-3xl p-6">
-
-                    <h3 class="text-4xl font-black">
-
-                        120+
-
-                    </h3>
-
-                    <p class="text-zinc-400 mt-2">
-
-                        Assets
-
-                    </p>
-
-                </div>
-
-                <div class="glass rounded-3xl p-6">
-
-                    <h3 class="text-4xl font-black">
-
-                        $80M+
-
-                    </h3>
-
-                    <p class="text-zinc-400 mt-2">
-
-                        Volume
-
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- RIGHT SIDE -->
-
-    <section class="flex items-center justify-center px-4 sm:px-6 py-10">
-
-        <div class="glass rounded-3xl w-full max-w-xl p-6 sm:p-8 lg:p-10">
-
-            <!-- Mobile Logo -->
-
-            <div class="lg:hidden text-center mb-10">
-
-                <div class="w-16 h-16 rounded-2xl bg-red-600 flex items-center justify-center mx-auto">
-
-                    <i data-lucide="bitcoin"></i>
-
-                </div>
-
-                <h2 class="text-3xl font-black mt-5">
-
-                    XCoin
-
-                </h2>
-
-            </div>
-
-            <div class="mb-10">
-
-                <p class="uppercase tracking-[0.35em] text-red-500 text-xs">
-
-                    Start Investing
-
-                </p>
-
-                <h1 class="text-3xl sm:text-4xl font-black mt-3">
-
-                    Create your account
-
-                </h1>
-
-                <p class="text-zinc-400 mt-3">
-
-                    Join thousands of investors worldwide.
-
-                </p>
-
-            </div>
-
-            <!-- FORM STARTS HERE -->
-            <form method="POST" enctype="multipart/form-data">
-
-                {% csrf_token %}
-                <!-- Name -->
+{% csrf_token %}
+<!-- First & Last Name -->
 
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
     <div>
 
-        <label class="block text-sm mb-2 text-zinc-400">
+        <label class="block text-sm mb-2 font-medium">
 
             First Name
 
@@ -268,15 +162,16 @@
         <input
             type="text"
             name="first_name"
-            required
-            class="w-full h-14 rounded-2xl bg-zinc-950 border border-zinc-800 focus:border-red-600 outline-none px-5"
-            placeholder="John">
+            value="{{ request.POST.first_name }}"
+            class="input"
+            placeholder="John"
+            required>
 
     </div>
 
     <div>
 
-        <label class="block text-sm mb-2 text-zinc-400">
+        <label class="block text-sm mb-2 font-medium">
 
             Last Name
 
@@ -285,225 +180,206 @@
         <input
             type="text"
             name="last_name"
-            required
-            class="w-full h-14 rounded-2xl bg-zinc-950 border border-zinc-800 focus:border-red-600 outline-none px-5"
-            placeholder="Doe">
+            value="{{ request.POST.last_name }}"
+            class="input"
+            placeholder="Doe"
+            required>
 
     </div>
 
 </div>
-
-
-
-<!-- Username -->
-
-<div class="mt-5">
-
-    <label class="block text-sm mb-2 text-zinc-400">
-
-        Username
-
-    </label>
-
-    <div class="relative">
-
-        <i data-lucide="user"
-
-           class="absolute left-5 top-4 w-5 h-5 text-zinc-500"></i>
-
-        <input
-            type="text"
-            name="username"
-            required
-            class="w-full h-14 rounded-2xl bg-zinc-950 border border-zinc-800 focus:border-red-600 outline-none pl-14 pr-5"
-            placeholder="johndoe">
-
-    </div>
-
-</div>
-
-
 
 <!-- Email -->
 
-<div class="mt-5">
+<div>
 
-    <label class="block text-sm mb-2 text-zinc-400">
+    <label class="block text-sm mb-2 font-medium">
 
         Email Address
 
     </label>
 
+    <input
+        type="email"
+        name="email"
+        value="{{ request.POST.email }}"
+        class="input"
+        placeholder="john@example.com"
+        required>
+
+</div>
+
+<!-- Phone -->
+
+<div>
+
+    <label class="block text-sm mb-2 font-medium">
+
+        Phone Number
+
+    </label>
+
+    <input
+        type="tel"
+        name="phone"
+        value="{{ request.POST.phone }}"
+        class="input"
+        placeholder="+234 801 234 5678"
+        required>
+
+</div>
+
+<!-- Country -->
+
+<div>
+
+    <label class="block text-sm mb-2 font-medium">
+
+        Country
+
+    </label>
+
+    <select
+        name="country"
+        class="input"
+        required>
+
+        <option value="">Select Country</option>
+
+        <option value="Nigeria">Nigeria</option>
+        <option value="Ghana">Ghana</option>
+        <option value="Kenya">Kenya</option>
+        <option value="South Africa">South Africa</option>
+        <option value="United States">United States</option>
+        <option value="Canada">Canada</option>
+        <option value="United Kingdom">United Kingdom</option>
+
+    </select>
+
+</div>
+
+<!-- Password -->
+
+<div x-data="{show:false}">
+
+    <label class="block text-sm mb-2 font-medium">
+
+        Password
+
+    </label>
+
     <div class="relative">
-
-        <i data-lucide="mail"
-
-           class="absolute left-5 top-4 w-5 h-5 text-zinc-500"></i>
-
-        <input
-            type="email"
-            name="email"
-            required
-            class="w-full h-14 rounded-2xl bg-zinc-950 border border-zinc-800 focus:border-red-600 outline-none pl-14 pr-5"
-            placeholder="john@email.com">
-
-    </div>
-
-</div>
-
-
-
-<!-- Country & Phone -->
-
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5">
-
-    <div>
-
-        <label class="block text-sm mb-2 text-zinc-400">
-
-            Country
-
-        </label>
-
-        <select
-            name="country"
-            class="w-full h-14 rounded-2xl bg-zinc-950 border border-zinc-800 focus:border-red-600 outline-none px-5">
-
-            <option>Nigeria</option>
-
-            <option>United States</option>
-
-            <option>United Kingdom</option>
-
-            <option>Canada</option>
-
-            <option>South Africa</option>
-
-            <option>Ghana</option>
-
-            <option>Kenya</option>
-
-            <option>Germany</option>
-
-            <option>France</option>
-
-            <option>Australia</option>
-
-        </select>
-
-    </div>
-
-    <div>
-
-        <label class="block text-sm mb-2 text-zinc-400">
-
-            Phone Number
-
-        </label>
-
-        <input
-            type="tel"
-            name="phone"
-            required
-            class="w-full h-14 rounded-2xl bg-zinc-950 border border-zinc-800 focus:border-red-600 outline-none px-5"
-            placeholder="+234 801 234 5678">
-
-    </div>
-
-</div>
-<!-- Passwords -->
-
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5"
-
-     x-data="{show:false}">
-
-    <div>
-
-        <label class="block text-sm mb-2 text-zinc-400">
-
-            Password
-
-        </label>
-
-        <div class="relative">
-
-            <input
-                :type="show ? 'text' : 'password'"
-                name="password1"
-                required
-                class="w-full h-14 rounded-2xl bg-zinc-950 border border-zinc-800 focus:border-red-600 outline-none px-5 pr-14"
-                placeholder="Enter password">
-
-            <button
-                type="button"
-                @click="show=!show"
-                class="absolute right-4 top-4 text-zinc-500">
-
-                <i data-lucide="eye"></i>
-
-            </button>
-
-        </div>
-
-    </div>
-
-    <div>
-
-        <label class="block text-sm mb-2 text-zinc-400">
-
-            Confirm Password
-
-        </label>
 
         <input
             :type="show ? 'text' : 'password'"
-            name="password2"
-            required
-            class="w-full h-14 rounded-2xl bg-zinc-950 border border-zinc-800 focus:border-red-600 outline-none px-5"
-            placeholder="Confirm password">
+            name="password"
+            class="input pr-12"
+            placeholder="Create a password"
+            required>
+
+        <button
+            type="button"
+            @click="show=!show"
+            class="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white">
+
+            <i
+                x-show="!show"
+                data-lucide="eye"
+                class="w-5 h-5">
+            </i>
+
+            <i
+                x-show="show"
+                data-lucide="eye-off"
+                class="w-5 h-5">
+            </i>
+
+        </button>
 
     </div>
 
 </div>
 
+<!-- Confirm Password -->
 
+<div x-data="{show:false}">
+
+    <label class="block text-sm mb-2 font-medium">
+
+        Confirm Password
+
+    </label>
+
+    <div class="relative">
+
+        <input
+            :type="show ? 'text' : 'password'"
+            name="confirm_password"
+            class="input pr-12"
+            placeholder="Confirm password"
+            required>
+
+        <button
+            type="button"
+            @click="show=!show"
+            class="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white">
+
+            <i
+                x-show="!show"
+                data-lucide="eye"
+                class="w-5 h-5">
+            </i>
+
+            <i
+                x-show="show"
+                data-lucide="eye-off"
+                class="w-5 h-5">
+            </i>
+
+        </button>
+
+    </div>
+
+</div>
 
 <!-- Referral -->
 
-<div class="mt-5">
+<div>
 
-    <label class="block text-sm mb-2 text-zinc-400">
+    <label class="block text-sm mb-2 font-medium">
 
-        Referral Code (Optional)
+        Referral Code
+        <span class="text-zinc-500">(Optional)</span>
 
     </label>
 
     <input
         type="text"
         name="referral_code"
-        class="w-full h-14 rounded-2xl bg-zinc-950 border border-zinc-800 focus:border-red-600 outline-none px-5"
+        value="{{ request.POST.referral_code }}"
+        class="input"
         placeholder="Referral code">
 
 </div>
-
-
-
 <!-- Terms -->
 
-<label class="flex items-start gap-3 mt-6">
+<div class="flex items-start gap-3">
 
     <input
         type="checkbox"
-        required
-        class="accent-red-600 mt-1">
+        name="agree_terms"
+        id="agree_terms"
+        class="mt-1 w-5 h-5 accent-red-600"
+        required>
 
-    <span class="text-sm text-zinc-400">
+    <label
+        for="agree_terms"
+        class="text-sm text-zinc-400 leading-6">
 
         I agree to the
 
-        <a href="{% url 'terms_and_conditions' %}"
-
-           class="text-red-500 hover:underline">
+        <a href=""
+           class="text-red-500 hover:text-red-400">
 
             Terms of Service
 
@@ -512,92 +388,61 @@
         and
 
         <a href="{% url 'privacy_policy' %}"
-
-           class="text-red-500 hover:underline">
+           class="text-red-500 hover:text-red-400">
 
             Privacy Policy
 
         </a>
 
-    </span>
-
-</label>
-
-
-
-<!-- Register Button -->
-
-<button
-
-type="submit"
-
-class="w-full h-14 rounded-2xl bg-red-600 hover:bg-red-700 transition font-bold text-lg mt-8">
-
-Create Account
-
-</button>
-
-
-
-<!-- Divider -->
-
-<div class="flex items-center gap-4 my-8">
-
-    <div class="flex-1 h-px bg-zinc-800"></div>
-
-    <span class="text-zinc-500 text-sm">
-
-        OR
-
-    </span>
-
-    <div class="flex-1 h-px bg-zinc-800"></div>
+    </label>
 
 </div>
 
-
-
-<!-- Google -->
+<!-- Submit -->
 
 <button
+    type="submit"
+    class="w-full h-12 rounded-xl bg-red-600 hover:bg-red-700 active:scale-[0.98] transition-all duration-300 font-semibold text-white shadow-lg shadow-red-600/20">
 
-type="button"
-
-class="w-full h-14 rounded-2xl border border-zinc-700 hover:border-red-500 transition flex items-center justify-center gap-3">
-
-<svg width="20"
-
-height="20"
-
-viewBox="0 0 48 48">
-
-<path fill="#FFC107"
-
-d="M43.611 20.083H42V20H24v8h11.303C33.651 32.657 29.24 36 24 36c-6.627 0-12-5.373-12-12S17.373 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.27 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917"/>
-
-</svg>
-
-Continue with Google
+    Create Account
 
 </button>
 
+<!-- Divider -->
 
+<div class="relative py-2">
+
+    <div class="absolute inset-0 flex items-center">
+
+        <div class="w-full border-t border-zinc-800"></div>
+
+    </div>
+
+    <div class="relative flex justify-center">
+
+        <span class="bg-[#070707] px-4 text-sm text-zinc-500">
+
+            OR
+
+        </span>
+
+    </div>
+
+</div>
 
 <!-- Login -->
 
-<p class="text-center text-zinc-400 mt-8">
+<p class="text-center text-zinc-400 text-sm">
 
-Already have an account?
+    Already have an account?
 
-<a
+    <a
+        href="{% url 'login' %}"
+        class="text-red-500 hover:text-red-400 font-semibold">
 
-href="{% url 'login' %}"
+        Sign In
 
-class="text-red-500 hover:underline font-semibold">
-
-Sign In
-
-</a>
+    </a>
 
 </p>
 
@@ -605,13 +450,33 @@ Sign In
 
 </div>
 
-</section>
+<!-- Back Home -->
+
+<div class="text-center mt-8">
+
+    <a
+        href="/"
+        class="inline-flex items-center gap-2 text-zinc-500 hover:text-white transition">
+
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+
+        Back to Home
+
+    </a>
 
 </div>
 
+</div>
+
+</section>
+
 <script>
 
-lucide.createIcons();
+document.addEventListener("DOMContentLoaded", () => {
+
+    lucide.createIcons();
+
+});
 
 </script>
 

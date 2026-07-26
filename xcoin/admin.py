@@ -40,35 +40,119 @@ def send_user_email(user, subject, message):
 
 
 # ==========================================
-# USER
-# ==========================================
+from django.contrib import admin
+from .models import User
+
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
 
     list_display = (
         "id",
+        "first_name",
+        "last_name",
         "email",
-        "username",
         "phone",
         "country",
         "email_verified",
+        "is_verified",
         "is_active",
-        "date_joined",
+        "is_suspended",
+        "referral_code",
+        "created_at",
     )
 
     list_filter = (
+        "country",
         "email_verified",
+        "is_verified",
         "is_active",
+        "is_suspended",
+        "created_at",
     )
 
     search_fields = (
+        "first_name",
+        "last_name",
         "email",
-        "username",
         "phone",
+        "referral_code",
     )
 
+    readonly_fields = (
+        "created_at",
+        "updated_at",
+        "referral_code",
+    )
 
+    ordering = (
+        "-created_at",
+    )
+
+    fieldsets = (
+        (
+            "Personal Information",
+            {
+                "fields": (
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "phone",
+                    "country",
+                    "avatar",
+                )
+            },
+        ),
+        (
+            "Verification",
+            {
+                "fields": (
+                    "email_verified",
+                    "is_verified",
+                )
+            },
+        ),
+        (
+            "Status",
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                    "is_suspended",
+                )
+            },
+        ),
+        (
+            "Referral",
+            {
+                "fields": (
+                    "referral_code",
+                    "referred_by",
+                )
+            },
+        ),
+        (
+            "Permissions",
+            {
+                "fields": (
+                    "groups",
+                    "user_permissions",
+                )
+            },
+        ),
+        (
+            "Important Dates",
+            {
+                "fields": (
+                    "last_login",
+                    "date_joined",
+                    "created_at",
+                    "updated_at",
+                )
+            },
+        ),
+    )
 
 # ==========================================
 # WALLET

@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en" x-data="{ mobileMenu:false }">
 
@@ -6,34 +7,28 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>XCoin</title>
-
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<title>XCoin | Invest Smarter</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 <script src="https://unpkg.com/lucide@latest"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 
-<link rel="preconnect"
-      href="https://fonts.gstatic.com"
-      crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-      rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 
 *{
     font-family:Inter,sans-serif;
 }
-[x-cloak] {
-    display: none !important;
-}
+
 html{
     scroll-behavior:smooth;
 }
@@ -41,7 +36,6 @@ html{
 body{
     background:#070707;
     color:white;
-    overflow-x:hidden;
 }
 
 .glass{
@@ -50,1668 +44,397 @@ body{
     border:1px solid rgba(255,255,255,.08);
 }
 
-.nav-link{
-    @apply text-sm;
-}
-
-.nav-link:hover{
-    color:#dc2626;
-    transition:.3s;
+.hero-glow{
+    position:absolute;
+    width:320px;
+    height:320px;
+    border-radius:9999px;
+    filter:blur(110px);
+    opacity:.25;
 }
 
 </style>
-<style>
 
-    .ticker{
-    
-    white-space:nowrap;
-    
-    overflow:hidden;
-    
-    }
-    
-    .ticker-track{
-    
-    display:inline-flex;
-    
-    animation:scroll 35s linear infinite;
-    
-    }
-    
-    .ticker-item{
-    
-    display:flex;
-    
-    align-items:center;
-    
-    gap:18px;
-    
-    margin-right:70px;
-    
-    padding:18px 26px;
-    
-    background:#111;
-    
-    border-radius:999px;
-    
-    border:1px solid rgba(255,255,255,.08);
-    
-    }
-    
-    @keyframes scroll{
-    
-    0%{
-    
-    transform:translateX(0);
-    
-    }
-    
-    100%{
-    
-    transform:translateX(-50%);
-    
-    }
-    
-    }
-    
-    </style>
 </head>
 
-<body x-data="{ mobileMenu: false }"></body>
-    <header
-class="fixed
-top-0
-left-0
-right-0
-z-50">
+<body>
 
-<div
-class="max-w-7xl
-mx-auto
-px-4
-py-4">
+<!-- Background -->
 
-<div
-class="glass
-rounded-2xl
-h-20
-px-6
-flex
-items-center
-justify-between">
+<div class="fixed inset-0 -z-10 overflow-hidden">
 
-<!-- Logo -->
+    <div class="hero-glow bg-red-600 top-0 -left-24"></div>
 
-<a
-href="/"
-class="text-3xl
-font-black">
-
-<span class="text-red-600">
-
-X
-
-</span>Coin
-
-</a>
-
-<!-- Desktop Menu -->
-
-<nav
-class="hidden
-lg:flex
-items-center
-gap-10">
-
-<a href="#markets"
-class="hover:text-red-500">
-
-Markets
-
-</a>
-
-<a href="#features"
-class="hover:text-red-500">
-
-Features
-
-</a>
-
-<a href="#plans"
-class="hover:text-red-500">
-
-Plans
-
-</a>
-
-<a href="#faq"
-class="hover:text-red-500">
-
-FAQ
-
-</a>
-
-</nav>
-
-<!-- Desktop Buttons -->
-
-<div
-class="hidden
-lg:flex
-items-center
-gap-3">
-
-<a
-href="{% url 'login' %}"
-class="glass
-px-6
-py-3
-rounded-xl">
-
-Login
-
-</a>
-
-<a
-href="{% url 'register' %}"
-class="bg-red-600
-hover:bg-red-700
-transition
-px-6
-py-3
-rounded-xl">
-
-Create Account
-
-</a>
+    <div class="hero-glow bg-red-700 bottom-0 -right-24"></div>
 
 </div>
 
-<!-- Hamburger -->
+<!-- NAVBAR -->
 
-<button
+<header class="sticky top-0 z-50 border-b border-zinc-900/70 backdrop-blur-xl bg-[#070707]/80">
 
-class="lg:hidden"
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
 
-@click="mobileMenu=true">
+        <div class="h-16 flex items-center justify-between">
 
-<i
-data-lucide="menu"
-class="w-8
-h-8">
+            <a href="/"
+               class="text-2xl font-black">
 
-</i>
-
-</button>
-
-</div>
-
-</div>
-
-</header>
-<div
-
-x-show="mobileMenu"
-
-x-transition.opacity
-
-class="fixed
-inset-0
-bg-black/70
-z-40"
-
-@click="mobileMenu=false">
-
-</div>
-<aside
-
-x-show="mobileMenu"
-
-x-transition:enter="transition duration-300"
-
-x-transition:enter-start="-translate-x-full"
-
-x-transition:enter-end="translate-x-0"
-
-x-transition:leave="transition duration-300"
-
-x-transition:leave-start="translate-x-0"
-
-x-transition:leave-end="-translate-x-full"
-
-class="fixed
-top-0
-left-0
-h-screen
-w-72
-bg-[#0b0b0b]
-border-r
-border-zinc-800
-z-50">
-
-<div
-class="p-8">
-
-<div
-class="flex
-justify-between
-items-center">
-
-<h2
-class="text-3xl
-font-black">
-
-<span
-class="text-red-600">
-
-X
-
-</span>Coin
-
-</h2>
-
-<button
-
-@click="mobileMenu=false">
-
-<i
-data-lucide="x"></i>
-
-</button>
-
-</div>
-
-<nav
-class="mt-14
-space-y-7">
-
-<a
-href="#markets"
-class="block
-text-lg">
-
-Markets
-
-</a>
-
-<a
-href="#features"
-class="block
-text-lg">
-
-Features
-
-</a>
-
-<a
-href="#plans"
-class="block
-text-lg">
-
-Investment Plans
-
-</a>
-
-<a
-href="#faq"
-class="block
-text-lg">
-
-FAQ
-
-</a>
-
-<hr
-class="border-zinc-800">
-
-<a
-href="{% url 'login' %}"
-class="block">
-
-Login
-
-</a>
-
-<a
-href="{% url 'register' %}"
-
-class="block
-mt-4
-bg-red-600
-text-center
-rounded-xl
-py-4">
-
-Create Account
-
-</a>
-
-</nav>
-
-</div>
-
-</aside>
-<!-- ========================================= -->
-<!-- HERO SECTION -->
-<!-- ========================================= -->
-
-<section
-class="relative
-min-h-screen
-flex
-items-center
-overflow-hidden
-bg-[#070707]">
-
-    <!-- Background Glow -->
-
-    <div
-    class="absolute
-    top-0
-    left-0
-    w-[500px]
-    h-[500px]
-    bg-red-700/20
-    blur-[140px]
-    rounded-full">
-
-    </div>
-
-    <div
-    class="absolute
-    bottom-0
-    right-0
-    w-[500px]
-    h-[500px]
-    bg-red-900/20
-    blur-[160px]
-    rounded-full">
-
-    </div>
-
-    <div
-    class="max-w-7xl
-    mx-auto
-    px-6
-    pt-36
-    pb-24
-    w-full">
-
-        <div
-        class="grid
-        lg:grid-cols-2
-        gap-20
-        items-center">
-
-            <!-- LEFT -->
-
-            <div>
-
-                <span
-                class="inline-flex
-                items-center
-                gap-2
-                glass
-                px-5
-                py-2
-                rounded-full
-                text-xs
-                uppercase
-                tracking-[0.35em]">
-
-                    <span
-                    class="w-2
-                    h-2
-                    bg-green-500
-                    rounded-full
-                    animate-pulse">
-
-                    </span>
-
-                    Trusted Worldwide
-
-                </span>
-
-                <h1
-                class="mt-8
-                text-5xl
-                sm:text-6xl
-                lg:text-7xl
-                font-black
-                leading-tight">
-
-                    Invest In
-
-                    <span class="text-red-600">
-
-                        Crypto,
-
-                    </span>
-
-                    Stocks,
-
-                    Forex &
-
-                    ETFs.
-
-                </h1>
-
-                <p
-                class="mt-8
-                text-zinc-400
-                text-lg
-                leading-8
-                max-w-xl">
-
-                    XCoin is a modern investment platform that lets you
-                    invest in cryptocurrencies, global stocks,
-                    commodities, ETFs and forex from one secure account.
-
-                </p>
-
-                <div class="mt-10 flex flex-col sm:flex-row gap-5 relative z-30">
-                    <a
-href="{% url 'register' %}"
-class="relative z-30 inline-flex w-full sm:w-auto items-center justify-center bg-red-600 hover:bg-red-700 px-8 py-4 rounded-2xl font-semibold">
-
-    Get Started
-
-</a>
-                    <a
-                    href="#markets"
-                    class="glass
-                    px-8
-                    py-4
-                    rounded-2xl
-                    text-center">
-
-                        Live Markets
-
-                    </a>
-
-                </div>
-
-                <!-- Stats -->
-
-                <div
-                class="grid
-                grid-cols-2
-                md:grid-cols-4
-                gap-8
-                mt-16">
-
-                    <div>
-
-                        <h3 class="text-3xl font-black">
-
-                            120+
-
-                        </h3>
-
-                        <p class="text-zinc-500 mt-2">
-
-                            Assets
-
-                        </p>
-
-                    </div>
-
-                    <div>
-
-                        <h3 class="text-3xl font-black">
-
-                            150K+
-
-                        </h3>
-
-                        <p class="text-zinc-500 mt-2">
-
-                            Traders
-
-                        </p>
-
-                    </div>
-
-                    <div>
-
-                        <h3 class="text-3xl font-black">
-
-                            180+
-
-                        </h3>
-
-                        <p class="text-zinc-500 mt-2">
-
-                            Countries
-
-                        </p>
-
-                    </div>
-
-                    <div>
-
-                        <h3 class="text-3xl font-black">
-
-                            $2.6B
-
-                        </h3>
-
-                        <p class="text-zinc-500 mt-2">
-
-                            Daily Volume
-
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- RIGHT -->
-
-            <div
-            class="hidden
-            lg:flex
-            justify-center
-            relative">
-
-                <div
-                class="glass
-                rounded-[36px]
-                p-8
-                w-full
-                max-w-lg">
-
-                    <div
-                    class="flex
-                    justify-between
-                    items-center">
-
-                        <div>
-
-                            <p class="text-zinc-500">
-
-                                Portfolio Value
-
-                            </p>
-
-                            <h2
-                            class="mt-2
-                            text-5xl
-                            font-black">
-
-                                $248,590
-
-                            </h2>
-
-                        </div>
-
-                        <div
-                        class="w-16
-                        h-16
-                        rounded-2xl
-                        bg-red-600/20
-                        flex
-                        items-center
-                        justify-center">
-
-                            <i
-                            data-lucide="wallet"
-                            class="text-red-500">
-
-                            </i>
-
-                        </div>
-
-                    </div>
-
-                    <!-- Fake Chart -->
-
-                    <div
-                    class="mt-12
-                    h-56
-                    rounded-3xl
-                    bg-gradient-to-r
-                    from-red-900/20
-                    via-red-700/20
-                    to-red-900/20
-                    flex
-                    items-end
-                    p-6">
-
-                        <svg
-                        viewBox="0 0 600 200"
-                        class="w-full">
-
-                            <polyline
-
-                            fill="none"
-
-                            stroke="#dc2626"
-
-                            stroke-width="6"
-
-                            points="0,180
-                                    80,160
-                                    160,170
-                                    240,90
-                                    320,120
-                                    420,70
-                                    520,35
-                                    600,55"/>
-
-                        </svg>
-
-                    </div>
-
-                    <div
-                    class="grid
-                    grid-cols-3
-                    gap-6
-                    mt-8">
-
-                        <div>
-
-                            <p class="text-zinc-500 text-sm">
-
-                                BTC
-
-                            </p>
-
-                            <h4 class="font-bold">
-
-                                +24%
-
-                            </h4>
-
-                        </div>
-
-                        <div>
-
-                            <p class="text-zinc-500 text-sm">
-
-                                ETH
-
-                            </p>
-
-                            <h4 class="font-bold">
-
-                                +18%
-
-                            </h4>
-
-                        </div>
-
-                        <div>
-
-                            <p class="text-zinc-500 text-sm">
-
-                                TSLA
-
-                            </p>
-
-                            <h4 class="font-bold">
-
-                                +11%
-
-                            </h4>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-<!-- ========================================= -->
-<!-- LIVE MARKET -->
-<!-- ========================================= -->
-
-<section
-id="markets"
-class="py-24 bg-black overflow-hidden">
-
-    <div class="max-w-7xl mx-auto px-6">
-
-        <!-- Heading -->
-
-        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-
-            <div>
-
-                <span
-                class="uppercase tracking-[0.35em] text-red-500 text-xs">
-
-                    Live Markets
-
-                </span>
-
-                <h2
-                class="mt-4
-                text-4xl
-                md:text-5xl
-                font-black">
-
-                    Trade The World's Biggest Assets
-
-                </h2>
-
-            </div>
-
-            <a
-            href="{% url 'market' %}"
-            class="glass
-            px-6
-            py-3
-            rounded-xl
-            hover:border-red-600
-            transition">
-
-                View Full Market →
+                <span class="text-red-600">X</span>Coin
 
             </a>
 
-        </div>
+            <!-- Desktop -->
 
-    </div>
+            <nav class="hidden lg:flex items-center gap-8 text-sm">
 
+                <a href="#features" class="hover:text-red-500 transition">Features</a>
 
-    <!-- ================================= -->
-    <!-- TICKER -->
-    <!-- ================================= -->
+                <a href="#markets" class="hover:text-red-500 transition">Markets</a>
 
-    <div class="mt-16 overflow-hidden">
+                <a href="#plans" class="hover:text-red-500 transition">Plans</a>
 
-        <div class="ticker">
+                <a href="#faq" class="hover:text-red-500 transition">FAQ</a>
 
-            <div class="ticker-track">
+            </nav>
 
-                {% for asset in assets %}
+            <div class="hidden lg:flex items-center gap-3">
 
-                <div
-                class="ticker-item">
+                <a href="{% url 'login' %}"
+                   class="px-5 py-2.5 rounded-xl glass">
 
-                    <strong>
+                    Login
 
-                        {{ asset.symbol }}
+                </a>
 
-                    </strong>
+                <a href="{% url 'register' %}"
+                   class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 transition">
 
-                    <span>
-
-                        ${{ asset.current_price }}
-
-                    </span>
-
-                    {% if asset.change >= 0 %}
-
-                        <span class="text-green-500">
-
-                            ▲ {{ asset.change }}%
-
-                        </span>
-
-                    {% else %}
-
-                        <span class="text-red-500">
-
-                            ▼ {{ asset.change }}%
-
-                        </span>
-
-                    {% endif %}
-
-                </div>
-
-                {% endfor %}
-
-
-                {% for asset in assets %}
-
-                <div
-                class="ticker-item">
-
-                    <strong>
-
-                        {{ asset.symbol }}
-
-                    </strong>
-
-                    <span>
-
-                        ${{ asset.current_price }}
-
-                    </span>
-
-                    {% if asset.change >= 0 %}
-
-                        <span class="text-green-500">
-
-                            ▲ {{ asset.change }}%
-
-                        </span>
-
-                    {% else %}
-
-                        <span class="text-red-500">
-
-                            ▼ {{ asset.change }}%
-
-                        </span>
-
-                    {% endif %}
-
-                </div>
-
-                {% endfor %}
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- ================================= -->
-    <!-- FEATURED MARKET -->
-    <!-- ================================= -->
-
-    <div
-    class="max-w-7xl
-    mx-auto
-    px-6
-    mt-20">
-
-        <div
-        class="grid
-        sm:grid-cols-2
-        xl:grid-cols-4
-        gap-8">
-
-            {% for asset in assets|slice:":8" %}
-
-            <div
-            class="glass
-            rounded-3xl
-            p-6
-            hover:border-red-600
-            transition
-            hover:-translate-y-2
-            duration-300">
-
-                <div
-                class="flex
-                justify-between
-                items-center">
-
-                    <div>
-
-                        <h3
-                        class="font-bold">
-
-                            {{ asset.symbol }}
-
-                        </h3>
-
-                        <p
-                        class="text-zinc-500
-                        text-sm">
-
-                            {{ asset.name }}
-
-                        </p>
-
-                    </div>
-
-                    <div
-                    class="w-12
-                    h-12
-                    rounded-xl
-                    bg-red-600/20
-                    flex
-                    items-center
-                    justify-center">
-
-                        <i
-                        data-lucide="chart-candlestick"
-                        class="text-red-500
-                        w-5
-                        h-5">
-
-                        </i>
-
-                    </div>
-
-                </div>
-
-                <div class="mt-8">
-
-                    <h2
-                    class="text-3xl
-                    font-black">
-
-                        ${{ asset.current_price }}
-
-                    </h2>
-
-                    {% if asset.change >= 0 %}
-
-                    <p
-                    class="text-green-500
-                    mt-3">
-
-                        +{{ asset.change }}%
-
-                    </p>
-
-                    {% else %}
-
-                    <p
-                    class="text-red-500
-                    mt-3">
-
-                        {{ asset.change }}%
-
-                    </p>
-
-                    {% endif %}
-
-                </div>
-
-                <a
-                href="{% url 'asset_detail' asset.pk %}"
-
-                class="mt-8
-                inline-flex
-                items-center
-                gap-2
-                text-red-500">
-
-                    View Asset
-
-                    →
+                    Create Account
 
                 </a>
 
             </div>
 
-            {% endfor %}
+            <!-- Mobile -->
+
+            <button @click="mobileMenu=true"
+                    class="lg:hidden">
+
+                <i data-lucide="menu" class="w-7 h-7"></i>
+
+            </button>
 
         </div>
 
     </div>
 
-</section>
-<!-- ========================================= -->
-<!-- WHY XCOIN -->
-<!-- ========================================= -->
+</header>
 
-<section
-id="features"
-class="py-28 bg-[#080808]">
+<!-- MOBILE MENU -->
 
-    <div class="max-w-7xl mx-auto px-6">
+<div x-show="mobileMenu"
+     x-transition
+     class="fixed inset-0 bg-black/70 z-40"
+     @click="mobileMenu=false"></div>
 
-        <!-- Heading -->
+<aside
+    x-show="mobileMenu"
+    x-transition
+    class="fixed left-0 top-0 w-72 h-screen bg-[#0b0b0b] border-r border-zinc-800 z-50 p-6">
 
-        <div
-        class="max-w-3xl">
+    <div class="flex justify-between items-center">
 
-            <span
-            class="uppercase
-            tracking-[0.35em]
-            text-red-500
-            text-xs">
+        <h2 class="text-2xl font-black">
 
-                Why Choose XCoin
+            <span class="text-red-600">X</span>Coin
 
-            </span>
+        </h2>
 
-            <h2
-            class="mt-5
-            text-4xl
-            md:text-5xl
-            font-black">
+        <button @click="mobileMenu=false">
 
-                Built For Modern Investors.
+            <i data-lucide="x"></i>
 
-            </h2>
-
-            <p
-            class="mt-6
-            text-zinc-400
-            leading-8">
-
-                Everything you need to buy, trade and grow your
-                investments from one secure platform.
-
-            </p>
-
-        </div>
-
-
-        <!-- FEATURES -->
-
-        <div
-        class="grid
-        md:grid-cols-2
-        xl:grid-cols-3
-        gap-8
-        mt-20">
-
-
-            <!-- Card -->
-
-            <div
-            class="glass
-            rounded-3xl
-            p-8
-            hover:border-red-600
-            transition
-            duration-300
-            hover:-translate-y-2">
-
-                <div
-                class="w-16
-                h-16
-                rounded-2xl
-                bg-red-600/20
-                flex
-                items-center
-                justify-center">
-
-                    <i
-                    data-lucide="shield-check"
-                    class="text-red-500
-                    w-8
-                    h-8"></i>
-
-                </div>
-
-                <h3
-                class="mt-8
-                text-2xl
-                font-bold">
-
-                    Secure Platform
-
-                </h3>
-
-                <p
-                class="mt-4
-                text-zinc-400
-                leading-7">
-
-                    Enterprise-grade encryption,
-                    secure wallets,
-                    two-factor authentication
-                    and account monitoring.
-
-                </p>
-
-            </div>
-
-
-            <!-- Card -->
-
-            <div
-            class="glass
-            rounded-3xl
-            p-8
-            hover:border-red-600
-            transition
-            duration-300
-            hover:-translate-y-2">
-
-                <div
-                class="w-16
-                h-16
-                rounded-2xl
-                bg-red-600/20
-                flex
-                items-center
-                justify-center">
-
-                    <i
-                    data-lucide="globe"
-                    class="text-red-500
-                    w-8
-                    h-8"></i>
-
-                </div>
-
-                <h3
-                class="mt-8
-                text-2xl
-                font-bold">
-
-                    Global Markets
-
-                </h3>
-
-                <p
-                class="mt-4
-                text-zinc-400
-                leading-7">
-
-                    Trade Crypto,
-                    Stocks,
-                    ETFs,
-                    Commodities
-                    and Forex
-                    from one account.
-
-                </p>
-
-            </div>
-
-
-            <!-- Card -->
-
-            <div
-            class="glass
-            rounded-3xl
-            p-8
-            hover:border-red-600
-            transition
-            duration-300
-            hover:-translate-y-2">
-
-                <div
-                class="w-16
-                h-16
-                rounded-2xl
-                bg-red-600/20
-                flex
-                items-center
-                justify-center">
-
-                    <i
-                    data-lucide="zap"
-                    class="text-red-500
-                    w-8
-                    h-8"></i>
-
-                </div>
-
-                <h3
-                class="mt-8
-                text-2xl
-                font-bold">
-
-                    Instant Execution
-
-                </h3>
-
-                <p
-                class="mt-4
-                text-zinc-400
-                leading-7">
-
-                    Lightning-fast
-                    trade execution
-                    powered by
-                    modern infrastructure.
-
-                </p>
-
-            </div>
-
-
-            <!-- Card -->
-
-            <div
-            class="glass
-            rounded-3xl
-            p-8
-            hover:border-red-600
-            transition
-            duration-300
-            hover:-translate-y-2">
-
-                <div
-                class="w-16
-                h-16
-                rounded-2xl
-                bg-red-600/20
-                flex
-                items-center
-                justify-center">
-
-                    <i
-                    data-lucide="wallet"
-                    class="text-red-500
-                    w-8
-                    h-8"></i>
-
-                </div>
-
-                <h3
-                class="mt-8
-                text-2xl
-                font-bold">
-
-                    Smart Wallet
-
-                </h3>
-
-                <p
-                class="mt-4
-                text-zinc-400
-                leading-7">
-
-                    Deposit,
-                    withdraw
-                    and monitor
-                    every investment
-                    from one dashboard.
-
-                </p>
-
-            </div>
-
-
-            <!-- Card -->
-
-            <div
-            class="glass
-            rounded-3xl
-            p-8
-            hover:border-red-600
-            transition
-            duration-300
-            hover:-translate-y-2">
-
-                <div
-                class="w-16
-                h-16
-                rounded-2xl
-                bg-red-600/20
-                flex
-                items-center
-                justify-center">
-
-                    <i
-                    data-lucide="chart-line"
-                    class="text-red-500
-                    w-8
-                    h-8"></i>
-
-                </div>
-
-                <h3
-                class="mt-8
-                text-2xl
-                font-bold">
-
-                    Live Analytics
-
-                </h3>
-
-                <p
-                class="mt-4
-                text-zinc-400
-                leading-7">
-
-                    Real-time prices,
-                    portfolio tracking,
-                    profit calculation
-                    and investment insights.
-
-                </p>
-
-            </div>
-
-
-            <!-- Card -->
-
-            <div
-            class="glass
-            rounded-3xl
-            p-8
-            hover:border-red-600
-            transition
-            duration-300
-            hover:-translate-y-2">
-
-                <div
-                class="w-16
-                h-16
-                rounded-2xl
-                bg-red-600/20
-                flex
-                items-center
-                justify-center">
-
-                    <i
-                    data-lucide="headphones"
-                    class="text-red-500
-                    w-8
-                    h-8"></i>
-
-                </div>
-
-                <h3
-                class="mt-8
-                text-2xl
-                font-bold">
-
-                    24/7 Support
-
-                </h3>
-
-                <p
-                class="mt-4
-                text-zinc-400
-                leading-7">
-
-                    Dedicated support
-                    available anytime
-                    through live chat
-                    and email.
-
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <!-- STATS -->
-
-        <div
-        class="grid
-        grid-cols-2
-        lg:grid-cols-4
-        gap-8
-        mt-28">
-
-            <div class="text-center">
-
-                <h2 class="text-5xl font-black text-red-500">
-
-                    150K+
-
-                </h2>
-
-                <p class="mt-4 text-zinc-500">
-
-                    Active Investors
-
-                </p>
-
-            </div>
-
-            <div class="text-center">
-
-                <h2 class="text-5xl font-black text-red-500">
-
-                    120+
-
-                </h2>
-
-                <p class="mt-4 text-zinc-500">
-
-                    Assets Listed
-
-                </p>
-
-            </div>
-
-            <div class="text-center">
-
-                <h2 class="text-5xl font-black text-red-500">
-
-                    $5B+
-
-                </h2>
-
-                <p class="mt-4 text-zinc-500">
-
-                    Trading Volume
-
-                </p>
-
-            </div>
-
-            <div class="text-center">
-
-                <h2 class="text-5xl font-black text-red-500">
-
-                    99.99%
-
-                </h2>
-
-                <p class="mt-4 text-zinc-500">
-
-                    Platform Uptime
-
-                </p>
-
-            </div>
-
-        </div>
+        </button>
 
     </div>
 
-</section>
-<!-- ========================================= -->
-<!-- INVESTMENT PLANS -->
-<!-- ========================================= -->
+    <div class="mt-10 space-y-5">
 
-<section
-id="plans"
-class="py-28 bg-[#050505]">
+        <a href="#features" class="block">Features</a>
 
-    <div class="max-w-7xl mx-auto px-6">
+        <a href="#markets" class="block">Markets</a>
 
-        <!-- Heading -->
+        <a href="#plans" class="block">Investment Plans</a>
 
-        <div class="text-center max-w-3xl mx-auto">
+        <a href="#faq" class="block">FAQ</a>
 
-            <span
-            class="uppercase
-            tracking-[0.35em]
-            text-red-500
-            text-xs">
+        <hr class="border-zinc-800">
 
-                Investment Plans
+        <a href="{% url 'login' %}"
+           class="block text-center glass rounded-xl py-3">
 
-            </span>
+            Login
 
-            <h2
-            class="mt-5
-            text-4xl
-            md:text-5xl
-            font-black">
+        </a>
 
-                Choose Your Investment Strategy
+        <a href="{% url 'register' %}"
+           class="block text-center bg-red-600 rounded-xl py-3">
 
-            </h2>
+            Create Account
 
-            <p
-            class="mt-6
-            text-zinc-400
-            leading-8">
+        </a>
 
-                Whether you're just getting started or managing a large
-                portfolio, there's a plan designed to help you grow.
+    </div>
 
-            </p>
+</aside>
 
-        </div>
+<!-- HERO -->
 
-        <!-- Plans -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-16">
 
-        <div
-        class="grid
-        md:grid-cols-2
-        xl:grid-cols-4
-        gap-8
-        mt-20">
+    <div class="grid lg:grid-cols-2 gap-10 items-center">
 
-            {% for plan in plans %}
+        <!-- LEFT -->
 
-            <div
-            class="relative
-            glass
-            rounded-3xl
-            p-8
-            hover:border-red-600
-            hover:-translate-y-2
-            transition
-            duration-300">
+        <div>
 
-                {% if plan.featured %}
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-xs tracking-widest uppercase">
 
-                <span
-                class="absolute
-                top-5
-                right-5
-                bg-red-600
-                text-xs
-                px-3
-                py-1
-                rounded-full">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
 
-                    Popular
+                Trusted Worldwide
+
+            </div>
+
+            <h1 class="mt-6 text-4xl sm:text-5xl lg:text-7xl font-black leading-tight">
+
+                Invest in
+
+                <span class="text-red-600">
+
+                    Crypto,
 
                 </span>
 
-                {% endif %}
+                Stocks &
 
-                <h3
-                class="text-3xl
-                font-black">
+                ETFs.
 
-                    {{ plan.name }}
+            </h1>
 
-                </h3>
+            <p class="mt-6 text-zinc-400 leading-7 max-w-xl">
 
-                <p
-                class="mt-4
-                text-zinc-400
-                text-sm
-                leading-7">
+                Buy cryptocurrencies, stocks, ETFs, commodities and forex from one secure investment platform with real-time pricing and a seamless trading experience.
 
-                    {{ plan.description }}
+            </p>
 
-                </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-8">
 
-                <div class="mt-10">
+                <a href="{% url 'register' %}"
+                   class="h-12 rounded-xl bg-red-600 hover:bg-red-700 transition flex items-center justify-center font-semibold">
 
-                    <span
-                    class="text-zinc-500">
+                    Create Account
 
-                        ROI
+                </a>
 
-                    </span>
+                <a href="#markets"
+                   class="h-12 rounded-xl glass flex items-center justify-center">
 
-                    <h2
-                    class="text-5xl
-                    font-black
-                    mt-2
-                    text-red-500">
+                    Live Markets
 
-                        {{ plan.roi_percent }}%
+                </a>
+
+            </div>
+
+            <!-- Stats -->
+
+            <div class="grid grid-cols-2 gap-4 mt-10">
+
+                <div class="glass rounded-2xl p-4">
+
+                    <p class="text-zinc-500 text-sm">
+
+                        Assets
+
+                    </p>
+
+                    <h3 class="text-2xl font-black mt-2">
+
+                        120+
+
+                    </h3>
+
+                </div>
+
+                <div class="glass rounded-2xl p-4">
+
+                    <p class="text-zinc-500 text-sm">
+
+                        Users
+
+                    </p>
+
+                    <h3 class="text-2xl font-black mt-2">
+
+                        150K+
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT -->
+
+        <div class="glass rounded-3xl p-5 sm:p-6">
+
+            <div class="flex items-center justify-between">
+
+                <div>
+
+                    <p class="text-zinc-400">
+
+                        Portfolio Value
+
+                    </p>
+
+                    <h2 class="text-3xl sm:text-4xl font-black mt-2">
+
+                        $248,590.42
 
                     </h2>
 
                 </div>
 
-                <div
-                class="space-y-5
-                mt-10
-                text-sm">
+                <div class="w-14 h-14 rounded-2xl bg-red-600/20 flex items-center justify-center">
 
-                    <div class="flex justify-between">
-
-                        <span class="text-zinc-500">
-
-                            Minimum
-
-                        </span>
-
-                        <strong>
-
-                            ${{ plan.minimum_amount }}
-
-                        </strong>
-
-                    </div>
-
-                    <div class="flex justify-between">
-
-                        <span class="text-zinc-500">
-
-                            Maximum
-
-                        </span>
-
-                        <strong>
-
-                            ${{ plan.maximum_amount }}
-
-                        </strong>
-
-                    </div>
-
-                    <div class="flex justify-between">
-
-                        <span class="text-zinc-500">
-
-                            Duration
-
-                        </span>
-
-                        <strong>
-
-                            {{ plan.duration_days }} Days
-
-                        </strong>
-
-                    </div>
-
-                    <div class="flex justify-between">
-
-                        <span class="text-zinc-500">
-
-                            Type
-
-                        </span>
-
-                        <strong>
-
-                            {{ plan.get_plan_type_display }}
-
-                        </strong>
-
-                    </div>
+                    <i data-lucide="wallet" class="text-red-500"></i>
 
                 </div>
 
-                <a
-                href="{% url 'invest' plan.id %}"
-                class="mt-10
-                block
-                text-center
-                bg-red-600
-                hover:bg-red-700
-                transition
-                rounded-2xl
-                py-4
-                font-semibold">
+            </div>
 
-                    Invest Now
+            <div class="mt-8 h-44 rounded-2xl bg-gradient-to-r from-red-900/20 via-red-700/20 to-red-900/20 flex items-end p-4">
 
-                </a>
+                <svg viewBox="0 0 600 200" class="w-full">
+
+                    <polyline
+                        fill="none"
+                        stroke="#dc2626"
+                        stroke-width="6"
+                        points="0,180 90,160 170,165 250,95 340,120 440,60 520,35 600,55"/>
+
+                </svg>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ===================================== -->
+<!-- LIVE MARKET TICKER -->
+<!-- ===================================== -->
+
+<section id="markets" class="py-10">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+
+        <div class="mb-6">
+
+            <span class="text-red-500 uppercase tracking-[0.3em] text-xs">
+
+                Live Markets
+
+            </span>
+
+            <h2 class="text-2xl sm:text-4xl font-black mt-2">
+
+                Markets Moving Now
+
+            </h2>
+
+        </div>
+
+    </div>
+
+    <div class="overflow-hidden">
+
+        <div class="flex animate-[ticker_30s_linear_infinite] w-max">
+
+            {% for asset in assets %}
+            <div class="glass rounded-2xl p-4 mx-2 min-w-[220px]">
+
+                <div class="flex items-center justify-between">
+
+                    <div class="flex items-center gap-3">
+
+                        {% if asset.logo %}
+
+                        <img src="{{ asset.logo.url }}"
+                             class="w-10 h-10 rounded-full object-cover">
+
+                        {% else %}
+
+                        <div class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center font-bold">
+
+                            {{ asset.symbol|slice:":1" }}
+
+                        </div>
+
+                        {% endif %}
+
+                        <div>
+
+                            <h3 class="font-bold">
+
+                                {{ asset.symbol }}
+
+                            </h3>
+
+                            <p class="text-xs text-zinc-500">
+
+                                {{ asset.name }}
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    {% if asset.change >= 0 %}
+
+                    <span class="text-green-400 text-sm">
+
+                        +{{ asset.change|floatformat:2 }}%
+
+                    </span>
+
+                    {% else %}
+
+                    <span class="text-red-400 text-sm">
+
+                        {{ asset.change|floatformat:2 }}%
+
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="mt-4">
+
+                    <h4 class="text-2xl font-black">
+
+                        ${{ asset.current_price|floatformat:2|intcomma }}
+
+                    </h4>
+
+                </div>
 
             </div>
 
@@ -1719,1041 +442,147 @@ class="py-28 bg-[#050505]">
 
         </div>
 
-        <!-- Bottom Banner -->
-
-        <div
-        class="glass
-        rounded-[36px]
-        mt-24
-        p-10
-        lg:p-16">
-
-            <div
-            class="grid
-            lg:grid-cols-2
-            gap-10
-            items-center">
-
-                <div>
-
-                    <h2
-                    class="text-4xl
-                    font-black">
-
-                        Earn Passive Income
-                        Every Day.
-
-                    </h2>
-
-                    <p
-                    class="mt-6
-                    text-zinc-400
-                    leading-8">
-
-                        Our investment plans are designed for investors
-                        looking to diversify across cryptocurrencies,
-                        stocks, forex, commodities and ETFs while earning
-                        competitive returns.
-
-                    </p>
-
-                </div>
-
-                <div
-                class="grid
-                grid-cols-2
-                gap-6">
-
-                    <div class="glass rounded-2xl p-6">
-
-                        <h3
-                        class="text-3xl
-                        font-black
-                        text-red-500">
-
-                            7+
-
-                        </h3>
-
-                        <p class="mt-3 text-zinc-500">
-
-                            Investment Plans
-
-                        </p>
-
-                    </div>
-
-                    <div class="glass rounded-2xl p-6">
-
-                        <h3
-                        class="text-3xl
-                        font-black
-                        text-red-500">
-
-                            180+
-
-                        </h3>
-
-                        <p class="mt-3 text-zinc-500">
-
-                            Countries
-
-                        </p>
-
-                    </div>
-
-                    <div class="glass rounded-2xl p-6">
-
-                        <h3
-                        class="text-3xl
-                        font-black
-                        text-red-500">
-
-                            24/7
-
-                        </h3>
-
-                        <p class="mt-3 text-zinc-500">
-
-                            Monitoring
-
-                        </p>
-
-                    </div>
-
-                    <div class="glass rounded-2xl p-6">
-
-                        <h3
-                        class="text-3xl
-                        font-black
-                        text-red-500">
-
-                            99.9%
-
-                        </h3>
-
-                        <p class="mt-3 text-zinc-500">
-
-                            Security
-
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
     </div>
 
 </section>
-<!-- ========================================= -->
-<!-- HOW IT WORKS -->
-<!-- ========================================= -->
 
-<section
-id="how-it-works"
-class="py-28 bg-[#090909]">
+<style>
 
-    <div class="max-w-7xl mx-auto px-6">
+@keyframes ticker{
 
-        <!-- Heading -->
+0%{
 
-        <div class="text-center max-w-3xl mx-auto">
+transform:translateX(0);
 
-            <span
-            class="uppercase tracking-[0.35em]
-            text-red-500
-            text-xs">
-
-                How It Works
-
-            </span>
-
-            <h2
-            class="mt-5
-            text-4xl
-            md:text-5xl
-            font-black">
-
-                Start Investing In Minutes
-
-            </h2>
-
-            <p
-            class="mt-6
-            text-zinc-400
-            leading-8">
-
-                Creating wealth shouldn't be complicated.
-                Follow these four simple steps to begin your investment journey.
-
-            </p>
-
-        </div>
-
-
-        <!-- Timeline -->
-
-        <div
-        class="relative
-        mt-24">
-
-            <!-- Line -->
-
-            <div
-            class="hidden
-            lg:block
-            absolute
-            top-10
-            left-0
-            right-0
-            h-px
-            bg-gradient-to-r
-            from-transparent
-            via-red-700
-            to-transparent">
-
-            </div>
-
-            <div
-            class="grid
-            md:grid-cols-2
-            xl:grid-cols-4
-            gap-10">
-
-                <!-- STEP -->
-
-                <div
-                class="relative
-                text-center">
-
-                    <div
-                    class="mx-auto
-                    w-20
-                    h-20
-                    rounded-full
-                    bg-red-600
-                    flex
-                    items-center
-                    justify-center
-                    shadow-lg
-                    shadow-red-600/30">
-
-                        <i
-                        data-lucide="user-plus"
-                        class="w-9 h-9">
-
-                        </i>
-
-                    </div>
-
-                    <span
-                    class="inline-block
-                    mt-6
-                    text-red-500
-                    font-bold">
-
-                        STEP 01
-
-                    </span>
-
-                    <h3
-                    class="mt-3
-                    text-2xl
-                    font-bold">
-
-                        Create Account
-
-                    </h3>
-
-                    <p
-                    class="mt-5
-                    text-zinc-400
-                    leading-7">
-
-                        Sign up in less than two minutes
-                        and verify your account securely.
-
-                    </p>
-
-                </div>
-
-                <!-- STEP -->
-
-                <div
-                class="relative
-                text-center">
-
-                    <div
-                    class="mx-auto
-                    w-20
-                    h-20
-                    rounded-full
-                    bg-red-600
-                    flex
-                    items-center
-                    justify-center
-                    shadow-lg
-                    shadow-red-600/30">
-
-                        <i
-                        data-lucide="wallet"
-                        class="w-9 h-9">
-
-                        </i>
-
-                    </div>
-
-                    <span
-                    class="inline-block
-                    mt-6
-                    text-red-500
-                    font-bold">
-
-                        STEP 02
-
-                    </span>
-
-                    <h3
-                    class="mt-3
-                    text-2xl
-                    font-bold">
-
-                        Fund Wallet
-
-                    </h3>
-
-                    <p
-                    class="mt-5
-                    text-zinc-400
-                    leading-7">
-
-                        Deposit crypto or other supported
-                        payment methods into your account.
-
-                    </p>
-
-                </div>
-
-                <!-- STEP -->
-
-                <div
-                class="relative
-                text-center">
-
-                    <div
-                    class="mx-auto
-                    w-20
-                    h-20
-                    rounded-full
-                    bg-red-600
-                    flex
-                    items-center
-                    justify-center
-                    shadow-lg
-                    shadow-red-600/30">
-
-                        <i
-                        data-lucide="chart-candlestick"
-                        class="w-9 h-9">
-
-                        </i>
-
-                    </div>
-
-                    <span
-                    class="inline-block
-                    mt-6
-                    text-red-500
-                    font-bold">
-
-                        STEP 03
-
-                    </span>
-
-                    <h3
-                    class="mt-3
-                    text-2xl
-                    font-bold">
-
-                        Invest
-
-                    </h3>
-
-                    <p
-                    class="mt-5
-                    text-zinc-400
-                    leading-7">
-
-                        Choose an investment plan
-                        or buy your favourite assets
-                        from the live market.
-
-                    </p>
-
-                </div>
-
-                <!-- STEP -->
-
-                <div
-                class="relative
-                text-center">
-
-                    <div
-                    class="mx-auto
-                    w-20
-                    h-20
-                    rounded-full
-                    bg-red-600
-                    flex
-                    items-center
-                    justify-center
-                    shadow-lg
-                    shadow-red-600/30">
-
-                        <i
-                        data-lucide="badge-dollar-sign"
-                        class="w-9 h-9">
-
-                        </i>
-
-                    </div>
-
-                    <span
-                    class="inline-block
-                    mt-6
-                    text-red-500
-                    font-bold">
-
-                        STEP 04
-
-                    </span>
-
-                    <h3
-                    class="mt-3
-                    text-2xl
-                    font-bold">
-
-                        Earn Profits
-
-                    </h3>
-
-                    <p
-                    class="mt-5
-                    text-zinc-400
-                    leading-7">
-
-                        Watch your portfolio grow
-                        and withdraw profits
-                        directly to your wallet.
-
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- Bottom Card -->
-
-        <div
-        class="glass
-        rounded-[40px]
-        mt-24
-        p-10
-        lg:p-16">
-
-            <div
-            class="grid
-            lg:grid-cols-2
-            gap-12
-            items-center">
-
-                <div>
-
-                    <h2
-                    class="text-4xl
-                    font-black">
-
-                        Everything You Need.
-                        One Powerful Platform.
-
-                    </h2>
-
-                    <p
-                    class="mt-6
-                    text-zinc-400
-                    leading-8">
-
-                        XCoin combines investing,
-                        trading,
-                        portfolio tracking,
-                        analytics,
-                        and secure wallet management
-                        into one modern experience.
-
-                    </p>
-
-                    <a
-                    href="{% url 'register' %}"
-                    class="inline-block
-                    mt-10
-                    bg-red-600
-                    hover:bg-red-700
-                    transition
-                    px-8
-                    py-4
-                    rounded-2xl
-                    font-semibold">
-
-                        Start Investing
-
-                    </a>
-
-                </div>
-
-                <div
-                class="grid
-                grid-cols-2
-                gap-6">
-
-                    <div class="glass rounded-2xl p-6 text-center">
-
-                        <i
-                        data-lucide="shield-check"
-                        class="mx-auto
-                        text-red-500
-                        w-10
-                        h-10">
-
-                        </i>
-
-                        <h4 class="mt-4 font-bold">
-
-                            Secure
-
-                        </h4>
-
-                    </div>
-
-                    <div class="glass rounded-2xl p-6 text-center">
-
-                        <i
-                        data-lucide="rocket"
-                        class="mx-auto
-                        text-red-500
-                        w-10
-                        h-10">
-
-                        </i>
-
-                        <h4 class="mt-4 font-bold">
-
-                            Fast
-
-                        </h4>
-
-                    </div>
-
-                    <div class="glass rounded-2xl p-6 text-center">
-
-                        <i
-                        data-lucide="globe"
-                        class="mx-auto
-                        text-red-500
-                        w-10
-                        h-10">
-
-                        </i>
-
-                        <h4 class="mt-4 font-bold">
-
-                            Global
-
-                        </h4>
-
-                    </div>
-
-                    <div class="glass rounded-2xl p-6 text-center">
-
-                        <i
-                        data-lucide="trending-up"
-                        class="mx-auto
-                        text-red-500
-                        w-10
-                        h-10">
-
-                        </i>
-
-                        <h4 class="mt-4 font-bold">
-
-                            Profitable
-
-                        </h4>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-<!-- ========================================= -->
-<!-- TESTIMONIALS -->
-<!-- ========================================= -->
-
-<section
-class="py-28 bg-black"
-x-data="{
-
-slide:0,
-
-slides:[
-{
-name:'Michael Anderson',
-country:'United States',
-text:'XCoin completely changed how I invest. Everything is simple, fast and secure.',
-profit:'+18%'
-},
-
-{
-name:'Sarah Williams',
-country:'United Kingdom',
-text:'The investment plans have been amazing. My dashboard is beautiful and easy to understand.',
-profit:'+26%'
-},
-
-{
-name:'Daniel Kim',
-country:'Singapore',
-text:'Fast withdrawals, beautiful interface and excellent customer support.',
-profit:'+31%'
 }
 
-]
+100%{
 
-}"
+transform:translateX(-50%);
 
-x-init="setInterval(()=>slide=(slide+1)%slides.length,5000)"
+}
 
->
+}
 
-<div class="max-w-7xl mx-auto px-6">
+</style>
 
-<!-- Heading -->
+<!-- ===================================== -->
+<!-- WHY CHOOSE XCOIN -->
+<!-- ===================================== -->
 
-<div class="text-center">
+<section id="features" class="py-20">
 
-<span
-class="uppercase
-tracking-[0.35em]
-text-red-500
-text-xs">
+<div class="max-w-7xl mx-auto px-4 sm:px-6">
 
-Testimonials
+<div class="text-center max-w-3xl mx-auto">
+
+<span class="text-red-500 uppercase tracking-[0.35em] text-xs">
+
+WHY XCOIN
 
 </span>
 
-<h2
-class="mt-5
-text-5xl
-font-black">
+<h2 class="text-3xl sm:text-5xl font-black mt-4">
 
-Trusted Worldwide
+Built for Modern Investors
 
 </h2>
 
-<p
-class="mt-6
-text-zinc-400
-max-w-2xl
-mx-auto">
+<p class="text-zinc-400 mt-6 leading-8">
 
-Thousands of investors trust XCoin every day.
+Trade global financial markets from one secure platform with institutional-grade security and lightning-fast execution.
 
 </p>
 
 </div>
 
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-14">
 
-<!-- Slider -->
+<div class="glass rounded-3xl p-5 hover:border-red-600 transition">
 
-<div
-class="max-w-4xl
-mx-auto
-mt-20">
+<div class="w-14 h-14 rounded-2xl bg-red-600/20 flex items-center justify-center">
 
-<template
-x-for="(item,index) in slides"
-:key="index">
-
-<div
-
-x-show="slide===index"
-
-x-transition
-
-class="glass
-rounded-[40px]
-p-12
-text-center">
-
-<div
-class="w-24
-h-24
-rounded-full
-bg-red-600/20
-mx-auto
-flex
-items-center
-justify-center">
-
-<i
-data-lucide="user"
-class="w-12
-h-12
-text-red-500">
-
-</i>
+<i data-lucide="shield-check"></i>
 
 </div>
 
-<h3
-class="mt-8
-text-3xl
-font-bold"
+<h3 class="text-xl font-bold mt-6">
 
-x-text="item.name">
+Bank-Level Security
 
 </h3>
 
-<p
-class="text-zinc-500
-mt-2"
+<p class="text-zinc-400 mt-3">
 
-x-text="item.country">
+Your funds and personal information are protected using advanced encryption.
 
 </p>
 
-<p
-class="mt-8
-text-xl
-leading-9
-text-zinc-300"
+</div>
 
-x-text="item.text">
+<div class="glass rounded-3xl p-5 hover:border-red-600 transition">
+
+<div class="w-14 h-14 rounded-2xl bg-red-600/20 flex items-center justify-center">
+
+<i data-lucide="zap"></i>
+
+</div>
+
+<h3 class="text-xl font-bold mt-6">
+
+Instant Trading
+
+</h3>
+
+<p class="text-zinc-400 mt-3">
+
+Buy and sell assets instantly with real-time pricing and execution.
 
 </p>
 
-<div
-class="mt-10
-inline-flex
-bg-green-500/20
-text-green-400
-rounded-full
-px-5
-py-2">
+</div>
 
-Portfolio Growth
+<div class="glass rounded-3xl p-5 hover:border-red-600 transition">
 
-&nbsp;
+<div class="w-14 h-14 rounded-2xl bg-red-600/20 flex items-center justify-center">
 
-<strong x-text="item.profit"></strong>
+<i data-lucide="globe"></i>
 
 </div>
 
-</div>
+<h3 class="text-xl font-bold mt-6">
 
-</template>
-
-</div>
-
-
-<!-- TRUST -->
-
-<div
-class="grid
-grid-cols-2
-lg:grid-cols-4
-gap-8
-mt-24">
-
-<div class="glass rounded-3xl p-8 text-center">
-
-<i
-data-lucide="shield-check"
-class="mx-auto
-w-10
-h-10
-text-red-500">
-
-</i>
-
-<h3 class="mt-6 font-bold">
-
-256-bit Encryption
+Global Markets
 
 </h3>
 
-</div>
+<p class="text-zinc-400 mt-3">
 
-<div class="glass rounded-3xl p-8 text-center">
+Access cryptocurrencies, stocks, ETFs, commodities and forex from one account.
 
-<i
-data-lucide="badge-check"
-class="mx-auto
-w-10
-h-10
-text-red-500">
-
-</i>
-
-<h3 class="mt-6 font-bold">
-
-Verified Platform
-
-</h3>
+</p>
 
 </div>
 
-<div class="glass rounded-3xl p-8 text-center">
+<div class="glass rounded-3xl p-5 hover:border-red-600 transition">
 
-<i
-data-lucide="lock"
-class="mx-auto
-w-10
-h-10
-text-red-500">
+<div class="w-14 h-14 rounded-2xl bg-red-600/20 flex items-center justify-center">
 
-</i>
-
-<h3 class="mt-6 font-bold">
-
-Secure Wallet
-
-</h3>
+<i data-lucide="headset"></i>
 
 </div>
 
-<div class="glass rounded-3xl p-8 text-center">
-
-<i
-data-lucide="headphones"
-class="mx-auto
-w-10
-h-10
-text-red-500">
-
-</i>
-
-<h3 class="mt-6 font-bold">
+<h3 class="text-xl font-bold mt-6">
 
 24/7 Support
 
 </h3>
 
-</div>
+<p class="text-zinc-400 mt-3">
 
-</div>
+Professional customer support available whenever you need assistance.
 
-</div>
-
-</section>
-
-
-<!-- ========================================= -->
-<!-- FAQ -->
-<!-- ========================================= -->
-
-<section
-id="faq"
-class="py-28 bg-[#090909]"
-x-data="{open:1}">
-
-<div class="max-w-4xl mx-auto px-6">
-
-<div class="text-center">
-
-<span
-class="uppercase
-tracking-[0.35em]
-text-red-500
-text-xs">
-
-FAQ
-
-</span>
-
-<h2
-class="mt-5
-text-5xl
-font-black">
-
-Frequently Asked Questions
-
-</h2>
-
-</div>
-
-
-<div class="mt-20 space-y-6">
-
-<!-- Question -->
-
-<div
-class="glass
-rounded-3xl">
-
-<button
-
-@click="open==1?open=0:open=1"
-
-class="w-full
-flex
-justify-between
-items-center
-p-8">
-
-<h3 class="font-bold">
-
-How do I start investing?
-
-</h3>
-
-<i data-lucide="plus"></i>
-
-</button>
-
-<div
-x-show="open==1"
-x-transition
-class="px-8
-pb-8
-text-zinc-400">
-
-Create an account, deposit funds and choose an investment plan or purchase an asset.
-
-</div>
-
-</div>
-
-<div
-class="glass
-rounded-3xl">
-
-<button
-
-@click="open==2?open=0:open=2"
-
-class="w-full
-flex
-justify-between
-items-center
-p-8">
-
-<h3 class="font-bold">
-
-How fast are withdrawals?
-
-</h3>
-
-<i data-lucide="plus"></i>
-
-</button>
-
-<div
-x-show="open==2"
-x-transition
-class="px-8
-pb-8
-text-zinc-400">
-
-Approved withdrawals are usually processed within 24 hours.
-
-</div>
-
-</div>
-
-<div
-class="glass
-rounded-3xl">
-
-<button
-
-@click="open==3?open=0:open=3"
-
-class="w-full
-flex
-justify-between
-items-center
-p-8">
-
-<h3 class="font-bold">
-
-Is my investment secure?
-
-</h3>
-
-<i data-lucide="plus"></i>
-
-</button>
-
-<div
-x-show="open==3"
-x-transition
-class="px-8
-pb-8
-text-zinc-400">
-
-We use encrypted infrastructure, secure authentication and continuous monitoring to protect your account.
-
-</div>
-
-</div>
-
-<div
-class="glass
-rounded-3xl">
-
-<button
-
-@click="open==4?open=0:open=4"
-
-class="w-full
-flex
-justify-between
-items-center
-p-8">
-
-<h3 class="font-bold">
-
-Can I trade crypto and stocks?
-
-</h3>
-
-<i data-lucide="plus"></i>
-
-</button>
-
-<div
-x-show="open==4"
-x-transition
-class="px-8
-pb-8
-text-zinc-400">
-
-Yes. XCoin supports cryptocurrencies, stocks, ETFs, commodities and forex from one platform.
-
-</div>
+</p>
 
 </div>
 
@@ -2762,151 +591,229 @@ Yes. XCoin supports cryptocurrencies, stocks, ETFs, commodities and forex from o
 </div>
 
 </section>
-<!-- ========================================= -->
-<!-- FINAL CTA -->
-<!-- ========================================= -->
+<!-- ===================================== -->
+<!-- INVESTMENT CATEGORIES -->
+<!-- ===================================== -->
 
-<section
-class="py-28 bg-[#050505]">
+<section id="plans" class="py-20">
 
-    <div class="max-w-7xl mx-auto px-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
 
-        <div
-        class="relative
-        overflow-hidden
-        rounded-[42px]
-        bg-gradient-to-r
-        from-red-700
-        via-red-600
-        to-red-800
-        p-12
-        lg:p-20">
+        <div class="text-center max-w-3xl mx-auto">
 
-            <!-- Glow -->
+            <span class="text-red-500 uppercase tracking-[0.35em] text-xs">
 
-            <div
-            class="absolute
-            -top-32
-            -right-32
-            w-96
-            h-96
-            rounded-full
-            bg-white/10
-            blur-3xl">
+                INVESTMENT MARKETS
+
+            </span>
+
+            <h2 class="text-3xl sm:text-5xl font-black mt-4">
+
+                Everything In One Place
+
+            </h2>
+
+            <p class="text-zinc-400 mt-6 leading-8">
+
+                Diversify your portfolio across multiple asset classes from one secure investment account.
+
+            </p>
+
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-14">
+
+            <!-- Crypto -->
+
+            <div class="glass rounded-3xl p-5 hover:scale-[1.02] transition duration-300">
+
+                <div class="w-14 h-14 rounded-2xl bg-orange-500/20 flex items-center justify-center">
+
+                    <i data-lucide="bitcoin"></i>
+
+                </div>
+
+                <h3 class="text-2xl font-bold mt-6">
+
+                    Cryptocurrency
+
+                </h3>
+
+                <p class="text-zinc-400 mt-3">
+
+                    Bitcoin, Ethereum, Solana, XRP and hundreds of digital assets.
+
+                </p>
+
+                <a href="#markets"
+                   class="inline-flex items-center gap-2 mt-6 text-red-500 font-semibold">
+
+                    Explore
+
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+
+                </a>
 
             </div>
 
-            <div
-            class="relative
-            grid
-            lg:grid-cols-2
-            gap-12
-            items-center">
+            <!-- Stocks -->
+
+            <div class="glass rounded-3xl p-5 hover:scale-[1.02] transition duration-300">
+
+                <div class="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center">
+
+                    <i data-lucide="chart-column"></i>
+
+                </div>
+
+                <h3 class="text-2xl font-bold mt-6">
+
+                    Stocks
+
+                </h3>
+
+                <p class="text-zinc-400 mt-3">
+
+                    Invest in leading global companies including Tesla, Apple and NVIDIA.
+
+                </p>
+
+                <a href="#markets"
+                   class="inline-flex items-center gap-2 mt-6 text-red-500 font-semibold">
+
+                    Explore
+
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+
+                </a>
+
+            </div>
+
+            <!-- ETFs -->
+
+            <div class="glass rounded-3xl p-5 hover:scale-[1.02] transition duration-300">
+
+                <div class="w-14 h-14 rounded-2xl bg-green-500/20 flex items-center justify-center">
+
+                    <i data-lucide="briefcase-business"></i>
+
+                </div>
+
+                <h3 class="text-2xl font-bold mt-6">
+
+                    ETFs
+
+                </h3>
+
+                <p class="text-zinc-400 mt-3">
+
+                    Build diversified portfolios with professionally managed exchange-traded funds.
+
+                </p>
+
+                <a href="#markets"
+                   class="inline-flex items-center gap-2 mt-6 text-red-500 font-semibold">
+
+                    Explore
+
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+
+                </a>
+
+            </div>
+
+            <!-- Forex -->
+
+            <div class="glass rounded-3xl p-5 hover:scale-[1.02] transition duration-300">
+
+                <div class="w-14 h-14 rounded-2xl bg-purple-500/20 flex items-center justify-center">
+
+                    <i data-lucide="badge-dollar-sign"></i>
+
+                </div>
+
+                <h3 class="text-2xl font-bold mt-6">
+
+                    Forex
+
+                </h3>
+
+                <p class="text-zinc-400 mt-3">
+
+                    Trade major, minor and exotic currency pairs in real time.
+
+                </p>
+
+                <a href="#markets"
+                   class="inline-flex items-center gap-2 mt-6 text-red-500 font-semibold">
+
+                    Explore
+
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+
+                </a>
+
+            </div>
+
+            <!-- Commodities -->
+
+            <div class="glass rounded-3xl p-5 hover:scale-[1.02] transition duration-300">
+
+                <div class="w-14 h-14 rounded-2xl bg-yellow-500/20 flex items-center justify-center">
+
+                    <i data-lucide="gem"></i>
+
+                </div>
+
+                <h3 class="text-2xl font-bold mt-6">
+
+                    Commodities
+
+                </h3>
+
+                <p class="text-zinc-400 mt-3">
+
+                    Gold, silver, oil and other commodities to hedge and diversify.
+
+                </p>
+
+                <a href="#markets"
+                   class="inline-flex items-center gap-2 mt-6 text-red-500 font-semibold">
+
+                    Explore
+
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+
+                </a>
+
+            </div>
+
+            <!-- Security -->
+
+            <div class="bg-gradient-to-br from-red-600 to-red-800 rounded-3xl p-6 flex flex-col justify-between">
 
                 <div>
 
-                    <span
-                    class="uppercase
-                    tracking-[0.35em]
-                    text-white/70
-                    text-xs">
+                    <h3 class="text-3xl font-black">
 
-                        Join XCoin Today
+                        Start Investing Today
 
-                    </span>
+                    </h3>
 
-                    <h2
-                    class="mt-6
-                    text-5xl
-                    lg:text-6xl
-                    font-black
-                    leading-tight">
+                    <p class="mt-4 text-red-100 leading-7">
 
-                        Start Building
-
-                        <br>
-
-                        Your Wealth
-
-                        Today.
-
-                    </h2>
-
-                    <p
-                    class="mt-8
-                    text-white/80
-                    text-lg
-                    leading-8
-                    max-w-xl">
-
-                        Join thousands of investors using XCoin to invest in
-                        cryptocurrencies, stocks, ETFs, commodities and forex
-                        from one secure platform.
+                        Open your account in minutes and begin building your investment portfolio.
 
                     </p>
 
                 </div>
 
-                <div>
+                <a href="{% url 'register' %}"
+                   class="mt-8 bg-white text-black rounded-xl h-12 flex items-center justify-center font-bold hover:bg-zinc-200 transition">
 
-                    <div
-                    class="glass
-                    bg-white/10
-                    rounded-3xl
-                    p-8">
+                    Create Free Account
 
-                        <h3
-                        class="text-2xl
-                        font-bold">
-
-                            Create Your Free Account
-
-                        </h3>
-
-                        <p
-                        class="mt-3
-                        text-white/70">
-
-                            It takes less than 2 minutes.
-
-                        </p>
-
-                        <div
-                        class="mt-8
-                        flex
-                        flex-col
-                        gap-4">
-
-                            <a
-                            href="{% url 'register' %}"
-                            class="bg-white
-                            text-black
-                            text-center
-                            rounded-2xl
-                            py-4
-                            font-bold">
-
-                                Open Account
-
-                            </a>
-
-                            <a
-                            href="{% url 'login' %}"
-                            class="border
-                            border-white/20
-                            rounded-2xl
-                            py-4
-                            text-center">
-
-                                Sign In
-
-                            </a>
-
-                        </div>
-
-                    </div>
-
-                </div>
+                </a>
 
             </div>
 
@@ -2916,194 +823,751 @@ class="py-28 bg-[#050505]">
 
 </section>
 
+<!-- ===================================== -->
+<!-- HOW IT WORKS -->
+<!-- ===================================== -->
 
-<!-- ========================================= -->
-<!-- NEWSLETTER -->
-<!-- ========================================= -->
+<section class="py-20">
 
-<section
-class="py-24 bg-black">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
 
-<div class="max-w-4xl mx-auto px-6 text-center">
+        <div class="text-center">
 
-<span
-class="uppercase
-tracking-[0.35em]
-text-red-500
-text-xs">
+            <span class="text-red-500 uppercase tracking-[0.35em] text-xs">
 
-Newsletter
+                SIMPLE PROCESS
+
+            </span>
+
+            <h2 class="text-3xl sm:text-5xl font-black mt-4">
+
+                Start Investing In Minutes
+
+            </h2>
+
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-14">
+
+            <div class="glass rounded-3xl p-6 text-center">
+
+                <div class="w-16 h-16 rounded-full bg-red-600 mx-auto flex items-center justify-center text-2xl font-black">
+
+                    1
+
+                </div>
+
+                <h3 class="text-2xl font-bold mt-6">
+
+                    Create Account
+
+                </h3>
+
+                <p class="text-zinc-400 mt-4">
+
+                    Register securely using your email address in just a few minutes.
+
+                </p>
+
+            </div>
+
+            <div class="glass rounded-3xl p-6 text-center">
+
+                <div class="w-16 h-16 rounded-full bg-red-600 mx-auto flex items-center justify-center text-2xl font-black">
+
+                    2
+
+                </div>
+
+                <h3 class="text-2xl font-bold mt-6">
+
+                    Fund Wallet
+
+                </h3>
+
+                <p class="text-zinc-400 mt-4">
+
+                    Deposit funds using your preferred payment method.
+
+                </p>
+
+            </div>
+
+            <div class="glass rounded-3xl p-6 text-center">
+
+                <div class="w-16 h-16 rounded-full bg-red-600 mx-auto flex items-center justify-center text-2xl font-black">
+
+                    3
+
+                </div>
+
+                <h3 class="text-2xl font-bold mt-6">
+
+                    Start Trading
+
+                </h3>
+
+                <p class="text-zinc-400 mt-4">
+
+                    Buy, sell and manage your investments from one dashboard.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ===================================== -->
+<!-- PORTFOLIO PREVIEW -->
+<!-- ===================================== -->
+
+<section class="py-20 bg-[#090909]">
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6">
+
+<div class="grid lg:grid-cols-2 gap-10 items-center">
+
+<div>
+
+<span class="text-red-500 uppercase tracking-[0.35em] text-xs">
+
+SMART PORTFOLIO
 
 </span>
 
-<h2
-class="mt-5
-text-5xl
-font-black">
+<h2 class="text-3xl sm:text-5xl font-black mt-4">
 
-Stay Ahead Of The Market
+Track Every Investment In One Dashboard
 
 </h2>
 
-<p
-class="mt-6
-text-zinc-400
-leading-8">
+<p class="text-zinc-400 mt-6 leading-8">
 
-Receive crypto updates, market news and investment opportunities.
+Monitor profits, losses, portfolio allocation and recent transactions from one beautiful dashboard built for modern investors.
 
 </p>
 
-<form
-class="mt-12
-flex
-flex-col
-sm:flex-row
-gap-4">
+<ul class="space-y-5 mt-8">
 
-<input
+<li class="flex items-center gap-3">
 
-type="email"
+<div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
 
-placeholder="Enter your email"
+<i data-lucide="check"></i>
 
-class="flex-1
-bg-zinc-900
-rounded-2xl
-px-6
-py-5
-outline-none
-border
-border-zinc-800
-focus:border-red-600">
+</div>
 
-<button
+Real-time Portfolio Tracking
 
-class="bg-red-600
-hover:bg-red-700
-transition
-rounded-2xl
-px-10
-font-semibold">
+</li>
 
-Subscribe
+<li class="flex items-center gap-3">
 
-</button>
+<div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
 
-</form>
+<i data-lucide="check"></i>
+
+</div>
+
+Live Profit & Loss
+
+</li>
+
+<li class="flex items-center gap-3">
+
+<div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+
+<i data-lucide="check"></i>
+
+</div>
+
+Instant Buy & Sell Orders
+
+</li>
+
+<li class="flex items-center gap-3">
+
+<div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
+
+<i data-lucide="check"></i>
+
+</div>
+
+Bank-Level Security
+
+</li>
+
+</ul>
+
+</div>
+
+<div class="glass rounded-[32px] p-6">
+
+<div class="flex justify-between items-center">
+
+<div>
+
+<p class="text-zinc-500">
+
+Total Portfolio
+
+</p>
+
+<h2 class="text-4xl font-black mt-2">
+
+$186,420.58
+
+</h2>
+
+</div>
+
+<div class="bg-green-500/20 text-green-400 px-4 py-2 rounded-full">
+
++18.42%
+
+</div>
+
+</div>
+
+<div class="mt-10 h-56 rounded-2xl bg-gradient-to-r from-red-900/20 via-red-700/20 to-red-900/20 flex items-end p-5">
+
+<svg viewBox="0 0 600 200" class="w-full">
+
+<polyline
+
+fill="none"
+
+stroke="#dc2626"
+
+stroke-width="6"
+
+points="0,170 80,160 170,145 250,100 330,120 420,75 520,40 600,20"/>
+
+</svg>
+
+</div>
+
+<div class="grid grid-cols-2 gap-4 mt-8">
+
+<div class="glass rounded-2xl p-4">
+
+<p class="text-zinc-500 text-sm">
+
+Wallet
+
+</p>
+
+<h3 class="text-2xl font-bold mt-2">
+
+$28,000
+
+</h3>
+
+</div>
+
+<div class="glass rounded-2xl p-4">
+
+<p class="text-zinc-500 text-sm">
+
+Today's Gain
+
+</p>
+
+<h3 class="text-2xl font-bold text-green-400 mt-2">
+
++$1,485
+
+</h3>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 </div>
 
 </section>
 
+<!-- ===================================== -->
+<!-- STATS -->
+<!-- ===================================== -->
 
-<!-- ========================================= -->
-<!-- FOOTER -->
-<!-- ========================================= -->
+<section class="py-20">
 
-<footer
-class="bg-[#070707]
-border-t
-border-zinc-900
-pt-24
-pb-10">
+<div class="max-w-7xl mx-auto px-4 sm:px-6">
 
-<div class="max-w-7xl mx-auto px-6">
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
 
-<div
-class="grid
-md:grid-cols-2
-lg:grid-cols-5
-gap-12">
+<div class="glass rounded-3xl p-6 text-center">
 
-<!-- Logo -->
+<h2 class="text-4xl font-black text-red-500">
 
-<div
-class="lg:col-span-2">
-
-<h2
-class="text-4xl
-font-black">
-
-<span class="text-red-600">
-
-X
-
-</span>Coin
+150K+
 
 </h2>
 
-<p
-class="mt-8
-text-zinc-500
-leading-8
-max-w-md">
+<p class="mt-3 text-zinc-400">
 
-Modern investment platform for Crypto,
-Stocks,
-Forex,
-ETFs and Commodities.
-
-Invest smarter with institutional-grade security.
+Active Investors
 
 </p>
 
-<div
-class="flex
-gap-4
-mt-10">
+</div>
+
+<div class="glass rounded-3xl p-6 text-center">
+
+<h2 class="text-4xl font-black text-red-500">
+
+$8.4B
+
+</h2>
+
+<p class="mt-3 text-zinc-400">
+
+Trading Volume
+
+</p>
+
+</div>
+
+<div class="glass rounded-3xl p-6 text-center">
+
+<h2 class="text-4xl font-black text-red-500">
+
+180+
+
+</h2>
+
+<p class="mt-3 text-zinc-400">
+
+Countries
+
+</p>
+
+</div>
+
+<div class="glass rounded-3xl p-6 text-center">
+
+<h2 class="text-4xl font-black text-red-500">
+
+99.99%
+
+</h2>
+
+<p class="mt-3 text-zinc-400">
+
+Platform Uptime
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ===================================== -->
+<!-- TESTIMONIALS -->
+<!-- ===================================== -->
+
+<section class="py-20 bg-[#090909]">
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6">
+
+<div class="text-center">
+
+<span class="text-red-500 uppercase tracking-[0.35em] text-xs">
+
+TESTIMONIALS
+
+</span>
+
+<h2 class="text-3xl sm:text-5xl font-black mt-4">
+
+Trusted By Investors Worldwide
+
+</h2>
+
+</div>
+
+<div class="grid md:grid-cols-3 gap-6 mt-14">
+
+<div class="glass rounded-3xl p-6">
+
+★★★★★
+
+<p class="text-zinc-400 mt-5">
+
+The best investment platform I've ever used. Fast deposits and withdrawals with a beautiful interface.
+
+</p>
+
+<div class="mt-6">
+
+<h3 class="font-bold">
+
+Michael A.
+
+</h3>
+
+<p class="text-zinc-500 text-sm">
+
+United States
+
+</p>
+
+</div>
+
+</div>
+
+<div class="glass rounded-3xl p-6">
+
+★★★★★
+
+<p class="text-zinc-400 mt-5">
+
+Managing my crypto and stock investments in one place has made everything much easier.
+
+</p>
+
+<div class="mt-6">
+
+<h3 class="font-bold">
+
+Sophia L.
+
+</h3>
+
+<p class="text-zinc-500 text-sm">
+
+Canada
+
+</p>
+
+</div>
+
+</div>
+
+<div class="glass rounded-3xl p-6">
+
+★★★★★
+
+<p class="text-zinc-400 mt-5">
+
+Clean design, excellent support and a smooth trading experience.
+
+</p>
+
+<div class="mt-6">
+
+<h3 class="font-bold">
+
+Daniel K.
+
+</h3>
+
+<p class="text-zinc-500 text-sm">
+
+United Kingdom
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+<!-- ===================================== -->
+<!-- FAQ -->
+<!-- ===================================== -->
+
+<section id="faq" class="py-20">
+
+<div class="max-w-4xl mx-auto px-4 sm:px-6">
+
+<div class="text-center">
+
+<span class="text-red-500 uppercase tracking-[0.35em] text-xs">
+
+FAQ
+
+</span>
+
+<h2 class="text-3xl sm:text-5xl font-black mt-4">
+
+Frequently Asked Questions
+
+</h2>
+
+<p class="text-zinc-400 mt-6">
+
+Everything you need to know before you start investing.
+
+</p>
+
+</div>
+
+<div class="mt-14 space-y-4">
+
+<div x-data="{open:false}" class="glass rounded-2xl">
+
+<button
+@click="open=!open"
+class="w-full flex justify-between items-center p-5">
+
+<span class="font-semibold">
+
+Is XCoin secure?
+
+</span>
+
+<i data-lucide="chevron-down"
+:class="{'rotate-180':open}"
+class="transition"></i>
+
+</button>
+
+<div x-show="open"
+x-transition
+class="px-5 pb-5 text-zinc-400 leading-7">
+
+Yes. We use modern encryption, secure authentication and multiple layers of protection to safeguard user accounts and transactions.
+
+</div>
+
+</div>
+
+<div x-data="{open:false}" class="glass rounded-2xl">
+
+<button
+@click="open=!open"
+class="w-full flex justify-between items-center p-5">
+
+<span class="font-semibold">
+
+How do I start investing?
+
+</span>
+
+<i data-lucide="chevron-down"
+:class="{'rotate-180':open}"
+class="transition"></i>
+
+</button>
+
+<div x-show="open"
+x-transition
+class="px-5 pb-5 text-zinc-400 leading-7">
+
+Create your account, complete identity verification if required, fund your wallet, and choose the assets you want to invest in.
+
+</div>
+
+</div>
+
+<div x-data="{open:false}" class="glass rounded-2xl">
+
+<button
+@click="open=!open"
+class="w-full flex justify-between items-center p-5">
+
+<span class="font-semibold">
+
+Can I withdraw anytime?
+
+</span>
+
+<i data-lucide="chevron-down"
+:class="{'rotate-180':open}"
+class="transition"></i>
+
+</button>
+
+<div x-show="open"
+x-transition
+class="px-5 pb-5 text-zinc-400 leading-7">
+
+Yes. Withdrawals can be requested at any time, subject to account verification and platform policies.
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ===================================== -->
+<!-- CTA -->
+<!-- ===================================== -->
+
+<section class="py-20">
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6">
+
+<div class="rounded-[36px] bg-gradient-to-r from-red-600 to-red-800 p-8 sm:p-12 text-center">
+
+<h2 class="text-3xl sm:text-5xl font-black">
+
+Start Building Your Portfolio Today
+
+</h2>
+
+<p class="mt-6 text-red-100 max-w-2xl mx-auto leading-8">
+
+Join thousands of investors trading cryptocurrencies, stocks, ETFs, commodities and forex on one secure platform.
+
+</p>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-lg mx-auto mt-10">
 
 <a
-href="#"
-class="w-12
-h-12
-rounded-xl
-glass
-flex
-items-center
-justify-center">
+href="{% url 'register' %}"
+class="h-12 rounded-xl bg-white text-black font-bold flex items-center justify-center hover:bg-zinc-100 transition">
+
+Create Account
+
+</a>
+
+<a
+href="{% url 'login' %}"
+class="h-12 rounded-xl border border-white/30 flex items-center justify-center hover:bg-white/10 transition">
+
+Login
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ===================================== -->
+<!-- FOOTER -->
+<!-- ===================================== -->
+
+<footer class="border-t border-zinc-900 py-16">
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6">
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+
+<div>
+
+<h2 class="text-3xl font-black">
+
+<span class="text-red-600">X</span>Coin
+
+</h2>
+
+<p class="text-zinc-500 mt-5 leading-7">
+
+A modern investment platform designed for investors who want to trade confidently across global financial markets.
+
+</p>
+
+</div>
+
+<div>
+
+<h3 class="font-bold mb-5">
+
+Company
+
+</h3>
+
+<div class="space-y-3 text-zinc-400">
+
+<a href="#" class="block hover:text-white">About</a>
+
+<a href="#" class="block hover:text-white">Careers</a>
+
+<a href="#" class="block hover:text-white">Contact</a>
+
+<a href="#" class="block hover:text-white">Blog</a>
+
+</div>
+
+</div>
+
+<div>
+
+<h3 class="font-bold mb-5">
+
+Legal
+
+</h3>
+
+<div class="space-y-3 text-zinc-400">
+
+<a href="{% url 'privacy_policy' %}" class="block hover:text-white">
+
+Privacy Policy
+
+</a>
+
+<a href="" class="block hover:text-white">
+
+Terms of Service
+
+</a>
+
+<a href="#" class="block hover:text-white">
+
+Risk Disclosure
+
+</a>
+
+</div>
+
+</div>
+
+<div>
+
+<h3 class="font-bold mb-5">
+
+Follow Us
+
+</h3>
+
+<div class="flex gap-3">
+
+<a href="#" class="w-11 h-11 rounded-xl glass flex items-center justify-center">
 
 <i data-lucide="facebook"></i>
 
 </a>
 
-<a
-href="#"
-class="w-12
-h-12
-rounded-xl
-glass
-flex
-items-center
-justify-center">
+<a href="#" class="w-11 h-11 rounded-xl glass flex items-center justify-center">
 
 <i data-lucide="twitter"></i>
 
 </a>
 
-<a
-href="#"
-class="w-12
-h-12
-rounded-xl
-glass
-flex
-items-center
-justify-center">
+<a href="#" class="w-11 h-11 rounded-xl glass flex items-center justify-center">
 
 <i data-lucide="instagram"></i>
 
 </a>
 
-<a
-href="#"
-class="w-12
-h-12
-rounded-xl
-glass
-flex
-items-center
-justify-center">
+<a href="#" class="w-11 h-11 rounded-xl glass flex items-center justify-center">
 
 <i data-lucide="linkedin"></i>
 
@@ -3113,142 +1577,39 @@ justify-center">
 
 </div>
 
-
-<!-- Company -->
-
-<div>
-
-<h3 class="font-bold mb-6">
-
-Company
-
-</h3>
-
-<div class="space-y-4 text-zinc-500">
-
-<a href="{% url 'about' %}" class="block hover:text-white">About</a>
-
-<a href="{% url 'contact' %}" class="block hover:text-white">Contact</a>
-
-<a href="{% url 'faq' %}" class="block hover:text-white">FAQ</a>
-
-<a href="{% url 'help_center' %}" class="block hover:text-white">Support</a>
-
 </div>
 
-</div>
+<hr class="border-zinc-900 my-10">
 
+<div class="flex flex-col sm:flex-row justify-between items-center gap-4 text-zinc-500 text-sm">
 
-<!-- Markets -->
+<p>
 
-<div>
-
-<h3 class="font-bold mb-6">
-
-Markets
-
-</h3>
-
-<div class="space-y-4 text-zinc-500">
-
-<a href="{% url 'market' %}" class="block hover:text-white">Crypto</a>
-
-<a href="{% url 'market' %}" class="block hover:text-white">Stocks</a>
-
-<a href="{% url 'market' %}" class="block hover:text-white">ETFs</a>
-
-<a href="{% url 'market' %}" class="block hover:text-white">Forex</a>
-
-</div>
-
-</div>
-
-
-<!-- Legal -->
-
-<div>
-
-<h3 class="font-bold mb-6">
-
-Legal
-
-</h3>
-
-<div class="space-y-4 text-zinc-500">
-
-<a href="{% url 'privacy_policy' %}" class="block hover:text-white">
-
-Privacy Policy
-
-</a>
-
-<a href="{% url 'terms_and_conditions' %}" class="block hover:text-white">
-
-Terms
-
-</a>
-
-<a href="{% url 'login' %}" class="block hover:text-white">
-
-Login
-
-</a>
-
-<a href="{% url 'register' %}" class="block hover:text-white">
-
-Register
-
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-
-<hr class="border-zinc-900 my-14">
-
-
-<div
-class="flex
-flex-col
-md:flex-row
-justify-between
-items-center
-gap-6">
-
-<p class="text-zinc-600 text-sm">
-
-© 2026 XCoin. All rights reserved.
+© {% now "Y" %} XCoin. All rights reserved.
 
 </p>
 
-<div
-class="flex
-gap-8
-text-sm
-text-zinc-600">
+<p>
 
-<span>SSL Secured</span>
+Built for the future of investing.
 
-<span>256-bit Encryption</span>
-
-<span>24/7 Monitoring</span>
-
-</div>
+</p>
 
 </div>
 
 </div>
 
 </footer>
+
 <script>
 
-    lucide.createIcons();
-    
-    </script>
-    
-    </body>
-    
-    </html>
+lucide.createIcons();
+
+</script>
+
+<script>
+lucide.createIcons();
+</script>
+
+</body>
+</html>
