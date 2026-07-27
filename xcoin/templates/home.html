@@ -376,7 +376,7 @@ body{
 
     {% if assets %}
 
-    <div class="relative overflow-hidden">
+    <div class="relative overflow-hidden w-full">
 
         <div class="market-slider flex gap-5">
 
@@ -535,62 +535,44 @@ body{
     {% endif %}
 
 </section>
-
 <style>
-
-.market-slider{
-
-    width:max-content;
-    animation:marketScroll 45s linear infinite;
-
+    .market-slider{
+    display:flex;
+    width:fit-content;
+    animation:marketScroll 55s linear infinite;
+    will-change:transform;
 }
 
 .market-slider:hover{
-
     animation-play-state:paused;
-
 }
 
 .market-card{
-
-    flex-shrink:0;
-
+    flex:0 0 auto;
+    min-width:320px;
 }
 
 @keyframes marketScroll{
-
-    0%{
-
-        transform:translateX(0);
-
+    from{
+        transform:translate3d(0,0,0);
     }
-
-    100%{
-
-        transform:translateX(-50%);
-
+    to{
+        transform:translate3d(calc(-50% - 10px),0,0);
     }
-
 }
 
-@media(max-width:768px){
+@media (max-width:768px){
 
     .market-card{
-
-        min-width:270px;
-
-        padding:18px;
-
+        min-width:260px;
+        padding:16px;
     }
 
     .market-slider{
-
-        animation-duration:28s;
-
+        animation-duration:35s;
     }
 
 }
-
 </style>
 
 
