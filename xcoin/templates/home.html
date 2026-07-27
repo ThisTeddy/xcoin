@@ -33,6 +33,22 @@ html{
     scroll-behavior:smooth;
 }
 
+
+@keyframes ticker{
+
+0%{
+
+transform:translateX(0);
+
+}
+
+100%{
+
+transform:translateX(-50%);
+
+}
+
+}
 body{
     background:#070707;
     color:white;
@@ -336,107 +352,167 @@ body{
     </div>
 
 </section>
+
 <!-- ===================================== -->
 <!-- LIVE MARKET TICKER -->
 <!-- ===================================== -->
+<section id="markets" class="py-20 overflow-hidden">
 
-<section id="markets" class="py-10">
+    <div class="max-w-7xl mx-auto px-4">
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="text-center mb-12">
 
-        <div class="mb-6">
-
-            <span class="text-red-500 uppercase tracking-[0.3em] text-xs">
-
+            <h2 class="text-4xl md:text-5xl font-black text-white">
                 Live Markets
-
-            </span>
-
-            <h2 class="text-2xl sm:text-4xl font-black mt-2">
-
-                Markets Moving Now
-
             </h2>
+
+            <p class="text-zinc-400 mt-4 max-w-2xl mx-auto">
+                Follow the world's most traded cryptocurrencies, stocks, ETFs, commodities and forex markets in real time.
+            </p>
 
         </div>
 
     </div>
 
-    <div class="overflow-hidden">
+    {% if assets %}
 
-        <div class="flex animate-[ticker_30s_linear_infinite] w-max">
+    <div class="relative overflow-hidden">
+
+        <div class="market-slider flex gap-5">
 
             {% for asset in assets %}
-            <div class="glass rounded-2xl p-4 mx-2 min-w-[220px]">
+            <a href="{% url 'asset_detail' asset.id %}"
+               class="market-card glass flex items-center gap-4 rounded-2xl p-5 min-w-[320px] hover:border-red-600 transition duration-300">
 
-                <div class="flex items-center justify-between">
+                {% if asset.logo %}
 
-                    <div class="flex items-center gap-3">
+                <img
+                    src="{{ asset.logo.url }}"
+                    class="w-12 h-12 rounded-full object-cover">
 
-                        {% if asset.logo %}
+                {% else %}
 
-                        <img src="{{ asset.logo.url }}"
-                             class="w-10 h-10 rounded-full object-cover">
+                <div class="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center font-bold text-white">
 
-                        {% else %}
+                    {{ asset.symbol|slice:":1" }}
 
-                        <div class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center font-bold">
+                </div>
 
-                            {{ asset.symbol|slice:":1" }}
+                {% endif %}
 
-                        </div>
+                <div class="flex-1">
 
-                        {% endif %}
+                    <h3 class="font-bold text-white">
 
-                        <div>
+                        {{ asset.name }}
 
-                            <h3 class="font-bold">
+                    </h3>
 
-                                {{ asset.symbol }}
+                    <p class="text-zinc-500 text-sm">
 
-                            </h3>
+                        {{ asset.symbol }}
 
-                            <p class="text-xs text-zinc-500">
+                    </p>
 
-                                {{ asset.name }}
+                </div>
 
-                            </p>
+                <div class="text-right">
 
-                        </div>
+                    <div class="font-bold text-white">
+
+                        ${{ asset.current_price|floatformat:2 }}
 
                     </div>
 
                     {% if asset.change >= 0 %}
 
-                    <span class="text-green-400 text-sm">
+                    <div class="text-green-500 text-sm font-semibold">
 
-                        +{{ asset.change|floatformat:2 }}%
+                        ▲ {{ asset.change|floatformat:2 }}%
 
-                    </span>
+                    </div>
 
                     {% else %}
 
-                    <span class="text-red-400 text-sm">
+                    <div class="text-red-500 text-sm font-semibold">
 
-                        {{ asset.change|floatformat:2 }}%
+                        ▼ {{ asset.change|floatformat:2 }}%
 
-                    </span>
+                    </div>
 
                     {% endif %}
 
                 </div>
 
-                <div class="mt-4">
+            </a>
 
-                    <h4 class="text-2xl font-black">
+            {% endfor %}
 
-                        ${{ asset.current_price|floatformat:2|intcomma }}
+            {% for asset in assets %}
+            <a href="{% url 'asset_detail' asset.id %}"
+               class="market-card glass flex items-center gap-4 rounded-2xl p-5 min-w-[320px] hover:border-red-600 transition duration-300">
 
-                    </h4>
+                {% if asset.logo %}
+
+                <img
+                    src="{{ asset.logo.url }}"
+                    class="w-12 h-12 rounded-full object-cover">
+
+                {% else %}
+
+                <div class="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center font-bold text-white">
+
+                    {{ asset.symbol|slice:":1" }}
 
                 </div>
 
-            </div>
+                {% endif %}
+
+                <div class="flex-1">
+
+                    <h3 class="font-bold text-white">
+
+                        {{ asset.name }}
+
+                    </h3>
+
+                    <p class="text-zinc-500 text-sm">
+
+                        {{ asset.symbol }}
+
+                    </p>
+
+                </div>
+
+                <div class="text-right">
+
+                    <div class="font-bold text-white">
+
+                        ${{ asset.current_price|floatformat:2 }}
+
+                    </div>
+
+                    {% if asset.change >= 0 %}
+
+                    <div class="text-green-500 text-sm font-semibold">
+
+                        ▲ {{ asset.change|floatformat:2 }}%
+
+                    </div>
+
+                    {% else %}
+
+                    <div class="text-red-500 text-sm font-semibold">
+
+                        ▼ {{ asset.change|floatformat:2 }}%
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+            </a>
 
             {% endfor %}
 
@@ -444,27 +520,80 @@ body{
 
     </div>
 
+    {% else %}
+
+    <div class="max-w-7xl mx-auto px-4">
+
+        <div class="glass rounded-3xl py-16 text-center text-zinc-500">
+
+            No assets available.
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
 </section>
 
 <style>
 
-@keyframes ticker{
+.market-slider{
 
-0%{
+    width:max-content;
+    animation:marketScroll 45s linear infinite;
 
-transform:translateX(0);
+}
+
+.market-slider:hover{
+
+    animation-play-state:paused;
 
 }
 
-100%{
+.market-card{
 
-transform:translateX(-50%);
+    flex-shrink:0;
 
 }
+
+@keyframes marketScroll{
+
+    0%{
+
+        transform:translateX(0);
+
+    }
+
+    100%{
+
+        transform:translateX(-50%);
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .market-card{
+
+        min-width:270px;
+
+        padding:18px;
+
+    }
+
+    .market-slider{
+
+        animation-duration:28s;
+
+    }
 
 }
 
 </style>
+
+
 
 <!-- ===================================== -->
 <!-- WHY CHOOSE XCOIN -->
@@ -594,7 +723,147 @@ Professional customer support available whenever you need assistance.
 <!-- ===================================== -->
 <!-- INVESTMENT CATEGORIES -->
 <!-- ===================================== -->
+<section id="plans" class="py-24 bg-zinc-950">
 
+    <div class="max-w-7xl mx-auto px-4">
+
+        <div class="text-center mb-16">
+
+            <h2 class="text-4xl md:text-5xl font-black text-white">
+                Investment Plans
+            </h2>
+
+            <p class="text-zinc-400 mt-4 max-w-2xl mx-auto">
+                Choose an investment plan that matches your financial goals.
+            </p>
+
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+
+            {% for plan in investment_plans %}
+
+            <div class="glass rounded-3xl border border-zinc-800 hover:border-red-600 transition-all duration-300 p-8 relative overflow-hidden">
+
+                {% if plan.featured %}
+
+                <div class="absolute top-5 right-5 bg-red-600 text-white text-xs px-3 py-1 rounded-full font-semibold">
+                    POPULAR
+                </div>
+
+                {% endif %}
+
+                <h3 class="text-2xl font-bold text-white">
+
+                    {{ plan.name }}
+
+                </h3>
+
+                <p class="text-zinc-400 mt-2">
+
+                    {{ plan.description }}
+
+                </p>
+
+                <div class="mt-8 space-y-4">
+
+                    <div class="flex justify-between">
+
+                        <span class="text-zinc-500">
+                            Minimum
+                        </span>
+
+                        <span class="font-semibold text-white">
+
+                            ${{ plan.minimum_amount }}
+
+                        </span>
+
+                    </div>
+
+                    <div class="flex justify-between">
+
+                        <span class="text-zinc-500">
+                            Maximum
+                        </span>
+
+                        <span class="font-semibold text-white">
+
+                            ${{ plan.maximum_amount }}
+
+                        </span>
+
+                    </div>
+
+                    <div class="flex justify-between">
+
+                        <span class="text-zinc-500">
+                            Duration
+                        </span>
+
+                        <span class="font-semibold text-white">
+
+                            {{ plan.duration_days }} Days
+
+                        </span>
+
+                    </div>
+
+                    <div class="flex justify-between">
+
+                        <span class="text-zinc-500">
+                            ROI
+                        </span>
+
+                        <span class="font-bold text-green-500 text-lg">
+
+                            {{ plan.roi_percent }}%
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <a href="{% url 'register' %}"
+
+                   class="mt-8 w-full inline-flex items-center justify-center rounded-xl bg-red-600 hover:bg-red-700 text-white py-3 font-semibold transition">
+
+                    Invest Now
+
+                </a>
+
+            </div>
+
+            {% empty %}
+
+            <div class="col-span-full">
+
+                <div class="glass rounded-3xl p-12 text-center">
+
+                    <h3 class="text-2xl font-bold text-white">
+
+                        No Investment Plans Available
+
+                    </h3>
+
+                    <p class="text-zinc-500 mt-3">
+
+                        Investment plans will appear here once added from the admin panel.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
 <section id="plans" class="py-20">
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
@@ -921,259 +1190,8 @@ Professional customer support available whenever you need assistance.
 
 </section>
 <!-- ===================================== -->
-<!-- PORTFOLIO PREVIEW -->
-<!-- ===================================== -->
-
-<section class="py-20 bg-[#090909]">
-
-<div class="max-w-7xl mx-auto px-4 sm:px-6">
-
-<div class="grid lg:grid-cols-2 gap-10 items-center">
-
-<div>
-
-<span class="text-red-500 uppercase tracking-[0.35em] text-xs">
-
-SMART PORTFOLIO
-
-</span>
-
-<h2 class="text-3xl sm:text-5xl font-black mt-4">
-
-Track Every Investment In One Dashboard
-
-</h2>
-
-<p class="text-zinc-400 mt-6 leading-8">
-
-Monitor profits, losses, portfolio allocation and recent transactions from one beautiful dashboard built for modern investors.
-
-</p>
-
-<ul class="space-y-5 mt-8">
-
-<li class="flex items-center gap-3">
-
-<div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
-
-<i data-lucide="check"></i>
-
-</div>
-
-Real-time Portfolio Tracking
-
-</li>
-
-<li class="flex items-center gap-3">
-
-<div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
-
-<i data-lucide="check"></i>
-
-</div>
-
-Live Profit & Loss
-
-</li>
-
-<li class="flex items-center gap-3">
-
-<div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
-
-<i data-lucide="check"></i>
-
-</div>
-
-Instant Buy & Sell Orders
-
-</li>
-
-<li class="flex items-center gap-3">
-
-<div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center">
-
-<i data-lucide="check"></i>
-
-</div>
-
-Bank-Level Security
-
-</li>
-
-</ul>
-
-</div>
-
-<div class="glass rounded-[32px] p-6">
-
-<div class="flex justify-between items-center">
-
-<div>
-
-<p class="text-zinc-500">
-
-Total Portfolio
-
-</p>
-
-<h2 class="text-4xl font-black mt-2">
-
-$186,420.58
-
-</h2>
-
-</div>
-
-<div class="bg-green-500/20 text-green-400 px-4 py-2 rounded-full">
-
-+18.42%
-
-</div>
-
-</div>
-
-<div class="mt-10 h-56 rounded-2xl bg-gradient-to-r from-red-900/20 via-red-700/20 to-red-900/20 flex items-end p-5">
-
-<svg viewBox="0 0 600 200" class="w-full">
-
-<polyline
-
-fill="none"
-
-stroke="#dc2626"
-
-stroke-width="6"
-
-points="0,170 80,160 170,145 250,100 330,120 420,75 520,40 600,20"/>
-
-</svg>
-
-</div>
-
-<div class="grid grid-cols-2 gap-4 mt-8">
-
-<div class="glass rounded-2xl p-4">
-
-<p class="text-zinc-500 text-sm">
-
-Wallet
-
-</p>
-
-<h3 class="text-2xl font-bold mt-2">
-
-$28,000
-
-</h3>
-
-</div>
-
-<div class="glass rounded-2xl p-4">
-
-<p class="text-zinc-500 text-sm">
-
-Today's Gain
-
-</p>
-
-<h3 class="text-2xl font-bold text-green-400 mt-2">
-
-+$1,485
-
-</h3>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- ===================================== -->
 <!-- STATS -->
 <!-- ===================================== -->
-
-<section class="py-20">
-
-<div class="max-w-7xl mx-auto px-4 sm:px-6">
-
-<div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
-
-<div class="glass rounded-3xl p-6 text-center">
-
-<h2 class="text-4xl font-black text-red-500">
-
-150K+
-
-</h2>
-
-<p class="mt-3 text-zinc-400">
-
-Active Investors
-
-</p>
-
-</div>
-
-<div class="glass rounded-3xl p-6 text-center">
-
-<h2 class="text-4xl font-black text-red-500">
-
-$8.4B
-
-</h2>
-
-<p class="mt-3 text-zinc-400">
-
-Trading Volume
-
-</p>
-
-</div>
-
-<div class="glass rounded-3xl p-6 text-center">
-
-<h2 class="text-4xl font-black text-red-500">
-
-180+
-
-</h2>
-
-<p class="mt-3 text-zinc-400">
-
-Countries
-
-</p>
-
-</div>
-
-<div class="glass rounded-3xl p-6 text-center">
-
-<h2 class="text-4xl font-black text-red-500">
-
-99.99%
-
-</h2>
-
-<p class="mt-3 text-zinc-400">
-
-Platform Uptime
-
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
 <!-- ===================================== -->
 <!-- TESTIMONIALS -->
 <!-- ===================================== -->
@@ -1495,7 +1513,7 @@ Company
 
 <div class="space-y-3 text-zinc-400">
 
-<a href="#" class="block hover:text-white">About</a>
+<a href="{% url 'about' %}" class="block hover:text-white">About</a>
 
 <a href="#" class="block hover:text-white">Careers</a>
 

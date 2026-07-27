@@ -30,30 +30,34 @@ def generate_referral_code():
         )
         if not User.objects.filter(referral_code=code).exists():
             return code
+from .models import Asset, InvestmentPlan
 
 def home(request):
 
-    assets = Asset.objects.filter(active=True)[:8]
+    assets = Asset.objects.filter(active=True)
 
-    plans = InvestmentPlan.objects.filter(active=True)
+    investment_plans = InvestmentPlan.objects.filter(
+        active=True
+    ).order_by("minimum_amount")
 
     return render(
         request,
         "home.html",
         {
             "assets": assets,
-            "plans": plans,
-        },
+            "investment_plans": investment_plans,
+        }
     )
-
-  
-         
-        
+def about(request):
+    return render(request, "about.html")
 from django.contrib import messages
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
 
 from .models import User, Wallet, Notification
+
+
+from .models import Asset
 
 
 def register(request):
@@ -2579,3 +2583,5 @@ def reject_deposit(request, transaction_id):
     messages.success(request, "Deposit rejected.")
 
     return redirect("admin_dashboard")
+
+

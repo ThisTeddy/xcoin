@@ -788,6 +788,8 @@ class Payment(models.Model):
     def __str__(self):
         return f"{self.reference} ({self.user.email})"
 
+from django.db import models
+
 
 class DepositWallet(models.Model):
 
@@ -812,7 +814,11 @@ class DepositWallet(models.Model):
         ("DOGE", "Dogecoin"),
 
     )
-
+    asset = models.ForeignKey(
+        Asset,
+        on_delete=models.CASCADE,
+        related_name="deposit_wallets",
+    )
     network = models.CharField(
         max_length=30,
         choices=NETWORKS,
