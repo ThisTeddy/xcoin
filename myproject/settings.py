@@ -248,3 +248,21 @@ EMAIL_HOST_USER = "saviourb705@gmail.com"
 EMAIL_HOST_PASSWORD = "ddyf puqb zlpb ylcy"
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+
+
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}

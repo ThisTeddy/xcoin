@@ -49,7 +49,66 @@ def home(request):
         }
     )
 def about(request):
-    return render(request, "about.html")
+
+    return render(
+        request,
+        "about.html"
+    )
+
+
+def careers(request):
+
+    return render(
+        request,
+        "careers.html"
+    )
+
+
+def contact(request):
+
+    return render(
+        request,
+        "contact.html"
+    )
+
+
+def blog(request):
+
+    return render(
+        request,
+        "blog.html"
+    )
+
+
+def legal(request):
+
+    return render(
+        request,
+        "legal.html"
+    )
+
+
+def privacy_policy(request):
+
+    return render(
+        request,
+        "privacy_policy.html"
+    )
+
+
+def terms_of_service(request):
+
+    return render(
+        request,
+        "terms_of_service.html"
+    )
+
+
+def risk_disclosure(request):
+
+    return render(
+        request,"risk_disclosure.html"
+    )
 from django.contrib import messages
 from django.contrib.auth import login
 from django.shortcuts import render, redirect

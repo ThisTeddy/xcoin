@@ -16,6 +16,13 @@ urlpatterns = [
         name="home"
     ),
     path("about/", views.about, name="about"),
+path("careers/", views.careers, name="careers"),
+path("contact/", views.contact, name="contact"),
+path("blog/", views.blog, name="blog"),
+path("legal/", views.legal, name="legal"),
+path("privacy-policy/", views.privacy_policy, name="privacy_policy"),
+path("terms-of-service/", views.terms_of_service, name="terms_of_service"),
+path("risk-disclosure/", views.risk_disclosure, name="risk_disclosure"),
     path(
         "about/",
         views.about,
