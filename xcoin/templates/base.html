@@ -1,641 +1,1112 @@
 {% load static %}
 {% load humanize %}
+
 <!DOCTYPE html>
-<html lang="en" x-data="{ sidebar:false, profile:false, notifications:false }">
+
+<html lang="en"
+      x-data="{ sidebar:false }">
 
 <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
 
-    <title>
-        {% block title %}
-            XCoin
-        {% endblock %}
-    </title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-    <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
+<title>
+    {% block title %}
+        XCoin
+    {% endblock %}
+</title>
 
-    <!-- Alpine -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-    <!-- Lucide -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+<!-- Alpine -->
+<script defer
+        src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Lucide -->
+<script src="https://unpkg.com/lucide@latest"></script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet">
 
-    <style>
+<!-- Font -->
 
-        *{
-            font-family:'Inter',sans-serif;
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+
+<style>
+
+    * {
+        box-sizing: border-box;
+        font-family: 'Inter', sans-serif;
+    }
+
+
+    html,
+    body {
+
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+
+        margin: 0;
+        padding: 0;
+
+        overflow-x: hidden;
+
+    }
+
+
+    body {
+
+        background: #090909;
+        color: #fff;
+
+    }
+
+
+    img,
+    svg,
+    video,
+    canvas {
+
+        max-width: 100%;
+
+    }
+
+
+    ::-webkit-scrollbar {
+
+        width: 8px;
+
+    }
+
+
+    ::-webkit-scrollbar-thumb {
+
+        background: #dc2626;
+        border-radius: 30px;
+
+    }
+
+
+    ::-webkit-scrollbar-track {
+
+        background: #151515;
+
+    }
+
+
+    [x-cloak] {
+
+        display: none !important;
+
+    }
+
+
+    .glass {
+
+        background: rgba(24,24,24,.85);
+
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+
+        border: 1px solid rgba(255,255,255,.05);
+
+    }
+
+
+    .sidebar-link {
+
+        display: flex;
+        align-items: center;
+        gap: .75rem;
+
+        padding: .75rem 1rem;
+
+        border-radius: .75rem;
+
+        font-size: .875rem;
+
+        transition: all .3s ease;
+
+    }
+
+
+    /* Prevent flex children from creating horizontal overflow */
+
+    .app-main {
+
+        min-width: 0;
+        width: 100%;
+        max-width: 100%;
+
+    }
+
+
+    main {
+
+        min-width: 0;
+        max-width: 100%;
+
+    }
+
+
+    @media (max-width: 1023px) {
+
+        .mobile-sidebar {
+
+            width: min(18rem, 86vw);
+
         }
 
-        body{
+    }
 
-            background:#090909;
-            color:#fff;
+</style>
 
-}
-
-        ::-webkit-scrollbar{
-
-            width:8px;
-
-        }
-
-        ::-webkit-scrollbar-thumb{
-
-            background:#dc2626;
-            border-radius:30px;
-
-        }
-
-        ::-webkit-scrollbar-track{
-
-            background:#151515;
-
-        }
-
-        [x-cloak]{
-
-            display:none !important;
-
-        }
-
-        .glass{
-
-            background:rgba(24,24,24,.85);
-
-            backdrop-filter:blur(20px);
-
-            border:1px solid rgba(255,255,255,.05);
-
-        }
-
-        .sidebar-link{
-
-            @apply flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all;
-
-        }
-
-    </style>
 
 </head>
 
 <body class="text-sm overflow-x-hidden">
 
-<!-- Overlay -->
+<!-- ====================================================== -->
+
+<!-- MOBILE OVERLAY -->
+
+<!-- ====================================================== -->
 
 <div
-    x-show="sidebar"
-    x-transition.opacity
-    x-cloak
-    @click="sidebar=false"
-    class="fixed inset-0 bg-black/70 z-40 lg:hidden">
+
+```
+x-show="sidebar"
+
+x-transition.opacity
+
+x-cloak
+
+@click="sidebar=false"
+
+class="fixed inset-0 bg-black/70 z-40 lg:hidden">
+```
+
 </div>
 
-<div class="flex min-h-screen">
+<!-- ====================================================== -->
 
-    <!-- ========================= -->
-    <!-- SIDEBAR -->
-    <!-- ========================= -->
+<!-- APP -->
 
-    <aside
+<!-- ====================================================== -->
 
-        :class="sidebar ? 'translate-x-0':'-translate-x-full'"
+<div class="flex min-h-screen w-full min-w-0 overflow-x-hidden">
 
-        class="fixed lg:translate-x-0
-               lg:static
-               inset-y-0
-               left-0
-               w-72
-               bg-[#101010]
-               border-r
-               border-zinc-800
-               transition-all
-               duration-300
-               z-50">
 
-        <!-- Logo -->
+<!-- ================================================== -->
+<!-- SIDEBAR -->
+<!-- ================================================== -->
 
-        <div class="h-20 flex items-center px-6 border-b border-zinc-800">
+<aside
 
-            <div class="h-11 w-11 rounded-xl bg-red-600 flex items-center justify-center">
+    :class="sidebar
+        ? 'translate-x-0'
+        : '-translate-x-full'"
 
-                <i data-lucide="trending-up" class="w-5 h-5"></i>
+    class="mobile-sidebar
 
-            </div>
+           fixed
+           lg:static
 
-            <div class="ml-3">
+           inset-y-0
+           left-0
 
-                <h2 class="font-bold text-lg">
+           w-72
+           shrink-0
 
-                    XCoin
+           bg-[#101010]
+
+           border-r
+           border-zinc-800
+
+           transition-all
+           duration-300
+
+           z-50
+
+           lg:translate-x-0">
+
+
+    <!-- LOGO -->
+
+    <div class="h-20 flex items-center px-6 border-b border-zinc-800">
+
+
+        <div
+            class="h-11 w-11 shrink-0 rounded-xl bg-red-600 flex items-center justify-center">
+
+            <i
+                data-lucide="trending-up"
+                class="w-5 h-5">
+            </i>
+
+        </div>
+
+
+        <div class="ml-3 min-w-0">
+
+            <h2 class="font-bold text-lg">
+
+                XCoin
+
+            </h2>
+
+            <p class="text-xs text-zinc-500">
+
+                Investment Platform
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- NAVIGATION -->
+    <!-- ================================================= -->
+
+    <nav
+        class="flex flex-col h-[calc(100vh-80px)] justify-between">
+
+
+        <!-- TOP NAV -->
+
+        <div class="px-4 py-6 space-y-2 overflow-y-auto">
+
+
+            <!-- Dashboard -->
+
+            <a
+                href="{% url 'dashboard' %}"
+
+                @click="sidebar=false"
+
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-zinc-300 hover:bg-red-600 hover:text-white transition-all duration-300">
+
+                <i
+                    data-lucide="layout-dashboard"
+                    class="w-5 h-5 shrink-0">
+                </i>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <!-- Market -->
+
+            <a
+                href="{% url 'market' %}"
+
+                @click="sidebar=false"
+
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-zinc-300 hover:bg-red-600 hover:text-white transition">
+
+                <i
+                    data-lucide="candlestick-chart"
+                    class="w-5 h-5 shrink-0">
+                </i>
+
+                <span>
+                    Market
+                </span>
+
+            </a>
+
+
+            <!-- Portfolio -->
+
+            <a
+                href="{% url 'portfolio' %}"
+
+                @click="sidebar=false"
+
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-zinc-300 hover:bg-red-600 hover:text-white transition">
+
+                <i
+                    data-lucide="briefcase-business"
+                    class="w-5 h-5 shrink-0">
+                </i>
+
+                <span>
+                    Portfolio
+                </span>
+
+            </a>
+
+
+            <!-- Investments -->
+
+            <a
+                href="{% url 'investment_plans' %}"
+
+                @click="sidebar=false"
+
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-zinc-300 hover:bg-red-600 hover:text-white transition">
+
+                <i
+                    data-lucide="badge-dollar-sign"
+                    class="w-5 h-5 shrink-0">
+                </i>
+
+                <span>
+                    Investments
+                </span>
+
+            </a>
+
+
+            <!-- Wallet -->
+
+            <a
+                href="{% url 'wallet' %}"
+
+                @click="sidebar=false"
+
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-zinc-300 hover:bg-red-600 hover:text-white transition">
+
+                <i
+                    data-lucide="wallet"
+                    class="w-5 h-5 shrink-0">
+                </i>
+
+                <span>
+                    Wallet
+                </span>
+
+            </a>
+
+
+            <!-- Deposit -->
+
+            <a
+                href="{% url 'deposit' %}"
+
+                @click="sidebar=false"
+
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-zinc-300 hover:bg-red-600 hover:text-white transition">
+
+                <i
+                    data-lucide="arrow-down-circle"
+                    class="w-5 h-5 shrink-0">
+                </i>
+
+                <span>
+                    Deposit
+                </span>
+
+            </a>
+
+
+            <!-- Withdraw -->
+
+            <a
+                href="{% url 'withdraw' %}"
+
+                @click="sidebar=false"
+
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-zinc-300 hover:bg-red-600 hover:text-white transition">
+
+                <i
+                    data-lucide="arrow-up-circle"
+                    class="w-5 h-5 shrink-0">
+                </i>
+
+                <span>
+                    Withdraw
+                </span>
+
+            </a>
+
+
+            <!-- Transactions -->
+
+            <a
+                href="{% url 'transaction_history' %}"
+
+                @click="sidebar=false"
+
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-zinc-300 hover:bg-red-600 hover:text-white transition">
+
+                <i
+                    data-lucide="receipt-text"
+                    class="w-5 h-5 shrink-0">
+                </i>
+
+                <span>
+                    Transactions
+                </span>
+
+            </a>
+
+
+            <!-- Notifications -->
+
+            <a
+                href="{% url 'notifications' %}"
+
+                @click="sidebar=false"
+
+                class="flex items-center justify-between px-4 py-3 rounded-xl text-sm text-zinc-300 hover:bg-red-600 hover:text-white transition">
+
+                <div class="flex items-center gap-3">
+
+                    <i
+                        data-lucide="bell"
+                        class="w-5 h-5 shrink-0">
+                    </i>
+
+                    <span>
+                        Notifications
+                    </span>
+
+                </div>
+
+
+                {% if unread_notifications %}
+
+                <span
+                    class="bg-red-600 text-xs px-2 py-1 rounded-full">
+
+                    {{ unread_notifications }}
+
+                </span>
+
+                {% endif %}
+
+            </a>
+
+
+            <!-- Profile -->
+
+            <a
+                href="{% url 'profile' %}"
+
+                @click="sidebar=false"
+
+                class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-zinc-300 hover:bg-red-600 hover:text-white transition">
+
+                <i
+                    data-lucide="user-circle-2"
+                    class="w-5 h-5 shrink-0">
+                </i>
+
+                <span>
+                    Profile
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- BOTTOM -->
+        <!-- ================================================= -->
+
+        <div class="border-t border-zinc-800 p-4">
+
+
+            <!-- WALLET BALANCE -->
+
+            <div class="glass rounded-xl p-4 mb-4">
+
+
+                <p class="text-xs uppercase tracking-widest text-zinc-500">
+
+                    Wallet Balance
+
+                </p>
+
+
+                <h2 class="text-2xl font-bold mt-2">
+
+                    ${{ request.user.wallet.balance|floatformat:2|intcomma }}
 
                 </h2>
 
-                <p class="text-xs text-zinc-500">
 
-                    Investment Platform
+                <p class="text-xs text-green-500 mt-1">
+
+                    Available Balance
 
                 </p>
 
             </div>
 
+
+            <!-- LOGOUT -->
+
+            <a
+                href="{% url 'logout' %}"
+
+                class="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 rounded-xl h-12 transition">
+
+                <i
+                    data-lucide="log-out"
+                    class="w-5 h-5">
+                </i>
+
+                <span class="text-sm">
+
+                    Logout
+
+                </span>
+
+            </a>
+
         </div>
 
-        <!-- Navigation starts in Phase 2 -->
-        <!-- ========================= -->
-        <!-- SIDEBAR NAVIGATION -->
-        <!-- ========================= -->
-        
-        <nav class="flex flex-col h-[calc(100vh-80px)] justify-between">
-        
-            <div class="px-4 py-6 space-y-2 overflow-y-auto">
-        
-                <a href="{% url 'dashboard' %}"
-                   class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-zinc-300 hover:bg-red-600 hover:text-white transition-all duration-300">
-        
-                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-        
-                    <span>Dashboard</span>
-        
-                </a>
-        
-                <a href="{% url 'market' %}"
-                   class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-zinc-300 hover:bg-red-600 hover:text-white transition">
-        
-                    <i data-lucide="candlestick-chart" class="w-5 h-5"></i>
-        
-                    <span>Market</span>
-        
-                </a>
-        
-                <a href="{% url 'portfolio' %}"
-                   class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-zinc-300 hover:bg-red-600 hover:text-white transition">
-        
-                    <i data-lucide="briefcase-business" class="w-5 h-5"></i>
-        
-                    <span>Portfolio</span>
-        
-                </a>
-        
-                <a href="{% url 'investment_plans' %}"
-                   class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-zinc-300 hover:bg-red-600 hover:text-white transition">
-        
-                    <i data-lucide="badge-dollar-sign" class="w-5 h-5"></i>
-        
-                    <span>Investments</span>
-        
-                </a>
-        
-                <a href="{% url 'wallet' %}"
-                   class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-zinc-300 hover:bg-red-600 hover:text-white transition">
-        
-                    <i data-lucide="wallet" class="w-5 h-5"></i>
-        
-                    <span>Wallet</span>
-        
-                </a>
-        
-                <a href="{% url 'deposit' %}"
-                   class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-zinc-300 hover:bg-red-600 hover:text-white transition">
-        
-                    <i data-lucide="arrow-down-circle" class="w-5 h-5"></i>
-        
-                    <span>Deposit</span>
-        
-                </a>
-        
-                <a href="{% url 'withdraw' %}"
-                   class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-zinc-300 hover:bg-red-600 hover:text-white transition">
-        
-                    <i data-lucide="arrow-up-circle" class="w-5 h-5"></i>
-        
-                    <span>Withdraw</span>
-        
-                </a>
-        
-                <a href="{% url 'transaction_history' %}"
-                   class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-zinc-300 hover:bg-red-600 hover:text-white transition">
-        
-                    <i data-lucide="receipt-text" class="w-5 h-5"></i>
-        
-                    <span>Transactions</span>
-        
-                </a>
-        
-                <a href="{% url 'notifications' %}"
-                   class="flex items-center justify-between px-4 py-3 rounded-xl text-sm text-zinc-300 hover:bg-red-600 hover:text-white transition">
-        
-                    <div class="flex items-center gap-3">
-        
-                        <i data-lucide="bell" class="w-5 h-5"></i>
-        
-                        <span>Notifications</span>
-        
-                    </div>
-        
-                    <span class="bg-red-600 text-xs px-2 py-1 rounded-full">
-                        
-                        {{ unread_notifications}}
-                        
-                    </span>
-        
-                </a>
-        
-                <a href="{% url 'profile' %}"
-                   class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-zinc-300 hover:bg-red-600 hover:text-white transition">
-        
-                    <i data-lucide="user-circle-2" class="w-5 h-5"></i>
-        
-                    <span>Profile</span>
-        
-                </a>
-        
-            </div>
-        
-            <!-- Bottom -->
-        
-            <div class="border-t border-zinc-800 p-4">
-        
-                <div class="glass rounded-xl p-4 mb-4">
-        
-                    <p class="text-xs uppercase tracking-widest text-zinc-500">
-        
-                        Wallet Balance
-        
-                    </p>
-        
-                    <h2 class="text-2xl font-bold mt-2">
-        
-                        ${{ request.user.wallet.balance|floatformat:2|intcomma }}
-        
-                    </h2>
-        
-                    <p class="text-xs text-green-500 mt-1">
-        
-                        Available Balance
-        
-                    </p>
-        
+    </nav>
+
+</aside>
+
+
+
+<!-- ================================================== -->
+<!-- MAIN -->
+<!-- ================================================== -->
+
+<div class="app-main flex flex-1 flex-col overflow-x-hidden">
+
+
+    <!-- ================================================= -->
+    <!-- NAVBAR -->
+    <!-- ================================================= -->
+
+    <header
+
+        class="h-20 shrink-0
+
+               glass
+
+               border-b
+               border-zinc-800
+
+               sticky
+               top-0
+
+               z-30">
+
+
+        <div
+            class="h-full flex items-center justify-between gap-3 px-3 sm:px-6">
+
+
+            <!-- LEFT -->
+
+            <div class="flex min-w-0 items-center gap-3 sm:gap-4">
+
+
+                <!-- MOBILE MENU -->
+
+                <button
+
+                    @click="sidebar=true"
+
+                    type="button"
+
+                    class="lg:hidden
+
+                           h-10
+                           w-10
+                           shrink-0
+
+                           rounded-xl
+
+                           bg-[#151515]
+
+                           border
+                           border-zinc-800
+
+                           flex
+                           items-center
+                           justify-center
+
+                           hover:border-red-600
+
+                           transition">
+
+                    <i
+                        data-lucide="menu"
+                        class="w-5 h-5">
+                    </i>
+
+                </button>
+
+
+                <!-- DESKTOP SEARCH -->
+
+                <div
+                    class="relative hidden md:block">
+
+                    <i
+                        data-lucide="search"
+
+                        class="absolute
+                               left-3
+                               top-3
+                               w-4
+                               h-4
+                               text-zinc-500">
+                    </i>
+
+
+                    <input
+
+                        type="text"
+
+                        placeholder="Search."
+
+                        class="bg-[#151515]
+                               border
+                               border-zinc-800
+                               rounded-xl
+                               pl-10
+                               pr-4
+                               h-11
+                               w-72
+                               outline-none
+                               focus:border-red-600">
+
                 </div>
-        
-                <a href="{% url 'logout' %}"
-                   class="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 rounded-xl h-12 transition">
-        
-                    <i data-lucide="log-out" class="w-5 h-5"></i>
-        
-                    <span class="text-sm">
-        
-                        Logout
-        
-                    </span>
-        
-                </a>
-        
+
             </div>
-        
-        </nav>
 
-    </aside>
 
-    <!-- ========================= -->
-    <!-- MAIN -->
-    <!-- ========================= -->
+            <!-- RIGHT -->
 
-    <div class="flex-1 flex flex-col">
+            <div
+                class="flex shrink-0 items-center gap-2 sm:gap-4">
 
-        <!-- NAVBAR -->
 
-        <header
-            class="h-20
-                   glass
-                   border-b
-                   border-zinc-800
-                   sticky
-                   top-0
-                   z-30">
+                <!-- MOBILE SEARCH -->
 
-            <div class="h-full flex items-center justify-between px-6">
+                <button
 
-                <!-- LEFT -->
+                    type="button"
 
-                <div class="flex items-center gap-4">
+                    class="md:hidden
+                           h-10
+                           w-10
+                           rounded-xl
+                           bg-[#151515]
+                           border
+                           border-zinc-800
+                           flex
+                           items-center
+                           justify-center
+                           hover:border-red-600
+                           transition">
+
+                    <i
+                        data-lucide="search"
+                        class="w-4 h-4">
+                    </i>
+
+                </button>
+
+
+                <!-- NOTIFICATIONS -->
+
+                <div
+                    class="relative"
+                    x-data="{open:false}">
+
 
                     <button
 
-                        @click="sidebar=true"
+                        @click="open=!open"
 
-                        class="lg:hidden">
+                        type="button"
+
+                        class="relative
+                               h-10
+                               w-10
+                               rounded-xl
+                               bg-[#151515]
+                               border
+                               border-zinc-800
+                               flex
+                               items-center
+                               justify-center
+                               hover:border-red-600
+                               transition">
+
 
                         <i
-                            data-lucide="menu"
-                            class="w-5 h-5">
+                            data-lucide="bell"
+                            class="w-4 h-4">
+                        </i>
+
+
+                        {% if unread_notifications %}
+
+                        <span
+
+                            class="absolute
+                                   -top-1
+                                   -right-1
+                                   h-5
+                                   min-w-5
+                                   px-1
+                                   rounded-full
+                                   bg-red-600
+                                   text-[10px]
+                                   flex
+                                   items-center
+                                   justify-center">
+
+                            {{ unread_notifications }}
+
+                        </span>
+
+                        {% endif %}
+
+                    </button>
+
+
+                    <!-- NOTIFICATION DROPDOWN -->
+
+                    <div
+
+                        x-show="open"
+
+                        @click.outside="open=false"
+
+                        x-transition
+
+                        x-cloak
+
+                        class="absolute
+                               right-0
+                               mt-3
+                               w-[min(20rem,calc(100vw-1.5rem))]
+                               rounded-2xl
+                               glass
+                               border
+                               border-zinc-800
+                               overflow-hidden
+                               shadow-2xl
+                               shadow-black/40">
+
+
+                        <div
+                            class="px-5 py-4 border-b border-zinc-800">
+
+                            <h2 class="font-semibold">
+
+                                Notifications
+
+                            </h2>
+
+                        </div>
+
+
+                        <div class="max-h-80 overflow-y-auto">
+
+
+                            {% for notification in request.user.notifications.all|slice:":5" %}
+
+                            <a
+
+                                href="#"
+
+                                class="block px-5 py-4 border-b border-zinc-900 hover:bg-zinc-900 transition">
+
+                                <p class="text-sm">
+
+                                    {{ notification.title }}
+
+                                </p>
+
+                                <p class="text-xs text-zinc-500 mt-1">
+
+                                    {{ notification.created_at|timesince }} ago
+
+                                </p>
+
+                            </a>
+
+                            {% empty %}
+
+                            <div class="p-6 text-center text-zinc-500">
+
+                                No notifications
+
+                            </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- PROFILE -->
+
+                <div
+
+                    class="relative"
+
+                    x-data="{open:false}">
+
+
+                    <button
+
+                        @click="open=!open"
+
+                        type="button"
+
+                        class="flex items-center gap-2 sm:gap-3 px-1 sm:px-2 py-1 rounded-xl hover:bg-zinc-900 transition">
+
+
+                        {% if request.user.avatar %}
+
+                        <img
+
+                            src="{{ request.user.avatar.url }}"
+
+                            class="h-9 w-9 sm:h-10 sm:w-10 rounded-full object-cover border border-red-600">
+
+                        {% else %}
+
+                        <div
+
+                            class="h-9 w-9 sm:h-10 sm:w-10 rounded-full bg-red-600 flex items-center justify-center">
+
+                            <i
+                                data-lucide="user"
+                                class="w-4 h-4 sm:w-5 sm:h-5">
+                            </i>
+
+                        </div>
+
+                        {% endif %}
+
+
+                        <div class="hidden lg:block text-left">
+
+                            <h3 class="text-sm font-semibold">
+
+                                {{ request.user.username }}
+
+                            </h3>
+
+                            <p class="text-xs text-zinc-500">
+
+                                Investor
+
+                            </p>
+
+                        </div>
+
+
+                        <i
+                            data-lucide="chevron-down"
+                            class="hidden sm:block w-4 h-4">
                         </i>
 
                     </button>
 
-                    <div class="relative hidden md:block">
 
-                        <i
-                            data-lucide="search"
-                            class="absolute left-3 top-3 w-4 h-4 text-zinc-500">
-                        </i>
+                    <!-- PROFILE DROPDOWN -->
 
-                        <input
-                            type="text"
-                            placeholder="Search..."
-                            class="bg-[#151515]
-                                   border
-                                   border-zinc-800
-                                   rounded-xl
-                                   pl-10
-                                   pr-4
-                                   h-11
-                                   w-72
-                                   outline-none
-                                   focus:border-red-600">
+                    <div
+
+                        x-show="open"
+
+                        @click.outside="open=false"
+
+                        x-transition
+
+                        x-cloak
+
+                        class="absolute
+                               right-0
+                               mt-3
+                               w-60
+                               rounded-2xl
+                               glass
+                               border
+                               border-zinc-800
+                               overflow-hidden
+                               shadow-2xl
+                               shadow-black/40">
+
+
+                        <a
+
+                            href="{% url 'profile' %}"
+
+                            class="flex items-center gap-3 px-5 py-4 hover:bg-zinc-900 transition">
+
+                            <i
+                                data-lucide="user-circle"
+                                class="w-5 h-5">
+                            </i>
+
+                            Profile
+
+                        </a>
+
+
+                        <a
+
+                            href="{% url 'portfolio' %}"
+
+                            class="flex items-center gap-3 px-5 py-4 hover:bg-zinc-900 transition">
+
+                            <i
+                                data-lucide="wallet"
+                                class="w-5 h-5">
+                            </i>
+
+                            Wallet
+
+                        </a>
+
+
+                        <a
+
+                            href="{% url 'account_settings' %}"
+
+                            class="flex items-center gap-3 px-5 py-4 hover:bg-zinc-900 transition">
+
+                            <i
+                                data-lucide="settings"
+                                class="w-5 h-5">
+                            </i>
+
+                            Settings
+
+                        </a>
+
+
+                        <div class="border-t border-zinc-800"></div>
+
+
+                        <a
+
+                            href="{% url 'logout' %}"
+
+                            class="flex items-center gap-3 px-5 py-4 text-red-500 hover:bg-red-600 hover:text-white transition">
+
+                            <i
+                                data-lucide="log-out"
+                                class="w-5 h-5">
+                            </i>
+
+                            Logout
+
+                        </a>
 
                     </div>
 
                 </div>
 
-                <!-- RIGHT (Phase 3) -->
-
-                <div class="flex items-center gap-4">
-                    <!-- RIGHT -->
-
-<div class="flex items-center gap-3">
-
-    <!-- Search (Mobile) -->
-
-    <button
-        class="md:hidden h-10 w-10 rounded-xl bg-[#151515] border border-zinc-800 flex items-center justify-center">
-
-        <i data-lucide="search" class="w-4 h-4"></i>
-
-    </button>
-
-    <!-- Notifications -->
-
-    <div
-        class="relative"
-        x-data="{open:false}">
-
-        <button
-
-            @click="open=!open"
-
-            class="relative h-10 w-10 rounded-xl bg-[#151515] border border-zinc-800 flex items-center justify-center hover:border-red-600 transition">
-
-            <i data-lucide="bell" class="w-4 h-4"></i>
-
-            {% if unread_notifications %}
-
-            <span
-                class="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-red-600 text-[10px] flex items-center justify-center">
-
-                {{ unread_notifications }}
-
-            </span>
-
-            {% endif %}
-
-        </button>
-
-        <!-- Dropdown -->
-
-        <div
-
-            x-show="open"
-
-            @click.outside="open=false"
-
-            x-transition
-
-            x-cloak
-
-            class="absolute right-0 mt-3 w-80 rounded-2xl glass border border-zinc-800 overflow-hidden">
-
-            <div class="px-5 py-4 border-b border-zinc-800">
-
-                <h2 class="font-semibold">
-
-                    Notifications
-
-                </h2>
-
-            </div>
-
-            <div class="max-h-80 overflow-y-auto">
-
-                {% for notification in request.user.notifications.all|slice:":5" %}
-
-                <a
-
-                    href="#"
-
-                    class="block px-5 py-4 border-b border-zinc-900 hover:bg-zinc-900 transition">
-
-                    <p class="text-sm">
-
-                        {{ notification.title }}
-
-                    </p>
-
-                    <p class="text-xs text-zinc-500 mt-1">
-
-                        {{ notification.created_at|timesince }} ago
-
-                    </p>
-
-                </a>
-
-                {% empty %}
-
-                <div class="p-6 text-center text-zinc-500">
-
-                    No notifications
-
-                </div>
-
-                {% endfor %}
-
             </div>
 
         </div>
 
-    </div>
+    </header>
 
-    <!-- Profile -->
 
-    <div
 
-        class="relative"
+    <!-- ================================================= -->
+    <!-- PAGE CONTENT -->
+    <!-- ================================================= -->
 
-        x-data="{open:false}">
+    <main
 
-        <button
+        class="w-full
+               min-w-0
+               max-w-full
+               flex-1
+               overflow-x-hidden
 
-            @click="open=!open"
+               px-3
+               py-5
 
-            class="flex items-center gap-3 px-2 py-1 rounded-xl hover:bg-zinc-900 transition">
+               sm:px-6
+               sm:py-6
 
-            {% if request.user.avatar %}
+               lg:px-6">
 
-            <img
 
-                src="{{ request.user.avatar.url }}"
+        {% block content %}
 
-                class="h-10 w-10 rounded-full object-cover border border-red-600">
+        {% endblock %}
 
-            {% else %}
 
-            <div
+    </main>
 
-                class="h-10 w-10 rounded-full bg-red-600 flex items-center justify-center">
-
-                <i data-lucide="user"></i>
-
-            </div>
-
-            {% endif %}
-
-            <div class="hidden lg:block text-left">
-
-                <h3 class="text-sm font-semibold">
-
-                    {{ request.user.username }}
-
-                </h3>
-
-                <p class="text-xs text-zinc-500">
-
-                    Investor
-
-                </p>
-
-            </div>
-
-            <i data-lucide="chevron-down" class="w-4 h-4"></i>
-
-        </button>
-
-        <!-- Dropdown -->
-
-        <div
-
-            x-show="open"
-
-            @click.outside="open=false"
-
-            x-transition
-
-            x-cloak
-
-            class="absolute right-0 mt-3 w-60 rounded-2xl glass border border-zinc-800 overflow-hidden">
-
-            <a
-
-                href="{% url 'profile' %}"
-
-                class="flex items-center gap-3 px-5 py-4 hover:bg-zinc-900 transition">
-
-                <i data-lucide="user-circle"></i>
-
-                Profile
-
-            </a>
-
-            <a
-
-                href="{% url 'portfolio' %}"
-
-                class="flex items-center gap-3 px-5 py-4 hover:bg-zinc-900 transition">
-
-                <i data-lucide="wallet"></i>
-
-                Wallet
-
-            </a>
-
-            <a
-
-                href="{% url 'account_settings' %}"
-
-                class="flex items-center gap-3 px-5 py-4 hover:bg-zinc-900 transition">
-
-                <i data-lucide="settings"></i>
-
-                Settings
-
-            </a>
-
-            <div class="border-t border-zinc-800"></div>
-
-            <a
-
-                href="{% url 'logout' %}"
-
-                class="flex items-center gap-3 px-5 py-4 text-red-500 hover:bg-red-600 hover:text-white transition">
-
-                <i data-lucide="log-out"></i>
-
-                Logout
-
-            </a>
-
-        </div>
-
-    </div>
 
 </div>
-                </div>
-
-            </div>
-
-        </header>
-
-        <!-- PAGE -->
-
-        <main class="flex-1 p-6">
-
-            {% block content %}
-
-            {% endblock %}
-
-        </main>
-
-    </div>
+```
 
 </div>
+
+<!-- ====================================================== -->
+
+<!-- ICONS -->
+
+<!-- ====================================================== -->
 
 <script>
 
-    lucide.createIcons();
+    function initializeIcons() {
+
+        if (typeof lucide !== "undefined") {
+
+            lucide.createIcons();
+
+        }
+
+    }
+
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        initializeIcons
+    );
+
+
+    document.addEventListener(
+        "alpine:init",
+        initializeIcons
+    );
 
 </script>
 
 {% block scripts %}
 
 {% endblock %}
-<script>
 
-    document.addEventListener("DOMContentLoaded", () => {
-    
-        lucide.createIcons();
-    
-    });
-    
-    </script>
 </body>
 
 </html>

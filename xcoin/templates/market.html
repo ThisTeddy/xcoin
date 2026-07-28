@@ -7,362 +7,393 @@ Market | XCoin
 
 {% block content %}
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+<div class="w-full max-w-full min-w-0 overflow-x-hidden px-3 py-5 sm:px-6 sm:py-6 lg:px-8"></div>
 
-    <!-- Header -->
+<div class="mx-auto w-full max-w-7xl min-w-0"></div>
 
-    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-8">
+    <div class="mb-7 flex flex-col gap-5 sm:mb-9 lg:flex-row lg:items-center lg:justify-between">
 
-        <div>
+        <div class="min-w-0">
 
-            <h1 class="text-3xl font-black text-white">
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-red-500">
+                XCoin Markets
+            </p>
 
+            <h1 class="mt-2 text-3xl font-black tracking-tight text-white sm:text-4xl">
                 Markets
-
             </h1>
 
-            <p class="text-zinc-400 mt-2">
-
+            <p class="mt-2 max-w-2xl text-sm leading-6 text-zinc-400 sm:text-base">
                 Trade cryptocurrencies, stocks, ETFs, commodities and forex.
-
             </p>
 
         </div>
 
         <a href="{% url 'portfolio' %}"
-           class="inline-flex items-center justify-center h-11 px-5 rounded-xl bg-red-600 hover:bg-red-700 transition font-semibold">
-
+           class="inline-flex h-11 w-full items-center justify-center rounded-xl bg-red-600 px-5 text-sm font-semibold text-white transition hover:bg-red-700 sm:w-auto">
             My Portfolio
-
         </a>
 
     </div>
 
-    <!-- Search -->
 
-    <form method="GET" class="mb-6">
+    <form method="GET" class="mb-5">
 
         <div class="relative">
 
             <i data-lucide="search"
-               class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500"></i>
+               class="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-zinc-500"></i>
 
             <input
                 type="text"
                 name="search"
                 value="{{ search }}"
                 placeholder="Search assets..."
-                class="w-full h-12 rounded-2xl bg-zinc-900 border border-zinc-800 pl-12 pr-4 focus:border-red-600 focus:ring-2 focus:ring-red-600 outline-none">
+                class="h-12 w-full rounded-2xl border border-zinc-800 bg-zinc-900 pl-12 pr-4 text-sm text-white outline-none transition placeholder:text-zinc-600 focus:border-red-600 focus:ring-2 focus:ring-red-600/20">
 
         </div>
 
     </form>
 
-    <!-- Filters -->
 
-    <div class="flex gap-3 overflow-x-auto pb-2 mb-8">
+    <div class="mb-7 -mx-3 overflow-x-auto px-3 sm:mx-0 sm:px-0">
 
-        <a href="{% url 'market' %}"
-           class="px-5 py-2 rounded-full whitespace-nowrap transition
-           {% if not selected_type %}
-           bg-red-600 text-white
-           {% else %}
-           bg-zinc-900 hover:bg-zinc-800
-           {% endif %}">
+        <div class="flex w-max gap-2 pb-1">
 
-            All
+            <a href="{% url 'market' %}"
+               class="rounded-full px-5 py-2.5 text-sm font-medium whitespace-nowrap transition
+               {% if not selected_type %}
+               bg-red-600 text-white
+               {% else %}
+               bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-white
+               {% endif %}">
+                All
+            </a>
 
-        </a>
+            <a href="?type=crypto"
+               class="rounded-full px-5 py-2.5 text-sm font-medium whitespace-nowrap transition
+               {% if selected_type == 'crypto' %}
+               bg-red-600 text-white
+               {% else %}
+               bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-white
+               {% endif %}">
+                Crypto
+            </a>
 
-        <a href="?type=crypto"
-           class="px-5 py-2 rounded-full whitespace-nowrap transition
-           {% if selected_type == 'crypto' %}
-           bg-red-600 text-white
-           {% else %}
-           bg-zinc-900 hover:bg-zinc-800
-           {% endif %}">
+            <a href="?type=stock"
+               class="rounded-full px-5 py-2.5 text-sm font-medium whitespace-nowrap transition
+               {% if selected_type == 'stock' %}
+               bg-red-600 text-white
+               {% else %}
+               bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-white
+               {% endif %}">
+                Stocks
+            </a>
 
-            Crypto
+            <a href="?type=etf"
+               class="rounded-full px-5 py-2.5 text-sm font-medium whitespace-nowrap transition
+               {% if selected_type == 'etf' %}
+               bg-red-600 text-white
+               {% else %}
+               bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-white
+               {% endif %}">
+                ETFs
+            </a>
 
-        </a>
+            <a href="?type=forex"
+               class="rounded-full px-5 py-2.5 text-sm font-medium whitespace-nowrap transition
+               {% if selected_type == 'forex' %}
+               bg-red-600 text-white
+               {% else %}
+               bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-white
+               {% endif %}">
+                Forex
+            </a>
 
-        <a href="?type=stock"
-           class="px-5 py-2 rounded-full whitespace-nowrap transition
-           {% if selected_type == 'stock' %}
-           bg-red-600 text-white
-           {% else %}
-           bg-zinc-900 hover:bg-zinc-800
-           {% endif %}">
+            <a href="?type=commodity"
+               class="rounded-full px-5 py-2.5 text-sm font-medium whitespace-nowrap transition
+               {% if selected_type == 'commodity' %}
+               bg-red-600 text-white
+               {% else %}
+               bg-zinc-900 text-zinc-400 hover:bg-zinc-800 hover:text-white
+               {% endif %}">
+                Commodities
+            </a>
 
-            Stocks
-
-        </a>
-
-        <a href="?type=etf"
-           class="px-5 py-2 rounded-full whitespace-nowrap transition
-           {% if selected_type == 'etf' %}
-           bg-red-600 text-white
-           {% else %}
-           bg-zinc-900 hover:bg-zinc-800
-           {% endif %}">
-
-            ETFs
-
-        </a>
-
-        <a href="?type=forex"
-           class="px-5 py-2 rounded-full whitespace-nowrap transition
-           {% if selected_type == 'forex' %}
-           bg-red-600 text-white
-           {% else %}
-           bg-zinc-900 hover:bg-zinc-800
-           {% endif %}">
-
-            Forex
-
-        </a>
-
-        <a href="?type=commodity"
-           class="px-5 py-2 rounded-full whitespace-nowrap transition
-           {% if selected_type == 'commodity' %}
-           bg-red-600 text-white
-           {% else %}
-           bg-zinc-900 hover:bg-zinc-800
-           {% endif %}">
-
-            Commodities
-
-        </a>
+        </div>
 
     </div>
 
-    <!-- Market Overview -->
 
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div class="mb-7 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
 
-        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
+        <div class="min-w-0 rounded-2xl border border-zinc-800 bg-zinc-900 p-4 sm:p-5">
 
-            <p class="text-zinc-500 text-sm">
-
+            <p class="text-xs text-zinc-500">
                 Assets
-
             </p>
 
-            <h3 class="text-3xl font-black mt-2">
-
+            <h3 class="mt-2 text-2xl font-black text-white sm:text-3xl">
                 {{ assets|length }}
-
             </h3>
 
         </div>
 
-        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
+        <div class="min-w-0 rounded-2xl border border-zinc-800 bg-zinc-900 p-4 sm:p-5">
 
-            <p class="text-zinc-500 text-sm">
-
+            <p class="text-xs text-zinc-500">
                 Markets
-
             </p>
 
-            <h3 class="text-3xl font-black mt-2">
-
+            <h3 class="mt-2 text-2xl font-black text-white sm:text-3xl">
                 24/7
-
             </h3>
 
         </div>
 
-        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
+        <div class="min-w-0 rounded-2xl border border-zinc-800 bg-zinc-900 p-4 sm:p-5">
 
-            <p class="text-zinc-500 text-sm">
-
+            <p class="text-xs text-zinc-500">
                 Trading
-
             </p>
 
-            <h3 class="text-3xl font-black mt-2 text-green-500">
-
+            <h3 class="mt-2 text-2xl font-black text-green-500 sm:text-3xl">
                 Live
-
             </h3>
 
         </div>
 
-        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
+        <div class="min-w-0 rounded-2xl border border-zinc-800 bg-zinc-900 p-4 sm:p-5">
 
-            <p class="text-zinc-500 text-sm">
-
+            <p class="text-xs text-zinc-500">
                 Currency
-
             </p>
 
-            <h3 class="text-3xl font-black mt-2">
-
+            <h3 class="mt-2 text-2xl font-black text-white sm:text-3xl">
                 USD
-
             </h3>
 
         </div>
 
     </div>
 
-    <!-- Asset Grid -->
 
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-2 xl:grid-cols-3">
+
         {% for asset in assets %}
 
-<div class="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden hover:border-red-600 hover:-translate-y-1 transition-all duration-300">
+        <div class="group min-w-0 overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900 transition duration-300 hover:-translate-y-1 hover:border-red-600/60">
 
-    <!-- Card Header -->
+            <div class="p-4 sm:p-6">
 
-    <div class="p-6">
+                <div class="flex min-w-0 items-start justify-between gap-3">
 
-        <div class="flex items-center justify-between">
+                    <div class="flex min-w-0 items-center gap-3 sm:gap-4">
 
-            <div class="flex items-center gap-4">
+                        {% if asset.logo %}
 
-                {% if asset.logo %}
+                        <img src="{{ asset.logo.url }}"
+                             class="h-11 w-11 shrink-0 rounded-full border border-zinc-700 object-cover sm:h-14 sm:w-14">
 
-                <img src="{{ asset.logo.url }}"
-                     class="w-14 h-14 rounded-full object-cover border border-zinc-700">
+                        {% else %}
 
-                {% else %}
+                        <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-red-600 text-lg font-bold text-white sm:h-14 sm:w-14 sm:text-xl">
+                            {{ asset.symbol|slice:":1" }}
+                        </div>
 
-                <div class="w-14 h-14 rounded-full bg-red-600 flex items-center justify-center text-xl font-bold">
+                        {% endif %}
 
-                    {{ asset.symbol|slice:":1" }}
+                        <div class="min-w-0">
+
+                            <h3 class="truncate text-lg font-bold text-white sm:text-xl">
+                                {{ asset.symbol }}
+                            </h3>
+
+                            <p class="truncate text-xs text-zinc-400 sm:text-sm">
+                                {{ asset.name }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    {% if asset.change >= 0 %}
+
+                    <span class="shrink-0 rounded-full bg-green-500/10 px-2.5 py-1 text-[11px] font-semibold text-green-400 sm:px-3 sm:text-xs">
+                        +{{ asset.change|floatformat:2 }}%
+                    </span>
+
+                    {% else %}
+
+                    <span class="shrink-0 rounded-full bg-red-500/10 px-2.5 py-1 text-[11px] font-semibold text-red-400 sm:px-3 sm:text-xs">
+                        {{ asset.change|floatformat:2 }}%
+                    </span>
+
+                    {% endif %}
 
                 </div>
 
-                {% endif %}
 
-                <div>
+                <div class="mt-6">
 
-                    <h3 class="text-xl font-bold">
+                    <p class="text-xs text-zinc-500">
+                        Current Price
+                    </p>
 
-                        {{ asset.symbol }}
+                    <h2 class="mt-1 break-all text-2xl font-black tracking-tight text-white sm:text-3xl">
+                        ${{ asset.current_price|floatformat:2|intcomma }}
+                    </h2>
 
-                    </h3>
+                </div>
 
-                    <p class="text-zinc-400 text-sm">
 
-                        {{ asset.name }}
+                <div class="mt-6 grid grid-cols-2 gap-3">
 
+                    <div class="min-w-0 rounded-xl bg-zinc-950/60 p-3">
+
+                        <p class="text-[11px] text-zinc-500">
+                            Market Cap
+                        </p>
+
+                        <p class="mt-1 break-all text-sm font-semibold text-zinc-200">
+                            ${{ asset.market_cap|floatformat:2|intcomma }}
+                        </p>
+
+                    </div>
+
+                    <div class="min-w-0 rounded-xl bg-zinc-950/60 p-3">
+
+                        <p class="text-[11px] text-zinc-500">
+                            Volume
+                        </p>
+
+                        <p class="mt-1 break-all text-sm font-semibold text-zinc-200">
+                            ${{ asset.volume_24h|floatformat:2|intcomma }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="mt-3 grid grid-cols-2 gap-3">
+
+                    <div class="min-w-0">
+
+                        <p class="text-[11px] text-zinc-500">
+                            24H High
+                        </p>
+
+                        <p class="mt-1 break-all text-sm font-semibold text-green-400">
+                            ${{ asset.high_24h|floatformat:2|intcomma }}
+                        </p>
+
+                    </div>
+
+                    <div class="min-w-0 text-right">
+
+                        <p class="text-[11px] text-zinc-500">
+                            24H Low
+                        </p>
+
+                        <p class="mt-1 break-all text-sm font-semibold text-red-400">
+                            ${{ asset.low_24h|floatformat:2|intcomma }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="grid grid-cols-2 gap-2 border-t border-zinc-800 p-3 sm:gap-3 sm:p-5">
+
+                <a href="{% url 'asset_detail' asset.id %}"
+                   class="inline-flex h-11 items-center justify-center rounded-xl bg-zinc-800 text-sm font-medium text-white transition hover:bg-zinc-700">
+                    Details
+                </a>
+
+                <a href="{% url 'buy_asset' asset.id %}"
+                   class="inline-flex h-11 items-center justify-center rounded-xl bg-red-600 text-sm font-semibold text-white transition hover:bg-red-700">
+                    Buy
+                </a>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <div class="col-span-full">
+
+            <div class="rounded-3xl border border-zinc-800 bg-zinc-900 px-5 py-14 text-center sm:px-12">
+
+                <i data-lucide="search-x"
+                   class="mx-auto h-14 w-14 text-zinc-600 sm:h-16 sm:w-16"></i>
+
+                <h2 class="mt-5 text-xl font-bold text-white sm:text-2xl">
+                    No Assets Found
+                </h2>
+
+                <p class="mx-auto mt-3 max-w-md text-sm leading-6 text-zinc-500">
+                    Try changing your search or selecting another asset category.
+                </p>
+
+                <a href="{% url 'market' %}"
+                   class="mt-6 inline-flex h-11 items-center justify-center rounded-xl bg-red-600 px-6 text-sm font-semibold text-white transition hover:bg-red-700">
+                    View All Assets
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+    <div class="mt-8 sm:mt-10">
+
+        <div class="rounded-3xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6">
+
+            <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+
+                <div class="min-w-0">
+
+                    <p class="text-xs font-semibold uppercase tracking-widest text-red-500">
+                        XCoin
+                    </p>
+
+                    <h2 class="mt-2 text-xl font-bold text-white sm:text-2xl">
+                        Ready to Invest?
+                    </h2>
+
+                    <p class="mt-2 max-w-2xl text-sm leading-6 text-zinc-400">
+                        Explore global financial markets and manage your portfolio with XCoin.
                     </p>
 
                 </div>
 
-            </div>
+                <div class="grid grid-cols-1 gap-2 sm:flex sm:flex-wrap">
 
-            {% if asset.change >= 0 %}
+                    <a href="{% url 'portfolio' %}"
+                       class="inline-flex h-11 items-center justify-center rounded-xl bg-zinc-800 px-5 text-sm font-medium text-white transition hover:bg-zinc-700">
+                        Portfolio
+                    </a>
 
-            <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-semibold">
+                    <a href="{% url 'wallet' %}"
+                       class="inline-flex h-11 items-center justify-center rounded-xl bg-zinc-800 px-5 text-sm font-medium text-white transition hover:bg-zinc-700">
+                        Wallet
+                    </a>
 
-                +{{ asset.change|floatformat:2 }}%
+                    <a href="{% url 'dashboard' %}"
+                       class="inline-flex h-11 items-center justify-center rounded-xl bg-red-600 px-5 text-sm font-semibold text-white transition hover:bg-red-700">
+                        Dashboard
+                    </a>
 
-            </span>
-
-            {% else %}
-
-            <span class="px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-xs font-semibold">
-
-                {{ asset.change|floatformat:2 }}%
-
-            </span>
-
-            {% endif %}
-
-        </div>
-
-        <!-- Price -->
-
-        <div class="mt-6">
-
-            <p class="text-zinc-500 text-sm">
-
-                Current Price
-
-            </p>
-
-            <h2 class="text-3xl font-black mt-2 break-words">
-
-                ${{ asset.current_price|floatformat:2|intcomma }}
-
-            </h2>
-
-        </div>
-
-        <!-- Statistics -->
-
-        <div class="grid grid-cols-2 gap-4 mt-6">
-
-            <div>
-
-                <p class="text-zinc-500 text-xs">
-
-                    Market Cap
-
-                </p>
-
-                <p class="font-semibold mt-1 break-words">
-
-                    ${{ asset.market_cap|floatformat:2|intcomma }}
-
-                </p>
-
-            </div>
-
-            <div class="text-right">
-
-                <p class="text-zinc-500 text-xs">
-
-                    Volume
-
-                </p>
-
-                <p class="font-semibold mt-1 break-words">
-
-                    ${{ asset.volume_24h|floatformat:2|intcomma }}
-
-                </p>
-
-            </div>
-
-        </div>
-
-        <!-- High & Low -->
-
-        <div class="grid grid-cols-2 gap-4 mt-6">
-
-            <div>
-
-                <p class="text-zinc-500 text-xs">
-
-                    24H High
-
-                </p>
-
-                <p class="text-green-400 font-semibold">
-
-                    ${{ asset.high_24h|floatformat:2|intcomma }}
-
-                </p>
-
-            </div>
-
-            <div class="text-right">
-
-                <p class="text-zinc-500 text-xs">
-
-                    24H Low
-
-                </p>
-
-                <p class="text-red-400 font-semibold">
-
-                    ${{ asset.low_24h|floatformat:2|intcomma }}
-
-                </p>
+                </div>
 
             </div>
 
@@ -370,122 +401,39 @@ Market | XCoin
 
     </div>
 
-    <!-- Footer -->
-
-    <div class="border-t border-zinc-800 p-5 flex gap-3">
-
-        <a href="{% url 'asset_detail' asset.id %}"
-           class="flex-1 h-11 rounded-xl bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center transition font-medium">
-
-            Details
-
-        </a>
-
-        <a href="{% url 'buy_asset' asset.id %}"
-           class="flex-1 h-11 rounded-xl bg-red-600 hover:bg-red-700 flex items-center justify-center transition font-semibold">
-
-            Buy
-
-        </a>
-
-    </div>
-
 </div>
 
-{% empty %}
-
-<div class="col-span-full">
-
-    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-12 text-center">
-
-        <i data-lucide="search-x"
-           class="w-16 h-16 mx-auto text-zinc-600"></i>
-
-        <h2 class="text-2xl font-bold mt-6">
-
-            No Assets Found
-
-        </h2>
-
-        <p class="text-zinc-500 mt-3">
-
-            Try changing your search or selecting another asset category.
-
-        </p>
-
-        <a href="{% url 'market' %}"
-           class="inline-flex items-center justify-center mt-6 px-6 h-11 rounded-xl bg-red-600 hover:bg-red-700 transition">
-
-            View All Assets
-
-        </a>
-
-    </div>
 
 </div>
+<style>
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
 
-{% endfor %}
-</div>
+main {
+    min-width: 0;
+    max-width: 100%;
+}
 
-<!-- ===================================== -->
-<!-- MARKET FOOTER -->
-<!-- ===================================== -->
+.market-page {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+}
 
-<div class="mt-10">
+.market-card {
+    min-width: 0;
+    max-width: 100%;
+}
 
-    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
-
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
-
-            <div>
-
-                <h2 class="text-xl font-bold">
-
-                    Ready to Invest?
-
-                </h2>
-
-                <p class="text-zinc-400 mt-2">
-
-                    Explore global financial markets and grow your portfolio with XCoin.
-
-                </p>
-
-            </div>
-
-            <div class="flex flex-wrap gap-3">
-
-                <a href="{% url 'portfolio' %}"
-                   class="h-11 px-5 rounded-xl bg-zinc-800 hover:bg-zinc-700 transition flex items-center justify-center">
-
-                    Portfolio
-
-                </a>
-
-                <a href="{% url 'wallet' %}"
-                   class="h-11 px-5 rounded-xl bg-zinc-800 hover:bg-zinc-700 transition flex items-center justify-center">
-
-                    Wallet
-
-                </a>
-
-                <a href="{% url 'dashboard' %}"
-                   class="h-11 px-5 rounded-xl bg-red-600 hover:bg-red-700 transition flex items-center justify-center font-semibold">
-
-                    Dashboard
-
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-</div>
-
+.market-card * {
+    min-width: 0;
+    max-width: 100%;
+}
+</style>
 {% endblock %}
 
 {% block scripts %}
@@ -494,7 +442,7 @@ Market | XCoin
 
 document.addEventListener("DOMContentLoaded", function(){
 
-lucide.createIcons();
+    lucide.createIcons();
 
 });
 
