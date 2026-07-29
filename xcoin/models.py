@@ -790,35 +790,26 @@ class Payment(models.Model):
 
 from django.db import models
 
-
 class DepositWallet(models.Model):
 
     NETWORKS = (
-
         ("BTC", "Bitcoin"),
-
         ("ETH", "Ethereum"),
-
         ("USDT_TRC20", "USDT (TRC20)"),
-
         ("USDT_ERC20", "USDT (ERC20)"),
-
         ("USDT_BEP20", "USDT (BEP20)"),
-
         ("BNB", "BNB Smart Chain"),
-
         ("SOL", "Solana"),
-
         ("LTC", "Litecoin"),
-
         ("DOGE", "Dogecoin"),
-
     )
+
     asset = models.ForeignKey(
         Asset,
         on_delete=models.CASCADE,
         related_name="deposit_wallets",
     )
+
     network = models.CharField(
         max_length=30,
         choices=NETWORKS,
@@ -826,12 +817,6 @@ class DepositWallet(models.Model):
     )
 
     wallet_address = models.TextField()
-
-    qr_code = models.ImageField(
-        upload_to="wallets/",
-        blank=True,
-        null=True
-    )
 
     active = models.BooleanField(
         default=True,
@@ -847,13 +832,11 @@ class DepositWallet(models.Model):
     )
 
     class Meta:
-
         ordering = ["network"]
 
     def __str__(self):
-
         return self.get_network_display()
-
+    
 class SiteSettings(models.Model):
 
     site_name = models.CharField(
