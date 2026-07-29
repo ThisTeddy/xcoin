@@ -4,236 +4,457 @@
 
 {% block content %}
 
-<section class="max-w-7xl mx-auto p-6">
+<section class="w-full max-w-[1400px] mx-auto space-y-5 sm:space-y-6">
 
-    <div class="flex items-center justify-between mb-10">
+
+<!-- ================================================= -->
+<!-- HEADER -->
+<!-- ================================================= -->
+
+<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+
+    <div class="min-w-0">
+
+        <p class="text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] text-red-500 font-semibold">
+            Finance
+        </p>
+
+        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight mt-1.5">
+            Wallet
+        </h1>
+
+        <p class="text-xs sm:text-sm text-zinc-500 mt-1">
+            Manage your funds, deposits and withdrawals.
+        </p>
+
+    </div>
+
+
+    <div class="grid grid-cols-2 gap-2.5 sm:flex sm:gap-3">
+
+        <a
+            href="{% url 'deposit' %}"
+            class="h-10 sm:h-11 px-4 rounded-xl
+                   bg-green-600 hover:bg-green-700
+                   transition
+                   flex items-center justify-center gap-2
+                   text-xs sm:text-sm font-semibold">
+
+            <i data-lucide="arrow-down-to-line" class="w-4 h-4"></i>
+
+            Deposit
+
+        </a>
+
+
+        <a
+            href="{% url 'withdraw' %}"
+            class="h-10 sm:h-11 px-4 rounded-xl
+                   bg-red-600 hover:bg-red-700
+                   transition
+                   flex items-center justify-center gap-2
+                   text-xs sm:text-sm font-semibold">
+
+            <i data-lucide="arrow-up-from-line" class="w-4 h-4"></i>
+
+            Withdraw
+
+        </a>
+
+    </div>
+
+</div>
+
+
+
+<!-- ================================================= -->
+<!-- BALANCE -->
+<!-- ================================================= -->
+
+<div
+    class="glass
+           rounded-2xl
+           sm:rounded-3xl
+           border border-zinc-800
+           p-5 sm:p-6 lg:p-8
+           relative overflow-hidden">
+
+
+    <div class="absolute -right-16 -top-16 w-40 h-40 bg-red-600/10 rounded-full blur-3xl"></div>
+
+
+    <div class="relative">
+
+        <div class="flex items-center justify-between gap-4">
+
+            <div>
+
+                <p class="text-[10px] sm:text-xs uppercase tracking-[0.15em] text-zinc-500">
+                    Available Balance
+                </p>
+
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight mt-2">
+
+                    ${{ wallet.balance|floatformat:2 }}
+
+                </h2>
+
+            </div>
+
+
+            <div
+                class="w-10 h-10 sm:w-12 sm:h-12
+                       rounded-xl sm:rounded-2xl
+                       bg-red-600/10
+                       flex items-center justify-center
+                       shrink-0">
+
+                <i
+                    data-lucide="wallet"
+                    class="w-5 h-5 sm:w-6 sm:h-6 text-red-500">
+                </i>
+
+            </div>
+
+        </div>
+
+
+        <div class="flex items-center gap-2 mt-4">
+
+            <span
+                class="w-2 h-2 rounded-full bg-green-500">
+            </span>
+
+            <p class="text-[11px] sm:text-xs text-green-500">
+                Funds available for trading and investing
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ================================================= -->
+<!-- STATS -->
+<!-- ================================================= -->
+
+<div class="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
+
+
+    <!-- LOCKED -->
+
+    <div class="glass rounded-2xl border border-zinc-800 p-4 sm:p-5">
+
+        <div class="flex items-center justify-between gap-2">
+
+            <p class="text-[10px] sm:text-xs uppercase tracking-wide text-zinc-500">
+                Locked Balance
+            </p>
+
+            <i
+                data-lucide="lock-keyhole"
+                class="w-4 h-4 text-zinc-600 shrink-0">
+            </i>
+
+        </div>
+
+        <h3 class="text-lg sm:text-2xl font-bold mt-3 break-words">
+            ${{ wallet.locked_balance }}
+        </h3>
+
+    </div>
+
+
+
+    <!-- DEPOSITS -->
+
+    <div class="glass rounded-2xl border border-zinc-800 p-4 sm:p-5">
+
+        <div class="flex items-center justify-between gap-2">
+
+            <p class="text-[10px] sm:text-xs uppercase tracking-wide text-zinc-500">
+                Deposits
+            </p>
+
+            <i
+                data-lucide="arrow-down-to-line"
+                class="w-4 h-4 text-green-500 shrink-0">
+            </i>
+
+        </div>
+
+        <h3 class="text-lg sm:text-2xl font-bold mt-3 break-words">
+            ${{ wallet.total_deposit }}
+        </h3>
+
+    </div>
+
+
+
+    <!-- WITHDRAWALS -->
+
+    <div class="glass rounded-2xl border border-zinc-800 p-4 sm:p-5">
+
+        <div class="flex items-center justify-between gap-2">
+
+            <p class="text-[10px] sm:text-xs uppercase tracking-wide text-zinc-500">
+                Withdrawals
+            </p>
+
+            <i
+                data-lucide="arrow-up-from-line"
+                class="w-4 h-4 text-red-500 shrink-0">
+            </i>
+
+        </div>
+
+        <h3 class="text-lg sm:text-2xl font-bold mt-3 break-words">
+            ${{ wallet.total_withdrawal }}
+        </h3>
+
+    </div>
+
+
+
+    <!-- PROFIT -->
+
+    <div class="glass rounded-2xl border border-zinc-800 p-4 sm:p-5">
+
+        <div class="flex items-center justify-between gap-2">
+
+            <p class="text-[10px] sm:text-xs uppercase tracking-wide text-zinc-500">
+                Total Profit
+            </p>
+
+            <i
+                data-lucide="trending-up"
+                class="w-4 h-4 text-green-500 shrink-0">
+            </i>
+
+        </div>
+
+        <h3 class="text-lg sm:text-2xl font-bold text-green-500 mt-3 break-words">
+            ${{ wallet.total_profit }}
+        </h3>
+
+    </div>
+
+</div>
+
+
+
+<!-- ================================================= -->
+<!-- TRANSACTIONS -->
+<!-- ================================================= -->
+
+<div class="glass rounded-2xl sm:rounded-3xl border border-zinc-800 overflow-hidden">
+
+    <div
+        class="px-4 sm:px-5 lg:px-6 py-4 sm:py-5
+               border-b border-zinc-800
+               flex items-center justify-between gap-3">
 
         <div>
 
-            <p class="uppercase tracking-[0.35em] text-red-500 text-xs">
-
-                Finance
-
-            </p>
-
-            <h1 class="text-4xl font-black mt-2">
-
-                Wallet
-
-            </h1>
-
-        </div>
-
-        <div class="flex gap-4">
-
-            <a href="{% url 'deposit' %}"
-               class="px-6 py-3 rounded-xl bg-green-600 hover:bg-green-700 font-semibold">
-
-                Deposit
-
-            </a>
-
-            <a href="{% url 'withdraw' %}"
-               class="px-6 py-3 rounded-xl bg-red-600 hover:bg-red-700 font-semibold">
-
-                Withdraw
-
-            </a>
-
-        </div>
-
-    </div>
-
-
-    <!-- Balance -->
-
-    <div class="glass rounded-3xl border border-zinc-800 p-10 mb-8">
-
-        <p class="text-zinc-400">
-
-            Available Balance
-
-        </p>
-
-        <h2 class="text-5xl font-black mt-3">
-
-            ${{ wallet.balance|floatformat:2 }}
-
-        </h2>
-
-        <p class="text-green-500 mt-3">
-
-            Funds available for trading and investing
-
-        </p>
-
-    </div>
-
-
-    <!-- Stats -->
-
-    <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
-
-        <div class="glass rounded-2xl border border-zinc-800 p-6">
-
-            <p class="text-zinc-500 text-sm">
-
-                Locked Balance
-
-            </p>
-
-            <h3 class="text-3xl font-bold mt-2">
-
-                ${{ wallet.locked_balance }}
-
-            </h3>
-
-        </div>
-
-        <div class="glass rounded-2xl border border-zinc-800 p-6">
-
-            <p class="text-zinc-500 text-sm">
-
-                Deposits
-
-            </p>
-
-            <h3 class="text-3xl font-bold mt-2">
-
-                ${{ wallet.total_deposit }}
-
-            </h3>
-
-        </div>
-
-        <div class="glass rounded-2xl border border-zinc-800 p-6">
-
-            <p class="text-zinc-500 text-sm">
-
-                Withdrawals
-
-            </p>
-
-            <h3 class="text-3xl font-bold mt-2">
-
-                ${{ wallet.total_withdrawal }}
-
-            </h3>
-
-        </div>
-
-        <div class="glass rounded-2xl border border-zinc-800 p-6">
-
-            <p class="text-zinc-500 text-sm">
-
-                Total Profit
-
-            </p>
-
-            <h3 class="text-3xl font-bold text-green-500 mt-2">
-
-                ${{ wallet.total_profit }}
-
-            </h3>
-
-        </div>
-
-    </div>
-
-
-    <!-- Transactions -->
-
-    <div class="glass rounded-3xl border border-zinc-800 overflow-hidden">
-
-        <div class="p-6 border-b border-zinc-800">
-
-            <h2 class="text-2xl font-bold">
-
+            <h2 class="text-base sm:text-lg font-bold">
                 Recent Wallet Activity
-
             </h2>
 
+            <p class="text-[10px] sm:text-xs text-zinc-500 mt-1">
+                Your latest wallet transactions.
+            </p>
+
         </div>
 
-        <table class="w-full">
 
-            <thead class="bg-zinc-900">
+        <i
+            data-lucide="history"
+            class="w-4 h-4 text-red-500 shrink-0">
+        </i>
+
+    </div>
+
+
+
+    <!-- ================================================= -->
+    <!-- MOBILE TRANSACTIONS -->
+    <!-- ================================================= -->
+
+    <div class="block sm:hidden">
+
+        {% for transaction in transactions %}
+
+        <div class="px-4 py-4 border-b border-zinc-800 last:border-0">
+
+            <div class="flex items-start justify-between gap-3">
+
+                <div class="min-w-0">
+
+                    <p class="text-xs font-semibold truncate">
+                        {{ transaction.get_transaction_type_display }}
+                    </p>
+
+                    <p class="text-[10px] text-zinc-600 mt-1">
+                        {{ transaction.created_at|date:"M d, Y" }}
+                    </p>
+
+                </div>
+
+
+                <div class="text-right shrink-0">
+
+                    <p class="text-xs font-semibold">
+                        ${{ transaction.amount }}
+                    </p>
+
+
+                    {% if transaction.status == "completed" %}
+
+                    <span class="inline-flex mt-1.5 px-2 py-0.5 rounded-full bg-green-600/15 text-green-500 text-[9px] font-medium">
+                        Completed
+                    </span>
+
+                    {% elif transaction.status == "pending" %}
+
+                    <span class="inline-flex mt-1.5 px-2 py-0.5 rounded-full bg-yellow-500/15 text-yellow-500 text-[9px] font-medium">
+                        Pending
+                    </span>
+
+                    {% else %}
+
+                    <span class="inline-flex mt-1.5 px-2 py-0.5 rounded-full bg-red-600/15 text-red-500 text-[9px] font-medium">
+                        {{ transaction.status }}
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {% empty %}
+
+        <div class="py-12 px-5 text-center">
+
+            <div
+                class="w-11 h-11 mx-auto
+                       rounded-xl
+                       bg-zinc-900
+                       flex items-center justify-center">
+
+                <i
+                    data-lucide="receipt"
+                    class="w-5 h-5 text-zinc-600">
+                </i>
+
+            </div>
+
+            <p class="text-xs sm:text-sm text-zinc-500 mt-3">
+                No wallet activity yet.
+            </p>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+
+    <!-- ================================================= -->
+    <!-- DESKTOP TABLE -->
+    <!-- ================================================= -->
+
+    <div class="hidden sm:block overflow-x-auto">
+
+        <table class="w-full min-w-[650px]">
+
+            <thead class="bg-zinc-950/70">
 
                 <tr>
 
-                    <th class="text-left px-6 py-4">Type</th>
+                    <th class="text-left px-5 lg:px-6 py-3.5 text-[10px] uppercase tracking-wide text-zinc-500">
+                        Type
+                    </th>
 
-                    <th class="text-left px-6 py-4">Amount</th>
+                    <th class="text-left px-5 lg:px-6 py-3.5 text-[10px] uppercase tracking-wide text-zinc-500">
+                        Amount
+                    </th>
 
-                    <th class="text-left px-6 py-4">Status</th>
+                    <th class="text-left px-5 lg:px-6 py-3.5 text-[10px] uppercase tracking-wide text-zinc-500">
+                        Status
+                    </th>
 
-                    <th class="text-left px-6 py-4">Date</th>
+                    <th class="text-left px-5 lg:px-6 py-3.5 text-[10px] uppercase tracking-wide text-zinc-500">
+                        Date
+                    </th>
 
                 </tr>
 
             </thead>
 
+
             <tbody>
 
                 {% for transaction in transactions %}
 
-                <tr class="border-t border-zinc-800">
+                <tr class="border-t border-zinc-800 hover:bg-zinc-900/40 transition">
 
-                    <td class="px-6 py-5">
-
+                    <td class="px-5 lg:px-6 py-4 text-xs sm:text-sm">
                         {{ transaction.get_transaction_type_display }}
-
                     </td>
 
-                    <td class="px-6 py-5 font-semibold">
 
+                    <td class="px-5 lg:px-6 py-4 text-xs sm:text-sm font-semibold">
                         ${{ transaction.amount }}
-
                     </td>
 
-                    <td class="px-6 py-5">
+
+                    <td class="px-5 lg:px-6 py-4">
 
                         {% if transaction.status == "completed" %}
 
-                        <span class="px-3 py-1 rounded-full bg-green-600 text-xs">
-
+                        <span class="inline-flex px-2.5 py-1 rounded-full bg-green-600/15 text-green-500 text-[10px] font-medium">
                             Completed
-
                         </span>
 
                         {% elif transaction.status == "pending" %}
 
-                        <span class="px-3 py-1 rounded-full bg-yellow-500 text-xs">
-
+                        <span class="inline-flex px-2.5 py-1 rounded-full bg-yellow-500/15 text-yellow-500 text-[10px] font-medium">
                             Pending
-
                         </span>
 
                         {% else %}
 
-                        <span class="px-3 py-1 rounded-full bg-red-600 text-xs">
-
+                        <span class="inline-flex px-2.5 py-1 rounded-full bg-red-600/15 text-red-500 text-[10px] font-medium">
                             {{ transaction.status }}
-
                         </span>
 
                         {% endif %}
 
                     </td>
 
-                    <td class="px-6 py-5 text-zinc-400">
 
+                    <td class="px-5 lg:px-6 py-4 text-xs text-zinc-500">
                         {{ transaction.created_at|date:"M d, Y" }}
-
                     </td>
 
                 </tr>
+
 
                 {% empty %}
 
                 <tr>
 
-                    <td colspan="4" class="py-16 text-center text-zinc-500">
+                    <td
+                        colspan="4"
+                        class="py-14 text-center text-xs sm:text-sm text-zinc-500">
 
                         No wallet activity yet.
 
@@ -248,6 +469,9 @@
         </table>
 
     </div>
+
+</div>
+
 
 </section>
 

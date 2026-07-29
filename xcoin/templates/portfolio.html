@@ -6,246 +6,339 @@ Portfolio
 
 {% block content %}
 
-<section class="p-6">
+<section class="w-full max-w-[1600px] mx-auto space-y-5 sm:space-y-6">
 
-    <!-- Header -->
+<!-- ================================================= -->
+<!-- HEADER -->
+<!-- ================================================= -->
 
-    <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-6">
+<div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
-        <div>
+    <div class="min-w-0">
 
-            <p class="uppercase tracking-[0.3em] text-xs text-red-500">
+        <p class="text-[10px] sm:text-xs uppercase tracking-[0.25em] text-red-500 font-semibold">
+            Portfolio
+        </p>
 
-                Portfolio
+        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight mt-1.5">
+            My Portfolio
+        </h1>
 
-            </p>
-
-            <h1 class="text-4xl font-black mt-2">
-
-                My Portfolio
-
-            </h1>
-
-            <p class="text-zinc-400 mt-2">
-
-                Monitor your investments and asset performance.
-
-            </p>
-
-        </div>
-
-        <div class="flex gap-3">
-
-            <a href="{% url 'market' %}"
-
-               class="bg-zinc-900 border border-zinc-800 hover:border-red-600 rounded-xl h-11 px-5 flex items-center gap-2 transition">
-
-                <i data-lucide="chart-candlestick"></i>
-
-                Market
-
-            </a>
-
-            <a href="{% url 'transaction_history' %}"
-
-               class="bg-red-600 hover:bg-red-700 rounded-xl h-11 px-5 flex items-center gap-2 transition">
-
-                <i data-lucide="history"></i>
-
-                History
-
-            </a>
-
-        </div>
+        <p class="text-xs sm:text-sm text-zinc-500 mt-1">
+            Monitor your investments and asset performance.
+        </p>
 
     </div>
 
 
-    <!-- Portfolio Cards -->
+    <div class="grid grid-cols-2 sm:flex gap-2 w-full sm:w-auto">
 
-    <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-6 mt-10">
+        <a
+            href="{% url 'market' %}"
+            class="h-10 px-3 sm:px-4 rounded-xl
+                   bg-zinc-900 border border-zinc-800
+                   hover:border-red-600
+                   flex items-center justify-center gap-2
+                   text-xs sm:text-sm
+                   transition">
 
-        <div class="glass rounded-3xl border border-zinc-800 p-6">
+            <i data-lucide="chart-candlestick"
+               class="w-4 h-4 shrink-0"></i>
 
-            <p class="text-zinc-500 text-sm">
+            <span>Market</span>
 
+        </a>
+
+
+        <a
+            href="{% url 'transaction_history' %}"
+            class="h-10 px-3 sm:px-4 rounded-xl
+                   bg-red-600 hover:bg-red-700
+                   flex items-center justify-center gap-2
+                   text-xs sm:text-sm
+                   transition">
+
+            <i data-lucide="history"
+               class="w-4 h-4 shrink-0"></i>
+
+            <span>History</span>
+
+        </a>
+
+    </div>
+
+</div>
+
+
+
+<!-- ================================================= -->
+<!-- PORTFOLIO SUMMARY -->
+<!-- ================================================= -->
+
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+
+    <!-- Portfolio Value -->
+
+    <div class="glass rounded-2xl border border-zinc-800 p-4 sm:p-5">
+
+        <div class="flex items-center justify-between gap-2">
+
+            <p class="text-[10px] sm:text-xs uppercase tracking-wide text-zinc-500">
                 Portfolio Value
-
             </p>
 
-            <h2 class="text-4xl font-black mt-3">
-
-                ${{ total_value|floatformat:2 }}
-
-            </h2>
+            <i data-lucide="wallet"
+               class="w-4 h-4 text-red-500 shrink-0"></i>
 
         </div>
 
-        <div class="glass rounded-3xl border border-zinc-800 p-6">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight mt-3 truncate">
 
-            <p class="text-zinc-500 text-sm">
+            ${{ total_value|floatformat:2 }}
 
-                Total Profit
-
-            </p>
-
-            <h2 class="text-4xl font-black text-green-500 mt-3">
-
-                ${{ total_profit }}
-
-            </h2>
-
-        </div>
-
-        <div class="glass rounded-3xl border border-zinc-800 p-6">
-
-            <p class="text-zinc-500 text-sm">
-
-                Assets
-
-            </p>
-
-            <h2 class="text-4xl font-black mt-3">
-
-                {{ assets|length }}
-
-            </h2>
-
-        </div>
-
-        <div class="glass rounded-3xl border border-zinc-800 p-6">
-
-            <p class="text-zinc-500 text-sm">
-
-                Today's Change
-
-            </p>
-
-            <h2 class="text-4xl font-black text-red-500 mt-3">
-
-                {{ today_change }}%
-
-            </h2>
-
-        </div>
+        </h2>
 
     </div>
 
 
-    <!-- Chart + Allocation -->
+    <!-- Profit -->
 
-    <div class="grid xl:grid-cols-3 gap-8 mt-10">
+    <div class="glass rounded-2xl border border-zinc-800 p-4 sm:p-5">
 
-        <!-- Performance Chart -->
+        <div class="flex items-center justify-between gap-2">
 
-        <div class="xl:col-span-2 glass rounded-3xl border border-zinc-800 p-8">
+            <p class="text-[10px] sm:text-xs uppercase tracking-wide text-zinc-500">
+                Total Profit
+            </p>
 
-            <div class="flex justify-between items-center">
+            <i data-lucide="trending-up"
+               class="w-4 h-4 text-green-500 shrink-0"></i>
 
-                <h2 class="text-2xl font-bold">
+        </div>
 
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-green-500 mt-3 truncate">
+
+            ${{ total_profit }}
+
+        </h2>
+
+    </div>
+
+
+    <!-- Assets -->
+
+    <div class="glass rounded-2xl border border-zinc-800 p-4 sm:p-5">
+
+        <div class="flex items-center justify-between gap-2">
+
+            <p class="text-[10px] sm:text-xs uppercase tracking-wide text-zinc-500">
+                Assets
+            </p>
+
+            <i data-lucide="layers-3"
+               class="w-4 h-4 text-blue-500 shrink-0"></i>
+
+        </div>
+
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight mt-3">
+
+            {{ assets|length }}
+
+        </h2>
+
+    </div>
+
+
+    <!-- Today's Change -->
+
+    <div class="glass rounded-2xl border border-zinc-800 p-4 sm:p-5">
+
+        <div class="flex items-center justify-between gap-2">
+
+            <p class="text-[10px] sm:text-xs uppercase tracking-wide text-zinc-500">
+                Today's Change
+            </p>
+
+            <i data-lucide="activity"
+               class="w-4 h-4 text-red-500 shrink-0"></i>
+
+        </div>
+
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-red-500 mt-3 truncate">
+
+            {{ today_change }}%
+
+        </h2>
+
+    </div>
+
+</div>
+
+
+
+<!-- ================================================= -->
+<!-- PERFORMANCE + ALLOCATION -->
+<!-- ================================================= -->
+
+<div class="grid xl:grid-cols-3 gap-4 sm:gap-5">
+
+
+    <!-- PERFORMANCE -->
+
+    <div class="xl:col-span-2 glass rounded-2xl border border-zinc-800 p-4 sm:p-5 lg:p-6">
+
+        <div class="flex items-center justify-between gap-3">
+
+            <div class="min-w-0">
+
+                <h2 class="text-sm sm:text-base font-semibold">
                     Portfolio Performance
-
                 </h2>
 
-                <span class="text-zinc-500 text-sm">
-
-                    Last 30 Days
-
-                </span>
+                <p class="text-[11px] sm:text-xs text-zinc-500 mt-1">
+                    Performance over the last 30 days
+                </p>
 
             </div>
 
-            <div class="mt-8 h-80">
-
-                <canvas id="portfolioChart"></canvas>
-
-            </div>
+            <span class="shrink-0 text-[10px] sm:text-xs text-red-500">
+                30D
+            </span>
 
         </div>
 
 
-        <!-- Allocation -->
+        <div class="relative mt-5 sm:mt-6 h-[220px] sm:h-[280px] lg:h-[320px]">
 
-        <div class="glass rounded-3xl border border-zinc-800 p-8">
+            <canvas id="portfolioChart"></canvas>
 
-            <h2 class="text-2xl font-bold">
+        </div>
 
-                Asset Allocation
+    </div>
 
-            </h2>
 
-            <div class="space-y-6 mt-8">
 
-                <div>
+    <!-- ALLOCATION -->
 
-                    <div class="flex justify-between mb-2">
+    <div class="glass rounded-2xl border border-zinc-800 p-4 sm:p-5 lg:p-6">
 
-                        <span>Bitcoin</span>
+        <div class="flex items-center justify-between">
 
-                        <span>45%</span>
+            <div>
 
-                    </div>
+                <h2 class="text-sm sm:text-base font-semibold">
+                    Asset Allocation
+                </h2>
 
-                    <div class="h-2 rounded-full bg-zinc-800">
+                <p class="text-[11px] sm:text-xs text-zinc-500 mt-1">
+                    Portfolio distribution
+                </p>
 
-                        <div class="h-2 rounded-full bg-orange-500 w-[45%]"></div>
+            </div>
 
-                    </div>
+            <i data-lucide="pie-chart"
+               class="w-4 h-4 text-red-500"></i>
 
-                </div>
+        </div>
 
-                <div>
 
-                    <div class="flex justify-between mb-2">
+        <div class="space-y-4 sm:space-y-5 mt-6">
 
-                        <span>Ethereum</span>
 
-                        <span>25%</span>
+            <!-- Bitcoin -->
 
-                    </div>
+            <div>
 
-                    <div class="h-2 rounded-full bg-zinc-800">
+                <div class="flex items-center justify-between mb-1.5">
 
-                        <div class="h-2 rounded-full bg-blue-500 w-[25%]"></div>
+                    <span class="text-xs sm:text-sm">
+                        Bitcoin
+                    </span>
 
-                    </div>
-
-                </div>
-
-                <div>
-
-                    <div class="flex justify-between mb-2">
-
-                        <span>Stocks</span>
-
-                        <span>20%</span>
-
-                    </div>
-
-                    <div class="h-2 rounded-full bg-zinc-800">
-
-                        <div class="h-2 rounded-full bg-green-500 w-[20%]"></div>
-
-                    </div>
+                    <span class="text-[11px] sm:text-xs text-zinc-500">
+                        45%
+                    </span>
 
                 </div>
 
-                <div>
+                <div class="h-1.5 rounded-full bg-zinc-800 overflow-hidden">
 
-                    <div class="flex justify-between mb-2">
+                    <div class="h-full rounded-full bg-orange-500 w-[45%]"></div>
 
-                        <span>Gold</span>
+                </div>
 
-                        <span>10%</span>
+            </div>
 
-                    </div>
 
-                    <div class="h-2 rounded-full bg-zinc-800">
+            <!-- Ethereum -->
 
-                        <div class="h-2 rounded-full bg-yellow-500 w-[10%]"></div>
+            <div>
 
-                    </div>
+                <div class="flex items-center justify-between mb-1.5">
+
+                    <span class="text-xs sm:text-sm">
+                        Ethereum
+                    </span>
+
+                    <span class="text-[11px] sm:text-xs text-zinc-500">
+                        25%
+                    </span>
+
+                </div>
+
+                <div class="h-1.5 rounded-full bg-zinc-800 overflow-hidden">
+
+                    <div class="h-full rounded-full bg-blue-500 w-[25%]"></div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Stocks -->
+
+            <div>
+
+                <div class="flex items-center justify-between mb-1.5">
+
+                    <span class="text-xs sm:text-sm">
+                        Stocks
+                    </span>
+
+                    <span class="text-[11px] sm:text-xs text-zinc-500">
+                        20%
+                    </span>
+
+                </div>
+
+                <div class="h-1.5 rounded-full bg-zinc-800 overflow-hidden">
+
+                    <div class="h-full rounded-full bg-green-500 w-[20%]"></div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Gold -->
+
+            <div>
+
+                <div class="flex items-center justify-between mb-1.5">
+
+                    <span class="text-xs sm:text-sm">
+                        Gold
+                    </span>
+
+                    <span class="text-[11px] sm:text-xs text-zinc-500">
+                        10%
+                    </span>
+
+                </div>
+
+                <div class="h-1.5 rounded-full bg-zinc-800 overflow-hidden">
+
+                    <div class="h-full rounded-full bg-yellow-500 w-[10%]"></div>
 
                 </div>
 
@@ -254,55 +347,80 @@ Portfolio
         </div>
 
     </div>
-    <!-- Holdings -->
 
-<div class="glass rounded-3xl border border-zinc-800 p-8 mt-10">
+</div>
 
-    <div class="flex items-center justify-between mb-8">
 
-        <div>
 
-            <h2 class="text-2xl font-bold">
+<!-- ================================================= -->
+<!-- HOLDINGS -->
+<!-- ================================================= -->
 
+<div class="glass rounded-2xl border border-zinc-800 p-4 sm:p-5 lg:p-6">
+
+
+    <div class="flex items-center justify-between gap-3 mb-5">
+
+        <div class="min-w-0">
+
+            <h2 class="text-sm sm:text-base font-semibold">
                 Asset Holdings
-
             </h2>
 
-            <p class="text-zinc-500 mt-2">
-
+            <p class="text-[11px] sm:text-xs text-zinc-500 mt-1">
                 Your current investment portfolio.
-
             </p>
 
         </div>
 
+        <span class="text-[10px] sm:text-xs text-zinc-600 shrink-0">
+            {{ holdings|length }} assets
+        </span>
+
     </div>
 
-    <!-- Desktop -->
+
+
+    <!-- ================================================= -->
+    <!-- DESKTOP TABLE -->
+    <!-- ================================================= -->
 
     <div class="hidden lg:block overflow-x-auto">
 
-        <table class="w-full">
+        <table class="w-full text-sm">
 
             <thead>
 
-                <tr class="border-b border-zinc-800 text-zinc-500 text-sm">
+                <tr class="border-b border-zinc-800 text-zinc-500 text-xs">
 
-                    <th class="text-left py-4">Asset</th>
+                    <th class="text-left py-3 font-medium">
+                        Asset
+                    </th>
 
-                    <th class="text-left">Quantity</th>
+                    <th class="text-left py-3 font-medium">
+                        Quantity
+                    </th>
 
-                    <th class="text-left">Price</th>
+                    <th class="text-left py-3 font-medium">
+                        Price
+                    </th>
 
-                    <th class="text-left">Value</th>
+                    <th class="text-left py-3 font-medium">
+                        Value
+                    </th>
 
-                    <th class="text-left">Profit</th>
+                    <th class="text-left py-3 font-medium">
+                        Profit
+                    </th>
 
-                    <th class="text-right">Action</th>
+                    <th class="text-right py-3 font-medium">
+                        Action
+                    </th>
 
                 </tr>
 
             </thead>
+
 
             <tbody>
 
@@ -310,21 +428,22 @@ Portfolio
 
                 <tr class="border-b border-zinc-900 hover:bg-zinc-900/50 transition">
 
-                    <td class="py-5">
 
-                        <div class="flex items-center gap-4">
+                    <!-- ASSET -->
+
+                    <td class="py-4">
+
+                        <div class="flex items-center gap-3">
 
                             {% if holding.asset.logo %}
 
                             <img
-
-                            src="{{ holding.asset.logo.url }}"
-
-                            class="w-10 h-10 rounded-full">
+                                src="{{ holding.asset.logo.url }}"
+                                class="w-9 h-9 rounded-full object-cover shrink-0">
 
                             {% else %}
 
-                            <div class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center">
+                            <div class="w-9 h-9 shrink-0 rounded-full bg-red-600 flex items-center justify-center text-xs font-bold">
 
                                 {{ holding.asset.symbol|slice:":1" }}
 
@@ -332,15 +451,16 @@ Portfolio
 
                             {% endif %}
 
-                            <div>
 
-                                <h3 class="font-semibold">
+                            <div class="min-w-0">
+
+                                <h3 class="font-medium truncate">
 
                                     {{ holding.asset.name }}
 
                                 </h3>
 
-                                <p class="text-zinc-500 text-sm">
+                                <p class="text-[11px] text-zinc-500">
 
                                     {{ holding.asset.symbol }}
 
@@ -352,11 +472,17 @@ Portfolio
 
                     </td>
 
+
+                    <!-- QUANTITY -->
+
                     <td>
 
                         {{ holding.quantity }}
 
                     </td>
+
+
+                    <!-- PRICE -->
 
                     <td>
 
@@ -364,11 +490,17 @@ Portfolio
 
                     </td>
 
-                    <td class="font-semibold">
+
+                    <!-- VALUE -->
+
+                    <td class="font-medium">
 
                         ${{ holding.market_value }}
 
                     </td>
+
+
+                    <!-- PROFIT -->
 
                     <td>
 
@@ -392,15 +524,24 @@ Portfolio
 
                     </td>
 
+
+                    <!-- ACTION -->
+
                     <td class="text-right">
 
                         <a
+                            href="{% url 'asset_detail' holding.asset.id %}"
+                            class="inline-flex items-center gap-1.5
+                                   px-3 py-2
+                                   rounded-lg
+                                   bg-red-600 hover:bg-red-700
+                                   text-xs
+                                   transition">
 
-                        href="{% url 'asset_detail' holding.asset.id %}"
+                            <span>View</span>
 
-                        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 transition">
-
-                            View
+                            <i data-lucide="arrow-up-right"
+                               class="w-3.5 h-3.5"></i>
 
                         </a>
 
@@ -412,7 +553,9 @@ Portfolio
 
                 <tr>
 
-                    <td colspan="6" class="py-16 text-center text-zinc-500">
+                    <td
+                        colspan="6"
+                        class="py-12 text-center text-zinc-500 text-sm">
 
                         No assets in your portfolio.
 
@@ -430,91 +573,172 @@ Portfolio
 
 
 
-    <!-- Mobile -->
+    <!-- ================================================= -->
+    <!-- MOBILE HOLDINGS -->
+    <!-- ================================================= -->
 
-    <div class="lg:hidden space-y-5">
+    <div class="lg:hidden space-y-2.5">
+
 
         {% for holding in holdings %}
 
-        <div class="rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
+        <div
+            class="rounded-xl
+                   border border-zinc-800
+                   bg-[#101010]
+                   p-3.5">
 
-            <div class="flex justify-between">
 
-                <div>
+            <!-- TOP -->
 
-                    <h3 class="font-bold">
+            <div class="flex items-center justify-between gap-3">
 
-                        {{ holding.asset.name }}
 
-                    </h3>
+                <div class="flex items-center gap-2.5 min-w-0">
 
-                    <p class="text-zinc-500 text-sm">
+                    {% if holding.asset.logo %}
 
-                        {{ holding.asset.symbol }}
+                    <img
+                        src="{{ holding.asset.logo.url }}"
+                        class="w-9 h-9 rounded-full object-cover shrink-0">
 
-                    </p>
+                    {% else %}
+
+                    <div
+                        class="w-9 h-9 shrink-0 rounded-full
+                               bg-red-600
+                               flex items-center justify-center
+                               text-xs font-bold">
+
+                        {{ holding.asset.symbol|slice:":1" }}
+
+                    </div>
+
+                    {% endif %}
+
+
+                    <div class="min-w-0">
+
+                        <h3 class="text-xs sm:text-sm font-semibold truncate">
+
+                            {{ holding.asset.name }}
+
+                        </h3>
+
+                        <p class="text-[10px] text-zinc-500">
+
+                            {{ holding.asset.symbol }}
+
+                        </p>
+
+                    </div>
 
                 </div>
 
-                <span class="text-red-500">
 
-                    ${{ holding.market_value }}
+                <div class="text-right shrink-0">
 
-                </span>
+                    <p class="text-sm font-semibold">
 
-            </div>
-
-            <div class="grid grid-cols-2 gap-4 mt-5 text-sm">
-
-                <div>
-
-                    <p class="text-zinc-500">
-
-                        Quantity
+                        ${{ holding.market_value }}
 
                     </p>
 
-                    <strong>
+                    {% if holding.profit >= 0 %}
+
+                    <p class="text-[10px] text-green-500">
+
+                        +${{ holding.profit }}
+
+                    </p>
+
+                    {% else %}
+
+                    <p class="text-[10px] text-red-500">
+
+                        -${{ holding.profit|cut:"-" }}
+
+                    </p>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+
+            <!-- DETAILS -->
+
+            <div
+                class="grid grid-cols-2 gap-2
+                       mt-3 pt-3
+                       border-t border-zinc-800">
+
+
+                <div>
+
+                    <p class="text-[10px] text-zinc-600 uppercase">
+                        Quantity
+                    </p>
+
+                    <p class="text-xs text-zinc-300 mt-0.5 truncate">
 
                         {{ holding.quantity }}
 
-                    </strong>
+                    </p>
 
                 </div>
 
+
                 <div>
 
-                    <p class="text-zinc-500">
-
+                    <p class="text-[10px] text-zinc-600 uppercase">
                         Price
-
                     </p>
 
-                    <strong>
+                    <p class="text-xs text-zinc-300 mt-0.5 truncate">
 
                         ${{ holding.asset.current_price }}
 
-                    </strong>
+                    </p>
 
                 </div>
 
             </div>
 
+
+
+            <!-- BUTTON -->
+
             <a
+                href="{% url 'asset_detail' holding.asset.id %}"
 
-            href="{% url 'asset_detail' holding.asset.id %}"
-
-            class="mt-6 w-full h-11 rounded-xl bg-red-600 flex items-center justify-center hover:bg-red-700 transition">
+                class="mt-3
+                       w-full
+                       h-9
+                       rounded-lg
+                       bg-red-600
+                       hover:bg-red-700
+                       flex items-center
+                       justify-center
+                       gap-1.5
+                       text-xs
+                       transition">
 
                 View Asset
+
+                <i data-lucide="arrow-up-right"
+                   class="w-3.5 h-3.5"></i>
 
             </a>
 
         </div>
 
+
         {% empty %}
 
-        <div class="text-center text-zinc-500 py-10">
+        <div class="text-center text-zinc-500 py-10 text-sm">
 
             No assets available.
 
@@ -528,39 +752,70 @@ Portfolio
 
 
 
-<!-- Recent Activity -->
+<!-- ================================================= -->
+<!-- RECENT ACTIVITY -->
+<!-- ================================================= -->
 
-<div class="glass rounded-3xl border border-zinc-800 p-8 mt-10">
+<div class="glass rounded-2xl border border-zinc-800 p-4 sm:p-5 lg:p-6">
 
-    <h2 class="text-2xl font-bold">
 
-        Recent Portfolio Activity
+    <div class="flex items-center justify-between mb-5">
 
-    </h2>
+        <div>
 
-    <div class="space-y-5 mt-8">
+            <h2 class="text-sm sm:text-base font-semibold">
+                Recent Portfolio Activity
+            </h2>
+
+            <p class="text-[11px] sm:text-xs text-zinc-500 mt-1">
+                Your latest portfolio transactions.
+            </p>
+
+        </div>
+
+        <i data-lucide="activity"
+           class="w-4 h-4 text-red-500"></i>
+
+    </div>
+
+
+    <div class="space-y-1">
+
 
         {% for transaction in recent_transactions|slice:":5" %}
 
-        <div class="flex items-center justify-between border-b border-zinc-900 pb-5">
+        <div
+            class="flex items-center justify-between
+                   gap-3
+                   py-3
+                   border-b border-zinc-900
+                   last:border-0">
 
-            <div class="flex items-center gap-4">
 
-                <div class="w-12 h-12 rounded-xl bg-red-600/10 flex items-center justify-center">
+            <div class="flex items-center gap-2.5 min-w-0">
 
-                    <i data-lucide="arrow-left-right" class="text-red-500"></i>
+
+                <div
+                    class="w-8 h-8 shrink-0
+                           rounded-lg
+                           bg-red-600/10
+                           flex items-center justify-center">
+
+                    <i data-lucide="arrow-left-right"
+                       class="w-4 h-4 text-red-500"></i>
 
                 </div>
 
-                <div>
 
-                    <h4 class="font-semibold">
+                <div class="min-w-0">
+
+                    <h4 class="text-xs sm:text-sm font-medium truncate">
 
                         {{ transaction.transaction_type|title }}
 
                     </h4>
 
-                    <p class="text-zinc-500 text-sm">
+                    <p class="text-[10px] sm:text-xs text-zinc-600 truncate">
 
                         {{ transaction.created_at|date:"M d, Y • H:i" }}
 
@@ -570,7 +825,8 @@ Portfolio
 
             </div>
 
-            <strong>
+
+            <strong class="text-xs sm:text-sm shrink-0">
 
                 ${{ transaction.amount }}
 
@@ -578,9 +834,10 @@ Portfolio
 
         </div>
 
+
         {% empty %}
 
-        <p class="text-center text-zinc-500 py-10">
+        <p class="text-center text-zinc-500 py-8 text-xs sm:text-sm">
 
             No recent activity.
 
@@ -592,72 +849,141 @@ Portfolio
 
 </div>
 
+
 </section>
+
+{% block scripts %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
 
-const ctx = document.getElementById('portfolioChart');
+document.addEventListener("DOMContentLoaded", function () {
 
-new Chart(ctx, {
+    const canvas = document.getElementById("portfolioChart");
 
-type:'line',
+    if (!canvas) return;
 
-data:{
+    new Chart(canvas, {
 
-labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+        type: "line",
 
-datasets:[{
+        data: {
 
-label:'Portfolio',
+            labels: [
+                "Mon",
+                "Tue",
+                "Wed",
+                "Thu",
+                "Fri",
+                "Sat",
+                "Sun"
+            ],
 
-data:[1200,1350,1320,1480,1600,1700,1820],
+            datasets: [{
 
-borderColor:'#dc2626',
+                label: "Portfolio",
 
-backgroundColor:'rgba(220,38,38,.15)',
+                data: [
+                    1200,
+                    1350,
+                    1320,
+                    1480,
+                    1600,
+                    1700,
+                    1820
+                ],
 
-fill:true,
+                borderColor: "#dc2626",
 
-tension:.4
+                backgroundColor: "rgba(220,38,38,.10)",
 
-}]
+                fill: true,
 
-},
+                tension: .4,
 
-options:{
+                borderWidth: 2,
 
-responsive:true,
+                pointRadius: 0,
 
-plugins:{
+                pointHoverRadius: 4
 
-legend:{
+            }]
 
-display:false
+        },
 
-}
+        options: {
 
-},
+            responsive: true,
 
-scales:{
+            maintainAspectRatio: false,
 
-x:{
+            interaction: {
+                intersect: false,
+                mode: "index"
+            },
 
-grid:{color:'#27272a'}
+            plugins: {
 
-},
+                legend: {
+                    display: false
+                }
 
-y:{
+            },
 
-grid:{color:'#27272a'}
+            scales: {
 
-}
+                x: {
 
-}
+                    grid: {
+                        display: false
+                    },
 
-}
+                    ticks: {
+                        color: "#71717a",
+                        font: {
+                            size: 10
+                        }
+                    }
+
+                },
+
+                y: {
+
+                    grid: {
+                        color: "#27272a"
+                    },
+
+                    border: {
+                        display: false
+                    },
+
+                    ticks: {
+
+                        color: "#71717a",
+
+                        font: {
+                            size: 10
+                        },
+
+                        callback: function(value) {
+                            return "$" + value;
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    });
 
 });
 
 </script>
+
+{% endblock %}
 
 {% endblock %}

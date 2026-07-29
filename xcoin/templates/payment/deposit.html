@@ -7,446 +7,752 @@ Deposit Funds
 {% block content %}
 
 <section
-class="max-w-6xl mx-auto p-6"
+    class="w-full max-w-[1400px] mx-auto space-y-5 sm:space-y-6"
+
 
 x-data="{
 
-selected:'',
+    selected: '',
 
-wallets:{
-{% for wallet in wallets %}
-'{{ wallet.network }}':{
-address:`{{ wallet.wallet_address }}`,
-qr:`{% if wallet.qr_code %}{{ wallet.qr_code.url }}{% endif %}`,
-name:`{{ wallet.get_network_display }}`
-},
-{% endfor %}
-}
+    wallets: {
+
+        {% for wallet in wallets %}
+
+        '{{ wallet.network }}': {
+
+            address: `{{ wallet.wallet_address }}`,
+
+            qr: `{% if wallet.qr_code %}{{ wallet.qr_code.url }}{% endif %}`,
+
+            name: `{{ wallet.get_network_display }}`
+
+        },
+
+        {% endfor %}
+
+    }
 
 }">
 
-<div class="grid lg:grid-cols-3 gap-8">
 
-<div class="lg:col-span-2">
+<!-- ================================================= -->
+<!-- HEADER -->
+<!-- ================================================= -->
 
-<div class="glass rounded-3xl border border-zinc-800 p-8">
+<div class="min-w-0">
 
-<p class="uppercase tracking-[0.3em] text-xs text-red-500">
+    <p class="text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] text-red-500 font-semibold">
+        Wallet
+    </p>
 
-Deposit Funds
+    <h1 class="text-2xl sm:text-3xl font-bold tracking-tight mt-1.5">
+        Deposit Funds
+    </h1>
 
-</p>
-
-<h1 class="text-4xl font-black mt-2">
-
-Crypto Deposit
-
-</h1>
-
-<p class="text-zinc-400 mt-3">
-
-Deposit cryptocurrency into your XCoin wallet.
-
-</p>
-
-<form
-
-method="POST"
-
-enctype="multipart/form-data"
-
-class="mt-10 space-y-8">
-
-{% csrf_token %}
-
-<!-- Network -->
-
-<div>
-
-<label class="block mb-3 font-semibold">
-
-Select Network
-
-</label>
-
-<select
-
-name="network"
-
-x-model="selected"
-
-required
-
-class="w-full h-14 rounded-2xl bg-zinc-950 border border-zinc-800 px-5 focus:border-red-600 outline-none">
-
-<option value="">
-
-Choose Network
-
-</option>
-
-{% for wallet in wallets %}
-
-<option value="{{ wallet.network }}">
-
-{{ wallet.get_network_display }}
-
-</option>
-
-{% endfor %}
-
-</select>
+    <p class="text-xs sm:text-sm text-zinc-500 mt-1">
+        Deposit cryptocurrency securely into your XCoin wallet.
+    </p>
 
 </div>
 
 
 
-<!-- Wallet -->
+<!-- ================================================= -->
+<!-- MAIN -->
+<!-- ================================================= -->
 
-<div
-x-show="selected"
-x-transition
-class="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
 
-<p class="text-zinc-500 text-sm">
 
-Deposit Address
+    <!-- ================================================= -->
+    <!-- DEPOSIT FORM -->
+    <!-- ================================================= -->
 
-</p>
+    <div class="xl:col-span-2">
 
-<div class="flex items-center justify-between gap-4 mt-4">
+        <form
+            method="POST"
+            enctype="multipart/form-data">
 
-<p
+            {% csrf_token %}
 
-class="font-mono text-red-500 break-all"
+            <div class="glass rounded-2xl border border-zinc-800 p-4 sm:p-5 lg:p-6">
 
-x-text="wallets[selected]?.address">
 
-</p>
+                <!-- FORM HEADER -->
 
-<button
+                <div class="flex items-center justify-between gap-3">
 
-type="button"
+                    <div>
 
-@click="navigator.clipboard.writeText(wallets[selected].address)"
+                        <h2 class="text-base sm:text-lg font-semibold">
+                            Crypto Deposit
+                        </h2>
 
-class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700">
+                        <p class="text-xs sm:text-sm text-zinc-500 mt-1">
+                            Send funds to the wallet address below.
+                        </p>
 
-Copy
+                    </div>
 
-</button>
+                    <div
+                        class="w-9 h-9 sm:w-10 sm:h-10 shrink-0
+                               rounded-xl
+                               bg-red-600/10
+                               flex items-center justify-center">
 
-</div>
+                        <i
+                            data-lucide="arrow-down-to-line"
+                            class="w-4 h-4 sm:w-5 sm:h-5 text-red-500">
+                        </i>
 
-</div>
-
-
-
-<!-- Amount -->
-
-<div>
-
-<label class="block mb-3 font-semibold">
-
-Amount (USD)
-
-</label>
-
-<input
-
-type="number"
-
-step="0.01"
-
-name="amount"
-
-required
-
-placeholder="100"
-
-class="w-full h-14 rounded-2xl bg-zinc-950 border border-zinc-800 px-5 focus:border-red-600 outline-none">
-
-</div>
-
-
-
-<!-- TXID -->
-
-<div>
-
-<label class="block mb-3 font-semibold">
-
-Transaction Hash (TxID)
-
-</label>
-
-<input
-
-type="text"
-
-name="txid"
-
-required
-
-placeholder="Paste blockchain transaction hash"
-
-class="w-full h-14 rounded-2xl bg-zinc-950 border border-zinc-800 px-5 focus:border-red-600 outline-none">
-
-</div>
-
-
-
-<!-- Proof -->
-
-<div>
-
-<label class="block mb-3 font-semibold">
-
-Proof of Payment (Optional)
-
-</label>
-
-<input
-
-type="file"
-
-name="proof"
-
-class="w-full rounded-2xl border border-zinc-800 bg-zinc-950
-file:bg-red-600
-file:border-0
-file:text-white
-file:px-5
-file:py-3">
-
-</div>
-
-
-
-<button
-
-type="submit"
-
-class="w-full h-14 rounded-2xl bg-red-600 hover:bg-red-700 transition font-bold">
-
-Submit Deposit
-
-</button>
-
-</form>
-
-</div>
-
-</div>
-<!-- Right Sidebar -->
-
-<div class="space-y-6">
-
-    <!-- QR Code -->
-
-    <div class="glass rounded-3xl border border-zinc-800 p-8">
-
-        <h2 class="text-2xl font-bold">
-
-            Wallet QR Code
-
-        </h2>
-
-        <div class="mt-8 flex justify-center">
-
-            <template x-if="selected && wallets[selected].qr">
-
-                <img
-
-                :src="wallets[selected].qr"
-
-                class="w-52 h-52 rounded-2xl border border-zinc-800 bg-white p-3">
-
-            </template>
-
-            <template x-if="!selected || !wallets[selected].qr">
-
-                <div class="w-52 h-52 rounded-2xl border border-dashed border-zinc-700 flex items-center justify-center text-zinc-500">
-
-                    Select a Network
+                    </div>
 
                 </div>
 
-            </template>
+
+
+                <!-- ================================================= -->
+                <!-- NETWORK -->
+                <!-- ================================================= -->
+
+                <div class="mt-6">
+
+                    <label
+                        for="network"
+                        class="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-zinc-500">
+
+                        Select Network
+
+                    </label>
+
+                    <select
+
+                        id="network"
+
+                        name="network"
+
+                        x-model="selected"
+
+                        required
+
+                        class="mt-2.5
+                               w-full
+                               h-12 sm:h-13
+                               rounded-xl
+                               bg-zinc-950
+                               border
+                               border-zinc-800
+                               px-4
+                               text-xs sm:text-sm
+                               outline-none
+                               focus:border-red-600
+                               transition">
+
+                        <option value="">
+                            Choose Network
+                        </option>
+
+                        {% for wallet in wallets %}
+
+                        <option value="{{ wallet.network }}">
+                            {{ wallet.get_network_display }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- ================================================= -->
+                <!-- DEPOSIT ADDRESS -->
+                <!-- ================================================= -->
+
+                <div
+                    x-show="selected"
+                    x-transition
+
+                    class="mt-5
+                           rounded-xl
+                           border border-zinc-800
+                           bg-zinc-950/70
+                           p-3.5 sm:p-4">
+
+
+                    <div class="flex items-center justify-between gap-3">
+
+                        <div class="min-w-0">
+
+                            <p class="text-[10px] sm:text-xs uppercase tracking-wide text-zinc-600">
+                                Deposit Address
+                            </p>
+
+                            <p
+                                class="font-mono
+                                       text-[11px] sm:text-xs
+                                       text-red-500
+                                       break-all
+                                       leading-relaxed
+                                       mt-2"
+
+                                x-text="wallets[selected]?.address">
+
+                            </p>
+
+                        </div>
+
+
+                        <button
+
+                            type="button"
+
+                            @click="navigator.clipboard.writeText(wallets[selected].address)"
+
+                            class="shrink-0
+                                   h-9
+                                   px-3
+                                   rounded-lg
+                                   bg-red-600
+                                   hover:bg-red-700
+                                   text-[11px] sm:text-xs
+                                   font-medium
+                                   transition">
+
+                            Copy
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ================================================= -->
+                <!-- AMOUNT -->
+                <!-- ================================================= -->
+
+                <div class="mt-5">
+
+                    <label
+                        for="amount"
+                        class="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-zinc-500">
+
+                        Amount (USD)
+
+                    </label>
+
+
+                    <div class="relative mt-2.5">
+
+                        <i
+                            data-lucide="badge-dollar-sign"
+                            class="absolute left-4 top-1/2 -translate-y-1/2
+                                   w-4 h-4
+                                   text-red-500">
+                        </i>
+
+
+                        <input
+
+                            id="amount"
+
+                            type="number"
+
+                            step="0.01"
+
+                            name="amount"
+
+                            required
+
+                            inputmode="decimal"
+
+                            placeholder="100.00"
+
+                            class="w-full
+                                   h-12 sm:h-13
+                                   rounded-xl
+                                   bg-zinc-950
+                                   border
+                                   border-zinc-800
+                                   focus:border-red-600
+                                   focus:ring-4
+                                   focus:ring-red-600/10
+                                   outline-none
+                                   transition
+                                   pl-11
+                                   pr-4
+                                   text-sm">
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ================================================= -->
+                <!-- TXID -->
+                <!-- ================================================= -->
+
+                <div class="mt-5">
+
+                    <label
+                        for="txid"
+                        class="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-zinc-500">
+
+                        Transaction Hash (TxID)
+
+                    </label>
+
+
+                    <input
+
+                        id="txid"
+
+                        type="text"
+
+                        name="txid"
+
+                        required
+
+                        placeholder="Paste blockchain transaction hash"
+
+                        autocomplete="off"
+
+                        class="mt-2.5
+                               w-full
+                               h-12 sm:h-13
+                               rounded-xl
+                               bg-zinc-950
+                               border
+                               border-zinc-800
+                               focus:border-red-600
+                               focus:ring-4
+                               focus:ring-red-600/10
+                               outline-none
+                               transition
+                               px-4
+                               text-xs sm:text-sm">
+
+                </div>
+
+
+
+                <!-- ================================================= -->
+                <!-- PROOF -->
+                <!-- ================================================= -->
+
+                <div class="mt-5">
+
+                    <label
+                        for="proof"
+                        class="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-zinc-500">
+
+                        Proof of Payment
+                        <span class="normal-case tracking-normal text-zinc-700">
+                            (Optional)
+                        </span>
+
+                    </label>
+
+
+                    <input
+
+                        id="proof"
+
+                        type="file"
+
+                        name="proof"
+
+                        class="mt-2.5
+                               w-full
+                               rounded-xl
+                               border
+                               border-zinc-800
+                               bg-zinc-950
+                               text-xs
+                               text-zinc-500
+
+                               file:bg-red-600
+                               file:hover:bg-red-700
+                               file:border-0
+                               file:text-white
+                               file:px-4
+                               file:py-2.5
+                               file:mr-3
+                               file:cursor-pointer
+
+                               transition">
+
+                </div>
+
+
+
+                <!-- ================================================= -->
+                <!-- SECURITY NOTICE -->
+                <!-- ================================================= -->
+
+                <div
+                    class="mt-5
+                           flex items-start gap-2.5
+                           rounded-xl
+                           border border-zinc-800
+                           bg-zinc-950/50
+                           p-3.5">
+
+                    <i
+                        data-lucide="shield-check"
+                        class="w-4 h-4 text-green-500 shrink-0 mt-0.5">
+                    </i>
+
+                    <p class="text-[11px] sm:text-xs text-zinc-500 leading-relaxed">
+
+                        Verify the network and wallet address before sending funds.
+
+                    </p>
+
+                </div>
+
+
+
+                <!-- ================================================= -->
+                <!-- SUBMIT -->
+                <!-- ================================================= -->
+
+                <button
+
+                    type="submit"
+
+                    class="mt-5
+                           w-full
+                           h-11 sm:h-12
+                           rounded-xl
+                           bg-red-600
+                           hover:bg-red-700
+                           active:scale-[0.99]
+                           transition
+                           font-semibold
+                           text-xs sm:text-sm
+                           flex
+                           items-center
+                           justify-center
+                           gap-2">
+
+                    <i
+                        data-lucide="arrow-down-circle"
+                        class="w-4 h-4">
+                    </i>
+
+                    Submit Deposit
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+
+    <!-- ================================================= -->
+    <!-- SIDEBAR -->
+    <!-- ================================================= -->
+
+    <div class="space-y-4 sm:space-y-5">
+
+
+        <!-- ================================================= -->
+        <!-- QR CODE -->
+        <!-- ================================================= -->
+
+        <div class="glass rounded-2xl border border-zinc-800 p-4 sm:p-5">
+
+            <div class="flex items-center justify-between">
+
+                <div>
+
+                    <h2 class="text-sm sm:text-base font-semibold">
+                        Wallet QR Code
+                    </h2>
+
+                    <p class="text-[10px] sm:text-xs text-zinc-500 mt-1">
+                        Scan to deposit
+                    </p>
+
+                </div>
+
+                <i
+                    data-lucide="qr-code"
+                    class="w-4 h-4 text-red-500">
+                </i>
+
+            </div>
+
+
+            <div class="mt-5 flex justify-center">
+
+
+                <template x-if="selected && wallets[selected].qr">
+
+                    <img
+
+                        :src="wallets[selected].qr"
+
+                        class="w-44 h-44 sm:w-48 sm:h-48
+                               rounded-xl
+                               border border-zinc-800
+                               bg-white
+                               p-2
+                               object-contain">
+
+                </template>
+
+
+                <template x-if="!selected || !wallets[selected].qr">
+
+                    <div
+                        class="w-44 h-44 sm:w-48 sm:h-48
+                               rounded-xl
+                               border border-dashed
+                               border-zinc-700
+                               flex
+                               items-center
+                               justify-center
+                               text-center
+                               px-5
+                               text-[11px] sm:text-xs
+                               text-zinc-600">
+
+                        Select a network
+
+                    </div>
+
+                </template>
+
+            </div>
+
+
+            <p class="text-center text-[11px] sm:text-xs text-zinc-600 mt-4 leading-relaxed">
+
+                Scan this QR code with your wallet app.
+
+            </p>
 
         </div>
 
-        <p class="text-center text-zinc-500 text-sm mt-6">
-
-            Scan this QR code with your wallet app to make a deposit.
-
-        </p>
-
-    </div>
 
 
+        <!-- ================================================= -->
+        <!-- INSTRUCTIONS -->
+        <!-- ================================================= -->
 
-    <!-- Deposit Instructions -->
+        <div class="glass rounded-2xl border border-zinc-800 p-4 sm:p-5">
 
-    <div class="glass rounded-3xl border border-zinc-800 p-8">
+            <div class="flex items-center justify-between">
 
-        <h2 class="text-2xl font-bold">
+                <h2 class="text-sm sm:text-base font-semibold">
+                    Deposit Instructions
+                </h2>
 
-            Deposit Instructions
+                <i
+                    data-lucide="info"
+                    class="w-4 h-4 text-red-500">
+                </i>
 
-        </h2>
-
-        <ul class="space-y-4 mt-6 text-zinc-400 text-sm">
-
-            <li class="flex gap-3">
-
-                <i data-lucide="check-circle"
-                   class="w-5 h-5 text-green-500"></i>
-
-                Only send cryptocurrency using the selected network.
-
-            </li>
-
-            <li class="flex gap-3">
-
-                <i data-lucide="check-circle"
-                   class="w-5 h-5 text-green-500"></i>
-
-                Paste the correct transaction hash (TxID).
-
-            </li>
-
-            <li class="flex gap-3">
-
-                <i data-lucide="check-circle"
-                   class="w-5 h-5 text-green-500"></i>
-
-                Your deposit will be reviewed by our finance team.
-
-            </li>
-
-            <li class="flex gap-3">
-
-                <i data-lucide="check-circle"
-                   class="w-5 h-5 text-green-500"></i>
-
-                Funds are credited after blockchain confirmation.
-
-            </li>
-
-        </ul>
-
-    </div>
+            </div>
 
 
+            <div class="space-y-3.5 mt-5">
 
-    <!-- Warning -->
 
-    <div class="rounded-3xl bg-yellow-500/10 border border-yellow-500/20 p-6">
+                <div class="flex items-start gap-2.5">
 
-        <div class="flex gap-3">
+                    <i
+                        data-lucide="check-circle-2"
+                        class="w-4 h-4 text-green-500 shrink-0 mt-0.5">
+                    </i>
 
-            <i data-lucide="triangle-alert"
-               class="text-yellow-500"></i>
+                    <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed">
 
-            <div>
+                        Only send cryptocurrency using the selected network.
 
-                <h3 class="font-bold text-yellow-500">
+                    </p>
 
-                    Important Notice
+                </div>
 
-                </h3>
 
-                <p class="text-sm text-zinc-400 mt-3">
+                <div class="flex items-start gap-2.5">
 
-                    Depositing to the wrong blockchain network may result
-                    in permanent loss of funds. Always verify the wallet
-                    address and selected network before sending your
-                    cryptocurrency.
+                    <i
+                        data-lucide="check-circle-2"
+                        class="w-4 h-4 text-green-500 shrink-0 mt-0.5">
+                    </i>
 
-                </p>
+                    <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+
+                        Paste the correct transaction hash (TxID).
+
+                    </p>
+
+                </div>
+
+
+                <div class="flex items-start gap-2.5">
+
+                    <i
+                        data-lucide="check-circle-2"
+                        class="w-4 h-4 text-green-500 shrink-0 mt-0.5">
+                    </i>
+
+                    <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+
+                        Your deposit will be reviewed by our finance team.
+
+                    </p>
+
+                </div>
+
+
+                <div class="flex items-start gap-2.5">
+
+                    <i
+                        data-lucide="check-circle-2"
+                        class="w-4 h-4 text-green-500 shrink-0 mt-0.5">
+                    </i>
+
+                    <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+
+                        Funds are credited after blockchain confirmation.
+
+                    </p>
+
+                </div>
 
             </div>
 
         </div>
 
-    </div>
 
 
+        <!-- ================================================= -->
+        <!-- WARNING -->
+        <!-- ================================================= -->
 
-    <!-- Minimum Confirmations -->
+        <div
+            class="rounded-2xl
+                   border border-yellow-500/20
+                   bg-yellow-500/5
+                   p-4 sm:p-5">
 
-    <div class="glass rounded-3xl border border-zinc-800 p-8">
 
-        <h2 class="text-xl font-bold mb-6">
+            <div class="flex items-start gap-3">
 
-            Network Confirmations
+                <i
+                    data-lucide="triangle-alert"
+                    class="w-4 h-4 text-yellow-500 shrink-0 mt-0.5">
+                </i>
 
-        </h2>
 
-        <div class="space-y-4">
+                <div class="min-w-0">
 
-            <div class="flex justify-between">
+                    <h3 class="text-xs sm:text-sm font-semibold text-yellow-500">
 
-                <span>
+                        Important Notice
 
-                    Bitcoin
+                    </h3>
 
-                </span>
 
-                <strong>
+                    <p class="text-[11px] sm:text-xs text-zinc-500 mt-2 leading-relaxed">
 
-                    2 Confirmations
+                        Depositing to the wrong blockchain network may result in permanent loss of funds. Always verify the wallet address and selected network before sending cryptocurrency.
 
-                </strong>
+                    </p>
 
-            </div>
-
-            <div class="flex justify-between">
-
-                <span>
-
-                    USDT (TRC20)
-
-                </span>
-
-                <strong>
-
-                    20 Confirmations
-
-                </strong>
+                </div>
 
             </div>
 
-            <div class="flex justify-between">
+        </div>
 
-                <span>
 
-                    USDT (BEP20)
 
-                </span>
+        <!-- ================================================= -->
+        <!-- CONFIRMATIONS -->
+        <!-- ================================================= -->
 
-                <strong>
+        <div class="glass rounded-2xl border border-zinc-800 p-4 sm:p-5">
 
-                    15 Confirmations
+            <div class="flex items-center justify-between">
 
-                </strong>
+                <h2 class="text-sm sm:text-base font-semibold">
+                    Network Confirmations
+                </h2>
+
+                <i
+                    data-lucide="blocks"
+                    class="w-4 h-4 text-red-500">
+                </i>
 
             </div>
 
-            <div class="flex justify-between">
 
-                <span>
+            <div class="space-y-3 mt-5">
 
-                    USDT (ERC20)
 
-                </span>
+                <div class="flex items-center justify-between gap-3">
 
-                <strong>
+                    <span class="text-xs sm:text-sm text-zinc-500">
+                        Bitcoin
+                    </span>
 
-                    12 Confirmations
+                    <strong class="text-xs sm:text-sm">
+                        2
+                    </strong>
 
-                </strong>
+                </div>
+
+
+                <div class="flex items-center justify-between gap-3">
+
+                    <span class="text-xs sm:text-sm text-zinc-500">
+                        USDT (TRC20)
+                    </span>
+
+                    <strong class="text-xs sm:text-sm">
+                        20
+                    </strong>
+
+                </div>
+
+
+                <div class="flex items-center justify-between gap-3">
+
+                    <span class="text-xs sm:text-sm text-zinc-500">
+                        USDT (BEP20)
+                    </span>
+
+                    <strong class="text-xs sm:text-sm">
+                        15
+                    </strong>
+
+                </div>
+
+
+                <div class="flex items-center justify-between gap-3">
+
+                    <span class="text-xs sm:text-sm text-zinc-500">
+                        USDT (ERC20)
+                    </span>
+
+                    <strong class="text-xs sm:text-sm">
+                        12
+                    </strong>
+
+                </div>
 
             </div>
 
@@ -456,7 +762,6 @@ Submit Deposit
 
 </div>
 
-</div>
 
 </section>
 
