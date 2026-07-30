@@ -8,21 +8,17 @@ Deposit Funds | XCoin
 
 <!-- QRCode.js -->
 
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
-    integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer">
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <section
     x-data="depositPage()"
-    class="w-full max-w-[1400px] mx-auto space-y-5 sm:space-y-6 px-3 sm:px-0">
+    class="w-full max-w-[1400px] mx-auto px-3 sm:px-5 lg:px-0 space-y-5 sm:space-y-6"
+>
 
-    
-<!-- ================================================= -->
+
+<!-- ===================================================== -->
 <!-- HEADER -->
-<!-- ================================================= -->
+<!-- ===================================================== -->
 
 <div>
 
@@ -38,6 +34,7 @@ Deposit Funds | XCoin
 
 
     <h1 class="text-2xl sm:text-3xl
+               lg:text-4xl
                font-bold
                tracking-tight
                mt-1.5">
@@ -59,23 +56,26 @@ Deposit Funds | XCoin
 
 
 
-<!-- ================================================= -->
-<!-- MAIN -->
-<!-- ================================================= -->
+<!-- ===================================================== -->
+<!-- MAIN GRID -->
+<!-- ===================================================== -->
 
 <div class="grid grid-cols-1 xl:grid-cols-3
             gap-4 sm:gap-5 lg:gap-6">
 
 
     <!-- ================================================= -->
-    <!-- DEPOSIT FORM -->
+    <!-- LEFT: DEPOSIT FORM -->
     <!-- ================================================= -->
 
     <div class="xl:col-span-2">
 
+
         <form
             method="POST"
-            enctype="multipart/form-data">
+            enctype="multipart/form-data"
+            class="space-y-4 sm:space-y-5"
+        >
 
             {% csrf_token %}
 
@@ -84,15 +84,19 @@ Deposit Funds | XCoin
                 class="glass
                        rounded-2xl
                        border border-zinc-800
-                       p-4 sm:p-5 lg:p-6">
+                       p-4 sm:p-5 lg:p-6"
+            >
 
 
                 <!-- FORM HEADER -->
 
-                <div class="flex items-center
-                            justify-between gap-3">
+                <div
+                    class="flex items-center
+                           justify-between
+                           gap-3"
+                >
 
-                    <div>
+                    <div class="min-w-0">
 
                         <h2 class="text-base sm:text-lg
                                    font-semibold">
@@ -118,7 +122,9 @@ Deposit Funds | XCoin
                                shrink-0
                                rounded-xl
                                bg-red-600/10
-                               flex items-center justify-center">
+                               flex items-center
+                               justify-center"
+                    >
 
                         <i
                             data-lucide="arrow-down-to-line"
@@ -132,9 +138,9 @@ Deposit Funds | XCoin
 
 
 
-                <!-- ================================================= -->
+                <!-- ========================================= -->
                 <!-- NETWORK -->
-                <!-- ================================================= -->
+                <!-- ========================================= -->
 
                 <div class="mt-6">
 
@@ -143,7 +149,8 @@ Deposit Funds | XCoin
                         class="text-[10px] sm:text-xs
                                uppercase
                                tracking-[0.2em]
-                               text-zinc-500">
+                               text-zinc-500"
+                    >
 
                         Select Network
 
@@ -158,7 +165,7 @@ Deposit Funds | XCoin
                         required
                         class="mt-2.5
                                w-full
-                               h-12 sm:h-13
+                               h-12
                                rounded-xl
                                bg-zinc-950
                                border border-zinc-800
@@ -166,7 +173,10 @@ Deposit Funds | XCoin
                                text-xs sm:text-sm
                                outline-none
                                focus:border-red-600
-                               transition">
+                               focus:ring-4
+                               focus:ring-red-600/10
+                               transition"
+                    >
 
                         <option value="">
                             Choose Network
@@ -187,26 +197,26 @@ Deposit Funds | XCoin
 
 
 
-                <!-- ================================================= -->
-                <!-- DEPOSIT ADDRESS -->
-                <!-- ================================================= -->
+                <!-- ========================================= -->
+                <!-- ADDRESS -->
+                <!-- ========================================= -->
 
                 <div
                     x-show="selected"
-                    x-transition
                     x-cloak
+                    x-transition
                     class="mt-5
                            rounded-xl
                            border border-zinc-800
                            bg-zinc-950/70
-                           p-3.5 sm:p-4">
-
+                           p-3.5 sm:p-4"
+                >
 
                     <div
                         class="flex items-start
                                justify-between
-                               gap-3">
-
+                               gap-3"
+                    >
 
                         <div class="min-w-0 flex-1">
 
@@ -214,7 +224,8 @@ Deposit Funds | XCoin
                                 class="text-[10px] sm:text-xs
                                        uppercase
                                        tracking-wide
-                                       text-zinc-600">
+                                       text-zinc-600"
+                            >
 
                                 Deposit Address
 
@@ -222,14 +233,14 @@ Deposit Funds | XCoin
 
 
                             <p
-                                x-text="currentWallet?.address || ''"
+                                x-text="currentWallet ? currentWallet.address : ''"
                                 class="font-mono
-                                       text-[11px] sm:text-xs
+                                       text-[10px] sm:text-xs
                                        text-red-500
                                        break-all
                                        leading-relaxed
-                                       mt-2">
-
+                                       mt-2"
+                            >
                             </p>
 
                         </div>
@@ -246,9 +257,12 @@ Deposit Funds | XCoin
                                    hover:bg-red-700
                                    text-[11px] sm:text-xs
                                    font-medium
-                                   transition">
+                                   transition"
+                        >
 
-                            <span x-text="copied ? 'Copied' : 'Copy'"></span>
+                            <span
+                                x-text="copied ? 'Copied' : 'Copy'"
+                            ></span>
 
                         </button>
 
@@ -258,9 +272,9 @@ Deposit Funds | XCoin
 
 
 
-                <!-- ================================================= -->
+                <!-- ========================================= -->
                 <!-- AMOUNT -->
-                <!-- ================================================= -->
+                <!-- ========================================= -->
 
                 <div class="mt-5">
 
@@ -269,7 +283,8 @@ Deposit Funds | XCoin
                         class="text-[10px] sm:text-xs
                                uppercase
                                tracking-[0.2em]
-                               text-zinc-500">
+                               text-zinc-500"
+                    >
 
                         Amount (USD)
 
@@ -280,11 +295,13 @@ Deposit Funds | XCoin
 
                         <i
                             data-lucide="badge-dollar-sign"
-                            class="absolute left-4 top-1/2
+                            class="absolute
+                                   left-4
+                                   top-1/2
                                    -translate-y-1/2
                                    w-4 h-4
-                                   text-red-500">
-                        </i>
+                                   text-red-500"
+                        ></i>
 
 
                         <input
@@ -297,7 +314,7 @@ Deposit Funds | XCoin
                             inputmode="decimal"
                             placeholder="100.00"
                             class="w-full
-                                   h-12 sm:h-13
+                                   h-12
                                    rounded-xl
                                    bg-zinc-950
                                    border border-zinc-800
@@ -308,7 +325,8 @@ Deposit Funds | XCoin
                                    transition
                                    pl-11
                                    pr-4
-                                   text-sm">
+                                   text-sm"
+                        >
 
                     </div>
 
@@ -316,9 +334,9 @@ Deposit Funds | XCoin
 
 
 
-                <!-- ================================================= -->
+                <!-- ========================================= -->
                 <!-- TXID -->
-                <!-- ================================================= -->
+                <!-- ========================================= -->
 
                 <div class="mt-5">
 
@@ -327,7 +345,8 @@ Deposit Funds | XCoin
                         class="text-[10px] sm:text-xs
                                uppercase
                                tracking-[0.2em]
-                               text-zinc-500">
+                               text-zinc-500"
+                    >
 
                         Transaction Hash (TxID)
 
@@ -339,11 +358,11 @@ Deposit Funds | XCoin
                         type="text"
                         name="txid"
                         required
-                        placeholder="Paste blockchain transaction hash"
                         autocomplete="off"
+                        placeholder="Paste blockchain transaction hash"
                         class="mt-2.5
                                w-full
-                               h-12 sm:h-13
+                               h-12
                                rounded-xl
                                bg-zinc-950
                                border border-zinc-800
@@ -353,15 +372,16 @@ Deposit Funds | XCoin
                                outline-none
                                transition
                                px-4
-                               text-xs sm:text-sm">
+                               text-xs sm:text-sm"
+                    >
 
                 </div>
 
 
 
-                <!-- ================================================= -->
+                <!-- ========================================= -->
                 <!-- PROOF -->
-                <!-- ================================================= -->
+                <!-- ========================================= -->
 
                 <div class="mt-5">
 
@@ -370,17 +390,17 @@ Deposit Funds | XCoin
                         class="text-[10px] sm:text-xs
                                uppercase
                                tracking-[0.2em]
-                               text-zinc-500">
+                               text-zinc-500"
+                    >
 
                         Proof of Payment
 
                         <span
                             class="normal-case
                                    tracking-normal
-                                   text-zinc-700">
-
+                                   text-zinc-700"
+                        >
                             (Optional)
-
                         </span>
 
                     </label>
@@ -405,16 +425,16 @@ Deposit Funds | XCoin
                                file:px-4
                                file:py-2.5
                                file:mr-3
-                               file:cursor-pointer
-                               transition">
+                               file:cursor-pointer"
+                    >
 
                 </div>
 
 
 
-                <!-- ================================================= -->
+                <!-- ========================================= -->
                 <!-- SECURITY -->
-                <!-- ================================================= -->
+                <!-- ========================================= -->
 
                 <div
                     class="mt-5
@@ -423,21 +443,23 @@ Deposit Funds | XCoin
                            rounded-xl
                            border border-zinc-800
                            bg-zinc-950/50
-                           p-3.5">
+                           p-3.5"
+                >
 
                     <i
                         data-lucide="shield-check"
                         class="w-4 h-4
                                text-green-500
                                shrink-0
-                               mt-0.5">
-                    </i>
+                               mt-0.5"
+                    ></i>
 
 
                     <p
                         class="text-[11px] sm:text-xs
                                text-zinc-500
-                               leading-relaxed">
+                               leading-relaxed"
+                    >
 
                         Verify the network and wallet address
                         before sending funds.
@@ -448,15 +470,15 @@ Deposit Funds | XCoin
 
 
 
-                <!-- ================================================= -->
+                <!-- ========================================= -->
                 <!-- SUBMIT -->
-                <!-- ================================================= -->
+                <!-- ========================================= -->
 
                 <button
                     type="submit"
                     class="mt-5
                            w-full
-                           h-11 sm:h-12
+                           h-12
                            rounded-xl
                            bg-red-600
                            hover:bg-red-700
@@ -467,12 +489,13 @@ Deposit Funds | XCoin
                            flex
                            items-center
                            justify-center
-                           gap-2">
+                           gap-2"
+                >
 
                     <i
                         data-lucide="arrow-down-circle"
-                        class="w-4 h-4">
-                    </i>
+                        class="w-4 h-4"
+                    ></i>
 
                     Submit Deposit
 
@@ -487,25 +510,28 @@ Deposit Funds | XCoin
 
 
     <!-- ================================================= -->
-    <!-- SIDEBAR -->
+    <!-- RIGHT SIDEBAR -->
     <!-- ================================================= -->
 
     <div class="space-y-4 sm:space-y-5">
 
 
-        <!-- ================================================= -->
+        <!-- =============================================== -->
         <!-- QR CODE -->
-        <!-- ================================================= -->
+        <!-- =============================================== -->
 
         <div
             class="glass
                    rounded-2xl
                    border border-zinc-800
-                   p-4 sm:p-5">
+                   p-4 sm:p-5"
+        >
 
-
-            <div class="flex items-center
-                        justify-between">
+            <div
+                class="flex items-center
+                       justify-between
+                       gap-3"
+            >
 
                 <div>
 
@@ -530,32 +556,35 @@ Deposit Funds | XCoin
 
                 <i
                     data-lucide="qr-code"
-                    class="w-4 h-4 text-red-500">
-                </i>
+                    class="w-4 h-4
+                           text-red-500"
+                ></i>
 
             </div>
 
 
 
-            <!-- QR -->
+            <!-- QR CONTAINER -->
 
             <div class="mt-5 flex justify-center">
 
                 <div
-                    class="w-48 h-48 sm:w-52 sm:h-52
+                    class="w-48 h-48
+                           sm:w-52 sm:h-52
                            rounded-2xl
                            bg-white
                            p-3
                            flex items-center
-                           justify-center">
+                           justify-center
+                           shadow-xl"
+                >
 
                     <div
                         id="wallet-qr"
                         class="w-full h-full
                                flex items-center
-                               justify-center">
-
-                    </div>
+                               justify-center"
+                    ></div>
 
                 </div>
 
@@ -563,16 +592,19 @@ Deposit Funds | XCoin
 
 
 
-            <!-- EMPTY STATE -->
+            <!-- QR EMPTY STATE -->
 
             <div
                 x-show="!selected"
                 x-cloak
-                class="mt-4
-                       text-center">
+                class="text-center
+                       mt-4"
+            >
 
-                <p class="text-[11px] sm:text-xs
-                          text-zinc-600">
+                <p
+                    class="text-[11px] sm:text-xs
+                           text-zinc-600"
+                >
 
                     Select a network to generate your QR code.
 
@@ -582,29 +614,30 @@ Deposit Funds | XCoin
 
 
 
-            <!-- SELECTED NETWORK -->
+            <!-- QR SELECTED STATE -->
 
             <div
                 x-show="selected"
                 x-cloak
-                class="mt-4 text-center">
-
+                class="text-center
+                       mt-4"
+            >
 
                 <p
-                    x-text="currentWallet?.name || ''"
+                    x-text="currentWallet ? currentWallet.name : ''"
                     class="text-xs
                            font-semibold
-                           text-zinc-300">
-
-                </p>
+                           text-zinc-300"
+                ></p>
 
 
                 <p
                     class="text-[10px]
                            text-zinc-600
-                           mt-1">
+                           mt-1"
+                >
 
-                    QR generated from the wallet address.
+                    QR generated from your deposit address.
 
                 </p>
 
@@ -614,19 +647,21 @@ Deposit Funds | XCoin
 
 
 
-        <!-- ================================================= -->
+        <!-- =============================================== -->
         <!-- INSTRUCTIONS -->
-        <!-- ================================================= -->
+        <!-- =============================================== -->
 
         <div
             class="glass
                    rounded-2xl
                    border border-zinc-800
-                   p-4 sm:p-5">
+                   p-4 sm:p-5"
+        >
 
-
-            <div class="flex items-center
-                        justify-between">
+            <div
+                class="flex items-center
+                       justify-between"
+            >
 
                 <h2 class="text-sm sm:text-base
                            font-semibold">
@@ -638,8 +673,9 @@ Deposit Funds | XCoin
 
                 <i
                     data-lucide="info"
-                    class="w-4 h-4 text-red-500">
-                </i>
+                    class="w-4 h-4
+                           text-red-500"
+                ></i>
 
             </div>
 
@@ -654,14 +690,15 @@ Deposit Funds | XCoin
                         class="w-4 h-4
                                text-green-500
                                shrink-0
-                               mt-0.5">
-                    </i>
+                               mt-0.5"
+                    ></i>
 
 
                     <p
                         class="text-xs sm:text-sm
                                text-zinc-400
-                               leading-relaxed">
+                               leading-relaxed"
+                    >
 
                         Only send cryptocurrency using
                         the selected network.
@@ -678,14 +715,15 @@ Deposit Funds | XCoin
                         class="w-4 h-4
                                text-green-500
                                shrink-0
-                               mt-0.5">
-                    </i>
+                               mt-0.5"
+                    ></i>
 
 
                     <p
                         class="text-xs sm:text-sm
                                text-zinc-400
-                               leading-relaxed">
+                               leading-relaxed"
+                    >
 
                         Paste the correct transaction hash (TxID).
 
@@ -701,14 +739,15 @@ Deposit Funds | XCoin
                         class="w-4 h-4
                                text-green-500
                                shrink-0
-                               mt-0.5">
-                    </i>
+                               mt-0.5"
+                    ></i>
 
 
                     <p
                         class="text-xs sm:text-sm
                                text-zinc-400
-                               leading-relaxed">
+                               leading-relaxed"
+                    >
 
                         Your deposit will be reviewed
                         by our finance team.
@@ -725,14 +764,15 @@ Deposit Funds | XCoin
                         class="w-4 h-4
                                text-green-500
                                shrink-0
-                               mt-0.5">
-                    </i>
+                               mt-0.5"
+                    ></i>
 
 
                     <p
                         class="text-xs sm:text-sm
                                text-zinc-400
-                               leading-relaxed">
+                               leading-relaxed"
+                    >
 
                         Funds are credited after
                         blockchain confirmation.
@@ -747,16 +787,16 @@ Deposit Funds | XCoin
 
 
 
-        <!-- ================================================= -->
+        <!-- =============================================== -->
         <!-- WARNING -->
-        <!-- ================================================= -->
+        <!-- =============================================== -->
 
         <div
             class="rounded-2xl
                    border border-yellow-500/20
                    bg-yellow-500/5
-                   p-4 sm:p-5">
-
+                   p-4 sm:p-5"
+        >
 
             <div class="flex items-start gap-3">
 
@@ -765,16 +805,17 @@ Deposit Funds | XCoin
                     class="w-4 h-4
                            text-yellow-500
                            shrink-0
-                           mt-0.5">
-                </i>
+                           mt-0.5"
+                ></i>
 
 
-                <div class="min-w-0">
+                <div>
 
                     <h3
                         class="text-xs sm:text-sm
                                font-semibold
-                               text-yellow-500">
+                               text-yellow-500"
+                    >
 
                         Important Notice
 
@@ -785,7 +826,8 @@ Deposit Funds | XCoin
                         class="text-[11px] sm:text-xs
                                text-zinc-500
                                mt-2
-                               leading-relaxed">
+                               leading-relaxed"
+                    >
 
                         Depositing to the wrong blockchain
                         network may result in permanent
@@ -803,19 +845,21 @@ Deposit Funds | XCoin
 
 
 
-        <!-- ================================================= -->
+        <!-- =============================================== -->
         <!-- CONFIRMATIONS -->
-        <!-- ================================================= -->
+        <!-- =============================================== -->
 
         <div
             class="glass
                    rounded-2xl
                    border border-zinc-800
-                   p-4 sm:p-5">
+                   p-4 sm:p-5"
+        >
 
-
-            <div class="flex items-center
-                        justify-between">
+            <div
+                class="flex items-center
+                       justify-between"
+            >
 
                 <h2 class="text-sm sm:text-base
                            font-semibold">
@@ -827,8 +871,9 @@ Deposit Funds | XCoin
 
                 <i
                     data-lucide="blocks"
-                    class="w-4 h-4 text-red-500">
-                </i>
+                    class="w-4 h-4
+                           text-red-500"
+                ></i>
 
             </div>
 
@@ -836,53 +881,89 @@ Deposit Funds | XCoin
             <div class="space-y-3 mt-5">
 
 
-                <div class="flex items-center justify-between">
+                <div
+                    class="flex items-center
+                           justify-between"
+                >
 
-                    <span class="text-xs sm:text-sm text-zinc-500">
+                    <span class="text-xs sm:text-sm
+                                  text-zinc-500">
+
                         Bitcoin
+
                     </span>
 
+
                     <strong class="text-xs sm:text-sm">
+
                         2
+
                     </strong>
 
                 </div>
 
 
-                <div class="flex items-center justify-between">
+                <div
+                    class="flex items-center
+                           justify-between"
+                >
 
-                    <span class="text-xs sm:text-sm text-zinc-500">
+                    <span class="text-xs sm:text-sm
+                                  text-zinc-500">
+
                         USDT (TRC20)
+
                     </span>
 
+
                     <strong class="text-xs sm:text-sm">
+
                         20
+
                     </strong>
 
                 </div>
 
 
-                <div class="flex items-center justify-between">
+                <div
+                    class="flex items-center
+                           justify-between"
+                >
 
-                    <span class="text-xs sm:text-sm text-zinc-500">
+                    <span class="text-xs sm:text-sm
+                                  text-zinc-500">
+
                         USDT (BEP20)
+
                     </span>
 
+
                     <strong class="text-xs sm:text-sm">
+
                         15
+
                     </strong>
 
                 </div>
 
 
-                <div class="flex items-center justify-between">
+                <div
+                    class="flex items-center
+                           justify-between"
+                >
 
-                    <span class="text-xs sm:text-sm text-zinc-500">
+                    <span class="text-xs sm:text-sm
+                                  text-zinc-500">
+
                         USDT (ERC20)
+
                     </span>
 
+
                     <strong class="text-xs sm:text-sm">
+
                         12
+
                     </strong>
 
                 </div>
@@ -895,14 +976,13 @@ Deposit Funds | XCoin
 
 </div>
 
-
 </section>
 
-<!-- ================================================= -->
+<!-- ========================================================= -->
 
-<!-- DYNAMIC QR LOGIC -->
+<!-- DEPOSIT PAGE LOGIC -->
 
-<!-- ================================================= -->
+<!-- ========================================================= -->
 
 <script>
 
@@ -943,7 +1023,12 @@ function depositPage() {
             const container =
                 document.getElementById("wallet-qr");
 
-            if (!container) return;
+
+            if (!container) {
+
+                return;
+
+            }
 
 
             container.innerHTML = "";
@@ -967,21 +1052,46 @@ function depositPage() {
             }
 
 
-            new QRCode(container, {
+            if (typeof QRCode === "undefined") {
 
-                text: wallet.address,
+                console.error(
+                    "XCoin: QRCode.js failed to load."
+                );
 
-                width: 180,
+                return;
 
-                height: 180,
+            }
 
-                colorDark: "#000000",
 
-                colorLight: "#ffffff",
+            try {
 
-                correctLevel: QRCode.CorrectLevel.H
+                new QRCode(container, {
 
-            });
+                    text: wallet.address,
+
+                    width: 180,
+
+                    height: 180,
+
+                    colorDark: "#000000",
+
+                    colorLight: "#ffffff",
+
+                    correctLevel:
+                        QRCode.CorrectLevel.H
+
+                });
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "XCoin: QR generation failed.",
+                    error
+                );
+
+            }
 
         },
 
@@ -1019,7 +1129,7 @@ function depositPage() {
             catch (error) {
 
                 console.error(
-                    "Could not copy address:",
+                    "XCoin: Copy failed.",
                     error
                 );
 
@@ -1027,25 +1137,9 @@ function depositPage() {
 
         }
 
-    }
+    };
 
 }
-
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        if (
-            typeof lucide !== "undefined"
-        ) {
-
-            lucide.createIcons();
-
-        }
-
-    }
-);
 
 </script>
 
