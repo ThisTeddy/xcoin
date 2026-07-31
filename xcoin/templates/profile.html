@@ -8,282 +8,147 @@ Profile
 
 <section class="w-full max-w-5xl mx-auto space-y-5 sm:space-y-6">
 
-
 <!-- PROFILE HEADER -->
 
 <div class="glass rounded-2xl sm:rounded-3xl border border-zinc-800 p-5 sm:p-6 lg:p-8">
 
-    <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 sm:gap-6">
 
+<div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 sm:gap-6">
 
-        <!-- AVATAR -->
+    <!-- AVATAR -->
 
-        {% if request.user.avatar %}
+    {% if request.user.avatar %}
 
-        <img
-            src="{{ request.user.avatar.url }}"
-            alt="Profile"
-            class="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32
-                   rounded-2xl sm:rounded-3xl
-                   object-cover
-                   shrink-0">
+    <img
+        src="{{ request.user.avatar.url }}"
+        alt="Profile"
+        class="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32
+               rounded-2xl sm:rounded-3xl
+               object-cover
+               shrink-0">
 
+    {% else %}
+
+    <div
+        class="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32
+               rounded-2xl sm:rounded-3xl
+               bg-red-600
+               flex items-center justify-center
+               text-3xl sm:text-4xl lg:text-5xl
+               font-black
+               shrink-0">
+
+        {% if request.user.username %}
+            {{ request.user.username|slice:":1"|upper }}
+        {% elif request.user.email %}
+            {{ request.user.email|slice:":1"|upper }}
         {% else %}
+            U
+        {% endif %}
 
-        <div
-            class="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32
-                   rounded-2xl sm:rounded-3xl
-                   bg-red-600
-                   flex items-center justify-center
-                   text-3xl sm:text-4xl lg:text-5xl
-                   font-black
-                   shrink-0">
+    </div>
 
-            {% if request.user.username %}
-                {{ request.user.username|slice:":1"|upper }}
-            {% elif request.user.email %}
-                {{ request.user.email|slice:":1"|upper }}
+    {% endif %}
+
+
+    <!-- USER INFO -->
+
+    <div class="min-w-0 flex-1 text-center sm:text-left">
+
+        <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
+
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black truncate max-w-full">
+
+                {% if request.user.username %}
+                    {{ request.user.username }}
+                {% else %}
+                    User
+                {% endif %}
+
+            </h1>
+
+
+            {% if request.user.email_verified %}
+
+            <span
+                class="bg-green-500/10
+                       text-green-400
+                       px-2.5 py-1
+                       rounded-full
+                       text-[10px] sm:text-xs
+                       font-medium">
+
+                Verified
+
+            </span>
+
             {% else %}
-                U
+
+            <span
+                class="bg-yellow-500/10
+                       text-yellow-400
+                       px-2.5 py-1
+                       rounded-full
+                       text-[10px] sm:text-xs
+                       font-medium">
+
+                Unverified
+
+            </span>
+
             {% endif %}
 
         </div>
 
-        {% endif %}
+
+        <p class="text-xs sm:text-sm text-zinc-400 mt-2.5 break-all">
+            {{ request.user.email }}
+        </p>
 
 
-
-        <!-- USER INFO -->
-
-        <div class="min-w-0 flex-1 text-center sm:text-left">
-
-            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2.5">
-
-                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black truncate max-w-full">
-
-                    {% if request.user.username %}
-                        {{ request.user.username }}
-                    {% else %}
-                        User
-                    {% endif %}
-
-                </h1>
-
-
-                {% if request.user.email_verified %}
-
-                <span
-                    class="bg-green-500/10
-                           text-green-400
-                           px-2.5 py-1
-                           rounded-full
-                           text-[10px] sm:text-xs
-                           font-medium">
-
-                    Verified
-
-                </span>
-
-                {% else %}
-
-                <span
-                    class="bg-yellow-500/10
-                           text-yellow-400
-                           px-2.5 py-1
-                           rounded-full
-                           text-[10px] sm:text-xs
-                           font-medium">
-
-                    Unverified
-
-                </span>
-
-                {% endif %}
-
-            </div>
-
-
-            <p class="text-xs sm:text-sm text-zinc-400 mt-2.5 break-all">
-
-                {{ request.user.email }}
-
-            </p>
-
-
-            <p class="text-[10px] sm:text-xs text-zinc-500 mt-2">
-
-                Member since {{ request.user.created_at|date:"M d, Y" }}
-
-            </p>
-
-        </div>
+        <p class="text-[10px] sm:text-xs text-zinc-500 mt-2">
+            Member since {{ request.user.created_at|date:"M d, Y" }}
+        </p>
 
     </div>
 
 </div>
 
-
+</div>
 
 <!-- DETAILS -->
 
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
 
 
-    <!-- EMAIL -->
+<!-- EMAIL -->
 
-    <div class="glass rounded-2xl border border-zinc-800 p-4 sm:p-5">
+<div class="glass rounded-2xl border border-zinc-800 p-4 sm:p-5">
 
-        <div class="flex items-center gap-3">
+    <div class="flex items-center gap-3">
 
-            <div
-                class="w-9 h-9 rounded-xl
-                       bg-zinc-900
-                       flex items-center justify-center
-                       shrink-0">
+        <div
+            class="w-9 h-9 rounded-xl
+                   bg-zinc-900
+                   flex items-center justify-center
+                   shrink-0">
 
-                <i
-                    data-lucide="mail"
-                    class="w-4 h-4 text-red-500">
-                </i>
-
-            </div>
-
-            <div class="min-w-0">
-
-                <p class="text-[10px] sm:text-xs uppercase tracking-wide text-zinc-500">
-                    Email Address
-                </p>
-
-                <h2 class="text-xs sm:text-sm font-semibold mt-1 break-all">
-
-                    {{ request.user.email }}
-
-                </h2>
-
-            </div>
+            <i
+                data-lucide="mail"
+                class="w-4 h-4 text-red-500">
+            </i>
 
         </div>
 
-    </div>
+        <div class="min-w-0">
 
+            <p class="text-[10px] sm:text-xs uppercase tracking-wide text-zinc-500">
+                Email Address
+            </p>
 
-
-    <!-- PHONE -->
-
-    <div class="glass rounded-2xl border border-zinc-800 p-4 sm:p-5">
-
-        <div class="flex items-center gap-3">
-
-            <div
-                class="w-9 h-9 rounded-xl
-                       bg-zinc-900
-                       flex items-center justify-center
-                       shrink-0">
-
-                <i
-                    data-lucide="phone"
-                    class="w-4 h-4 text-red-500">
-                </i>
-
-            </div>
-
-            <div class="min-w-0">
-
-                <p class="text-[10px] sm:text-xs uppercase tracking-wide text-zinc-500">
-                    Phone Number
-                </p>
-
-                <h2 class="text-xs sm:text-sm font-semibold mt-1">
-
-                    {% if request.user.phone %}
-                        {{ request.user.phone }}
-                    {% else %}
-                        <span class="text-zinc-600">Not provided</span>
-                    {% endif %}
-
-                </h2>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- COUNTRY -->
-
-    <div class="glass rounded-2xl border border-zinc-800 p-4 sm:p-5">
-
-        <div class="flex items-center gap-3">
-
-            <div
-                class="w-9 h-9 rounded-xl
-                       bg-zinc-900
-                       flex items-center justify-center
-                       shrink-0">
-
-                <i
-                    data-lucide="globe-2"
-                    class="w-4 h-4 text-red-500">
-                </i>
-
-            </div>
-
-            <div class="min-w-0">
-
-                <p class="text-[10px] sm:text-xs uppercase tracking-wide text-zinc-500">
-                    Country
-                </p>
-
-                <h2 class="text-xs sm:text-sm font-semibold mt-1">
-
-                    {% if request.user.country %}
-                        {{ request.user.country }}
-                    {% else %}
-                        <span class="text-zinc-600">Not provided</span>
-                    {% endif %}
-
-                </h2>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- STATUS -->
-
-    <div class="glass rounded-2xl border border-zinc-800 p-4 sm:p-5">
-
-        <div class="flex items-center gap-3">
-
-            <div
-                class="w-9 h-9 rounded-xl
-                       bg-green-500/10
-                       flex items-center justify-center
-                       shrink-0">
-
-                <i
-                    data-lucide="badge-check"
-                    class="w-4 h-4 text-green-500">
-                </i>
-
-            </div>
-
-            <div>
-
-                <p class="text-[10px] sm:text-xs uppercase tracking-wide text-zinc-500">
-                    Account Status
-                </p>
-
-                <h2 class="text-xs sm:text-sm font-semibold text-green-400 mt-1">
-                    Active
-                </h2>
-
-            </div>
+            <h2 class="text-xs sm:text-sm font-semibold mt-1 break-all">
+                {{ request.user.email }}
+            </h2>
 
         </div>
 
@@ -292,34 +157,293 @@ Profile
 </div>
 
 
+<!-- PHONE -->
 
-<!-- SECURITY -->
-
-<div class="glass rounded-2xl sm:rounded-3xl border border-zinc-800 p-5 sm:p-6 lg:p-7">
+<div class="glass rounded-2xl border border-zinc-800 p-4 sm:p-5">
 
     <div class="flex items-center gap-3">
 
         <div
-            class="w-9 h-9 sm:w-10 sm:h-10
-                   rounded-xl
-                   bg-red-600/10
-                   flex items-center justify-center">
+            class="w-9 h-9 rounded-xl
+                   bg-zinc-900
+                   flex items-center justify-center
+                   shrink-0">
 
             <i
-                data-lucide="shield"
-                class="w-4 h-4 sm:w-5 sm:h-5 text-red-500">
+                data-lucide="phone"
+                class="w-4 h-4 text-red-500">
+            </i>
+
+        </div>
+
+        <div class="min-w-0">
+
+            <p class="text-[10px] sm:text-xs uppercase tracking-wide text-zinc-500">
+                Phone Number
+            </p>
+
+            <h2 class="text-xs sm:text-sm font-semibold mt-1">
+
+                {% if request.user.phone %}
+                    {{ request.user.phone }}
+                {% else %}
+                    <span class="text-zinc-600">Not provided</span>
+                {% endif %}
+
+            </h2>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- COUNTRY -->
+
+<div class="glass rounded-2xl border border-zinc-800 p-4 sm:p-5">
+
+    <div class="flex items-center gap-3">
+
+        <div
+            class="w-9 h-9 rounded-xl
+                   bg-zinc-900
+                   flex items-center justify-center
+                   shrink-0">
+
+            <i
+                data-lucide="globe-2"
+                class="w-4 h-4 text-red-500">
+            </i>
+
+        </div>
+
+        <div class="min-w-0">
+
+            <p class="text-[10px] sm:text-xs uppercase tracking-wide text-zinc-500">
+                Country
+            </p>
+
+            <h2 class="text-xs sm:text-sm font-semibold mt-1">
+
+                {% if request.user.country %}
+                    {{ request.user.country }}
+                {% else %}
+                    <span class="text-zinc-600">Not provided</span>
+                {% endif %}
+
+            </h2>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- STATUS -->
+
+<div class="glass rounded-2xl border border-zinc-800 p-4 sm:p-5">
+
+    <div class="flex items-center gap-3">
+
+        <div
+            class="w-9 h-9 rounded-xl
+                   bg-green-500/10
+                   flex items-center justify-center
+                   shrink-0">
+
+            <i
+                data-lucide="badge-check"
+                class="w-4 h-4 text-green-500">
             </i>
 
         </div>
 
         <div>
 
-            <h2 class="text-base sm:text-lg font-bold">
-                Security
+            <p class="text-[10px] sm:text-xs uppercase tracking-wide text-zinc-500">
+                Account Status
+            </p>
+
+            <h2 class="text-xs sm:text-sm font-semibold text-green-400 mt-1">
+                Active
             </h2>
 
-            <p class="text-[10px] sm:text-xs text-zinc-500 mt-0.5">
-                Keep your account protected.
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<!-- ================================================ -->
+
+<!-- IDENTITY VERIFICATION -->
+
+<!-- ================================================ -->
+
+<div
+    class="
+        glass
+        rounded-2xl sm:rounded-3xl
+        border border-zinc-800
+        p-5 sm:p-6 lg:p-7
+    "
+>
+
+
+<div
+    class="
+        flex flex-col
+        sm:flex-row
+        sm:items-center
+        sm:justify-between
+        gap-5
+    "
+>
+
+    <div class="flex items-start gap-4 min-w-0">
+
+        <div
+            class="
+                w-11 h-11
+                sm:w-12 sm:h-12
+                rounded-2xl
+                bg-red-600/10
+                flex items-center justify-center
+                shrink-0
+            "
+        >
+
+            <i
+                data-lucide="shield-check"
+                class="w-5 h-5 sm:w-6 sm:h-6 text-red-500"
+            ></i>
+
+        </div>
+
+
+        <div class="min-w-0">
+
+            <div class="flex flex-wrap items-center gap-2">
+
+                <h2 class="text-base sm:text-lg font-bold">
+                    Identity Verification
+                </h2>
+
+
+                {% if request.user.kyc.status == "approved" %}
+
+                    <span
+                        class="
+                            inline-flex items-center gap-1.5
+                            rounded-full
+                            bg-green-500/10
+                            text-green-400
+                            px-2.5 py-1
+                            text-[9px] sm:text-[10px]
+                            font-bold
+                        "
+                    >
+
+                        <span class="w-1.5 h-1.5 rounded-full bg-green-400"></span>
+
+                        Verified
+
+                    </span>
+
+                {% elif request.user.kyc.status == "pending" %}
+
+                    <span
+                        class="
+                            inline-flex items-center gap-1.5
+                            rounded-full
+                            bg-yellow-500/10
+                            text-yellow-400
+                            px-2.5 py-1
+                            text-[9px] sm:text-[10px]
+                            font-bold
+                        "
+                    >
+
+                        <span class="w-1.5 h-1.5 rounded-full bg-yellow-400"></span>
+
+                        Pending
+
+                    </span>
+
+                {% elif request.user.kyc.status == "rejected" %}
+
+                    <span
+                        class="
+                            inline-flex items-center gap-1.5
+                            rounded-full
+                            bg-red-500/10
+                            text-red-400
+                            px-2.5 py-1
+                            text-[9px] sm:text-[10px]
+                            font-bold
+                        "
+                    >
+
+                        <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+
+                        Action Required
+
+                    </span>
+
+                {% else %}
+
+                    <span
+                        class="
+                            inline-flex items-center gap-1.5
+                            rounded-full
+                            bg-zinc-500/10
+                            text-zinc-400
+                            px-2.5 py-1
+                            text-[9px] sm:text-[10px]
+                            font-bold
+                        "
+                    >
+
+                        Not Verified
+
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+            <p
+                class="
+                    text-[10px] sm:text-xs
+                    text-zinc-500
+                    mt-1
+                    leading-5
+                "
+            >
+
+                {% if request.user.kyc.status == "approved" %}
+
+                    Your identity has been successfully verified.
+
+                {% elif request.user.kyc.status == "pending" %}
+
+                    Your identity verification is currently under review.
+
+                {% elif request.user.kyc.status == "rejected" %}
+
+                    Your verification needs attention. Review and resubmit your documents.
+
+                {% else %}
+
+                    Verify your identity to unlock account features.
+
+                {% endif %}
+
             </p>
 
         </div>
@@ -327,155 +451,260 @@ Profile
     </div>
 
 
+    <!-- KYC BUTTON -->
 
-    <div class="mt-5 space-y-3">
+    {% if not request.user.kyc or request.user.kyc.status == "rejected" %}
 
+        <a
+            href="{% url 'kyc' %}"
+            class="
+                w-full sm:w-auto
+                h-10 sm:h-11
+                px-4 sm:px-5
+                rounded-xl
+                bg-red-600
+                hover:bg-red-500
+                flex items-center justify-center
+                gap-2
+                text-xs sm:text-sm
+                font-bold
+                transition
+                shrink-0
+            "
+        >
 
-        <!-- PASSWORD -->
+            <i
+                data-lucide="shield-check"
+                class="w-4 h-4"
+            ></i>
 
-        <div
-            class="flex items-center justify-between gap-4
-                   rounded-xl
-                   border border-zinc-800
-                   bg-zinc-950/50
-                   p-3.5 sm:p-4">
+            {% if request.user.kyc.status == "rejected" %}
+                Resubmit
+            {% else %}
+                Verify Identity
+            {% endif %}
 
-            <div class="flex items-center gap-3 min-w-0">
+        </a>
 
-                <i
-                    data-lucide="lock-keyhole"
-                    class="w-4 h-4 text-zinc-500 shrink-0">
-                </i>
+    {% elif request.user.kyc.status == "pending" %}
 
-                <div class="min-w-0">
+        <a
+            href="{% url 'kyc' %}"
+            class="
+                w-full sm:w-auto
+                h-10 sm:h-11
+                px-4 sm:px-5
+                rounded-xl
+                border border-zinc-800
+                bg-zinc-900
+                hover:border-yellow-500/40
+                flex items-center justify-center
+                gap-2
+                text-xs sm:text-sm
+                font-bold
+                transition
+                shrink-0
+            "
+        >
 
-                    <h3 class="text-xs sm:text-sm font-semibold">
-                        Password
-                    </h3>
+            <i
+                data-lucide="clock-3"
+                class="w-4 h-4 text-yellow-400"
+            ></i>
 
-                    <p class="text-[10px] sm:text-xs text-zinc-500 mt-0.5">
-                        Keep your account secure
-                    </p>
+            View Status
 
-                </div>
+        </a>
 
-            </div>
+    {% endif %}
 
-
-            <a
-                href=""
-                class="h-9 px-3 sm:px-4
-                       rounded-lg
-                       bg-zinc-900
-                       border border-zinc-800
-                       hover:border-red-600
-                       flex items-center justify-center
-                       text-[10px] sm:text-xs
-                       font-medium
-                       shrink-0
-                       transition">
-
-                Change
-
-            </a>
-
-        </div>
-
-
-
-        <!-- TWO FACTOR -->
-
-        <div
-            class="flex items-center justify-between gap-4
-                   rounded-xl
-                   border border-zinc-800
-                   bg-zinc-950/50
-                   p-3.5 sm:p-4">
-
-            <div class="flex items-center gap-3 min-w-0">
-
-                <i
-                    data-lucide="smartphone"
-                    class="w-4 h-4 text-zinc-500 shrink-0">
-                </i>
-
-                <div class="min-w-0">
-
-                    <h3 class="text-xs sm:text-sm font-semibold">
-                        Two-Factor Authentication
-                    </h3>
-
-                    <p class="text-[10px] sm:text-xs text-zinc-500 mt-0.5">
-                        Extra protection for your account
-                    </p>
-
-                </div>
-
-            </div>
+</div>
 
 
-            <span
-                class="text-[9px] sm:text-[10px]
-                       text-yellow-400
-                       bg-yellow-500/10
-                       px-2 py-1
-                       rounded-full
-                       shrink-0">
+</div>
 
-                Coming Soon
+<!-- SECURITY -->
 
-            </span>
+<div class="glass rounded-2xl sm:rounded-3xl border border-zinc-800 p-5 sm:p-6 lg:p-7">
 
-        </div>
+
+<div class="flex items-center gap-3">
+
+    <div
+        class="w-9 h-9 sm:w-10 sm:h-10
+               rounded-xl
+               bg-red-600/10
+               flex items-center justify-center">
+
+        <i
+            data-lucide="shield"
+            class="w-4 h-4 sm:w-5 sm:h-5 text-red-500">
+        </i>
+
+    </div>
+
+    <div>
+
+        <h2 class="text-base sm:text-lg font-bold">
+            Security
+        </h2>
+
+        <p class="text-[10px] sm:text-xs text-zinc-500 mt-0.5">
+            Keep your account protected.
+        </p>
 
     </div>
 
 </div>
 
 
+<div class="mt-5 space-y-3">
+
+
+    <!-- PASSWORD -->
+
+    <div
+        class="flex items-center justify-between gap-4
+               rounded-xl
+               border border-zinc-800
+               bg-zinc-950/50
+               p-3.5 sm:p-4">
+
+        <div class="flex items-center gap-3 min-w-0">
+
+            <i
+                data-lucide="lock-keyhole"
+                class="w-4 h-4 text-zinc-500 shrink-0">
+            </i>
+
+            <div class="min-w-0">
+
+                <h3 class="text-xs sm:text-sm font-semibold">
+                    Password
+                </h3>
+
+                <p class="text-[10px] sm:text-xs text-zinc-500 mt-0.5">
+                    Keep your account secure
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <a
+            href=""
+            class="h-9 px-3 sm:px-4
+                   rounded-lg
+                   bg-zinc-900
+                   border border-zinc-800
+                   hover:border-red-600
+                   flex items-center justify-center
+                   text-[10px] sm:text-xs
+                   font-medium
+                   shrink-0
+                   transition">
+
+            Change
+
+        </a>
+
+    </div>
+
+
+    <!-- TWO FACTOR -->
+
+    <div
+        class="flex items-center justify-between gap-4
+               rounded-xl
+               border border-zinc-800
+               bg-zinc-950/50
+               p-3.5 sm:p-4">
+
+        <div class="flex items-center gap-3 min-w-0">
+
+            <i
+                data-lucide="smartphone"
+                class="w-4 h-4 text-zinc-500 shrink-0">
+            </i>
+
+            <div class="min-w-0">
+
+                <h3 class="text-xs sm:text-sm font-semibold">
+                    Two-Factor Authentication
+                </h3>
+
+                <p class="text-[10px] sm:text-xs text-zinc-500 mt-0.5">
+                    Extra protection for your account
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <span
+            class="text-[9px] sm:text-[10px]
+                   text-yellow-400
+                   bg-yellow-500/10
+                   px-2 py-1
+                   rounded-full
+                   shrink-0">
+
+            Coming Soon
+
+        </span>
+
+    </div>
+
+</div>
+
+
+</div>
 
 <!-- ACTIONS -->
 
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
 
-    <a
-        href="{% url 'edit_profile' %}"
-        class="h-11 sm:h-12
-               rounded-xl
-               bg-red-600
-               hover:bg-red-700
-               flex items-center justify-center gap-2
-               text-xs sm:text-sm
-               font-semibold
-               transition">
 
-        <i data-lucide="user-pen" class="w-4 h-4"></i>
+<a
+    href="{% url 'edit_profile' %}"
+    class="h-11 sm:h-12
+           rounded-xl
+           bg-red-600
+           hover:bg-red-700
+           flex items-center justify-center gap-2
+           text-xs sm:text-sm
+           font-semibold
+           transition">
 
-        Edit Profile
+    <i data-lucide="user-pen" class="w-4 h-4"></i>
 
-    </a>
+    Edit Profile
+
+</a>
 
 
-    <a
-        href="{% url 'logout' %}"
-        class="h-11 sm:h-12
-               rounded-xl
-               border border-zinc-800
-               bg-zinc-900
-               hover:border-red-600
-               flex items-center justify-center gap-2
-               text-xs sm:text-sm
-               font-semibold
-               transition">
+<a
+    href="{% url 'logout' %}"
+    class="h-11 sm:h-12
+           rounded-xl
+           border border-zinc-800
+           bg-zinc-900
+           hover:border-red-600
+           flex items-center justify-center gap-2
+           text-xs sm:text-sm
+           font-semibold
+           transition">
 
-        <i data-lucide="log-out" class="w-4 h-4"></i>
+    <i data-lucide="log-out" class="w-4 h-4"></i>
 
-        Logout
+    Logout
 
-    </a>
+</a>
+
 
 </div>
-
 
 </section>
 

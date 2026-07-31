@@ -28,6 +28,11 @@ path("risk-disclosure/", views.risk_disclosure, name="risk_disclosure"),
         views.about,
         name="about"
     ),
+    path(
+    "kyc/",
+    views.kyc,
+    name="kyc",
+),
 
     path(
         "contact/",

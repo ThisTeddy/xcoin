@@ -1081,4 +1081,128 @@ class EmailLog(models.Model):
     def __str__(self):
         return f"{self.recipient} - {self.subject}"
 
-    
+
+from cloudinary.models import CloudinaryField
+from django.db import models
+
+
+class KYCVerification(models.Model):
+
+    # --------------------------------------------------
+    # STATUS
+    # --------------------------------------------------
+
+    STATUS_CHOICES = (
+        ("pending", "Pending"),
+        ("approved", "Approved"),
+        ("rejected", "Rejected"),
+    )
+
+    # --------------------------------------------------
+    # DOCUMENT TYPES
+    # --------------------------------------------------
+
+    DOCUMENT_TYPES = (
+        ("passport", "Passport"),
+        ("drivers_license", "Driver's License"),
+        ("state_id", "State ID"),
+        ("government_id", "Government ID"),
+        ("national_id", "National ID"),
+    )
+
+    # --------------------------------------------------
+    # USER
+    # --------------------------------------------------
+
+    user = models.OneToOneField(
+        "User",
+        on_delete=models.CASCADE,
+        related_name="kyc",
+    )
+
+    # --------------------------------------------------
+    # PERSONAL / VERIFICATION DETAILS
+    # --------------------------------------------------
+
+    document_type = models.CharField(
+        max_length=30,
+        choices=DOCUMENT_TYPES,
+    )
+
+    document_number = models.CharField(
+        max_length=100,
+        blank=True,
+    )
+
+    # --------------------------------------------------
+    # DOCUMENT UPLOADS
+    # --------------------------------------------------
+
+    document_front = CloudinaryField(
+        "document_front",
+        folder="xcoin/kyc/documents",
+    )
+
+    document_back = CloudinaryField(
+        "document_back",
+        folder="xcoin/kyc/documents",
+        blank=True,
+        null=True,
+    )
+
+    # --------------------------------------------------
+    # SELFIE
+    # --------------------------------------------------
+
+    selfie = CloudinaryField(
+        "selfie",
+        folder="xcoin/kyc/selfies",
+    )
+
+    # --------------------------------------------------
+    # VERIFICATION STATUS
+    # --------------------------------------------------
+
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="pending",
+        db_index=True,
+    )
+
+    rejection_reason = models.TextField(
+        blank=True,
+    )
+
+    # --------------------------------------------------
+    # REVIEW INFORMATION
+    # --------------------------------------------------
+
+    submitted_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    reviewed_at = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
+
+    # --------------------------------------------------
+    # META
+    # --------------------------------------------------
+
+    class Meta:
+
+        ordering = ["-submitted_at"]
+
+        verbose_name = "KYC Verification"
+
+        verbose_name_plural = "KYC Verifications"
+
+    # --------------------------------------------------
+    # STRING
+    # --------------------------------------------------
+
+    def __str__(self):
+
+        return f"{self.user.email} - {self.get_status_display()}"

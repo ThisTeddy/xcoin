@@ -9,13 +9,14 @@ import uuid
 from .models import (
     User,
     Wallet,
+    KYCVerification,
     Asset,
     Portfolio,
     InvestmentPlan,
     Investment,
     Payment,
     Transaction,
-    Notification,
+    Notification,           
     DepositWallet,
     SiteSettings,
     EmailTemplate,
@@ -655,3 +656,29 @@ def create_wallet(sender, instance, created, **kwargs):
         Wallet.objects.get_or_create(
             user=instance
         )
+
+@admin.register(KYCVerification)
+class KYCVerificationAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "user",
+        "document_type",
+        "status",
+        "submitted_at",
+        "reviewed_at",
+    )
+
+    list_filter = (
+        "status",
+        "document_type",
+    )
+
+    search_fields = (
+        "user__email",
+        "document_number",
+    )
+
+    readonly_fields = (
+        "submitted_at",
+        "reviewed_at",
+    )

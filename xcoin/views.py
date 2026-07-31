@@ -2644,3 +2644,199 @@ def reject_deposit(request, transaction_id):
     return redirect("admin_dashboard")
 
 
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
+
+from .models import KYCVerification
+
+
+@login_required
+def kyc(request):
+
+    verification = getattr(
+        request.user,
+        "kyc",
+        None
+    )
+
+    if request.method == "POST":
+
+        # ---------------------------------------------
+        # EXISTING PENDING APPLICATION
+        # ---------------------------------------------
+
+        if verification and verification.status == "pending":
+
+            messages.info(
+                request,
+                "Your KYC application is already under review."
+            )
+
+            return redirect("kyc")
+
+
+        # ---------------------------------------------
+        # GET POST DATA
+        # ---------------------------------------------
+
+        document_type = request.POST.get(
+            "document_type",
+            ""
+        ).strip()
+
+        document_number = request.POST.get(
+            "document_number",
+            ""
+        ).strip()
+
+
+        # ---------------------------------------------
+        # GET FILES
+        # ---------------------------------------------
+
+        document_front = request.FILES.get(
+            "document_front"
+        )
+
+        document_back = request.FILES.get(
+            "document_back"
+        )
+
+        selfie = request.FILES.get(
+            "selfie"
+        )
+
+
+        # ---------------------------------------------
+        # VALIDATE DOCUMENT TYPE
+        # ---------------------------------------------
+
+        valid_document_types = {
+            "passport",
+            "drivers_license",
+            "state_id",
+            "government_id",
+            "national_id",
+        }
+
+        if document_type not in valid_document_types:
+
+            messages.error(
+                request,
+                "Please select a valid identity document."
+            )
+
+            return redirect("kyc")
+
+
+        # ---------------------------------------------
+        # VALIDATE DOCUMENT NUMBER
+        # ---------------------------------------------
+
+        if not document_number:
+
+            messages.error(
+                request,
+                "Please enter your document number."
+            )
+
+            return redirect("kyc")
+
+
+        # ---------------------------------------------
+        # VALIDATE FRONT DOCUMENT
+        # ---------------------------------------------
+
+        if not document_front:
+
+            messages.error(
+                request,
+                "Please upload the front of your document."
+            )
+
+            return redirect("kyc")
+
+
+        # ---------------------------------------------
+        # VALIDATE SELFIE
+        # ---------------------------------------------
+
+        if not selfie:
+
+            messages.error(
+                request,
+                "Please upload a selfie."
+            )
+
+            return redirect("kyc")
+
+
+        # ---------------------------------------------
+        # CREATE / UPDATE KYC
+        # ---------------------------------------------
+
+        if verification:
+
+            verification.document_type = document_type
+
+            verification.document_number = document_number
+
+            verification.document_front = document_front
+
+            verification.document_back = document_back
+
+            verification.selfie = selfie
+
+            verification.status = "pending"
+
+            verification.rejection_reason = ""
+
+            verification.reviewed_at = None
+
+            verification.save()
+
+        else:
+
+            verification = KYCVerification.objects.create(
+
+                user=request.user,
+
+                document_type=document_type,
+
+                document_number=document_number,
+
+                document_front=document_front,
+
+                document_back=document_back,
+
+                selfie=selfie,
+
+                status="pending",
+
+            )
+
+
+        # ---------------------------------------------
+        # SUCCESS
+        # ---------------------------------------------
+
+        messages.success(
+            request,
+            "Your identity verification has been submitted successfully."
+        )
+
+        return redirect("kyc")
+
+
+    # ---------------------------------------------
+    # GET REQUEST
+    # ---------------------------------------------
+
+    return render(
+        request,
+        "kyc.html",
+        {
+            "verification": verification,
+        }
+    )
