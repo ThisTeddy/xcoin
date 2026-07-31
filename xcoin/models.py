@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 import random 
 import string 
+from cloudinary.models import CloudinaryField
 
 def generate_referral_code():
     while True:
@@ -79,10 +80,11 @@ class User(AbstractUser):
         blank=True
     )
 
-    avatar = models.ImageField(
-        upload_to="avatars/",
-        blank=True,
-        null=True
+    avatar = CloudinaryField(
+    "avatar",
+    folder="xcoin/avatars",
+    blank=True,
+    null=True,
     )
 
     email_verified = models.BooleanField(
@@ -141,6 +143,8 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+
+    
 class Wallet(models.Model):
 
     user = models.OneToOneField(
@@ -817,7 +821,13 @@ class DepositWallet(models.Model):
     )
 
     wallet_address = models.TextField()
-
+    
+    qr_code = CloudinaryField(
+    "qr_code",
+    folder="xcoin/wallets",
+    blank=True,
+    null=True,
+    )
     active = models.BooleanField(
         default=True,
         db_index=True
