@@ -39,35 +39,36 @@ cloudinary.config(
 )
 # ==================================================
 
-# SECURITY
-
 # ==================================================
-ALLOWED_HOSTS = [
-    "xcoin-ufhb.onrender.com",
-    "localhost",
-    "127.0.0.1",
-    "xcoin.pxxlspace.cv",
-]
+# SECURITY
+# ==================================================
 
 SECRET_KEY = config(
-"SECRET_KEY",
-default="django-insecure-change-this-in-production"
+    "SECRET_KEY",
+    default="django-insecure-change-this-in-production"
 )
 
 DEBUG = config(
-"DEBUG",
-default=True,
-cast=bool,
+    "DEBUG",
+    default=True,
+    cast=bool,
 )
 
-ALLOWED_HOSTS = config(
-"ALLOWED_HOSTS",
-default="*",
-cast=lambda value: [
-host.strip()
-for host in value.split(",")
-if host.strip()
-],
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "xcoin.pxxlspace.cv",
+    "xcoin-ufhb.onrender.com",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://xcoin.pxxlspace.cv",
+    "https://xcoin-ufhb.onrender.com",
+]
+
+SECURE_PROXY_SSL_HEADER = (
+    "HTTP_X_FORWARDED_PROTO",
+    "https",
 )
 
 # ==================================================
