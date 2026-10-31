@@ -46,6 +46,7 @@ ALLOWED_HOSTS = [
     "xcoin-ufhb.onrender.com",
     "localhost",
     "127.0.0.1",
+    "xcoin.pxxlspace.cv",
 ]
 
 SECRET_KEY = config(
