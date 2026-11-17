@@ -22,7 +22,9 @@ from .models import (
 
 import random
 import string
-
+def ted():
+    print("Saviour")
+    
 def generate_referral_code():
     while True:
         code = ''.join(
